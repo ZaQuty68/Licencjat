@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+    <h1>Are you new to Critter Picker?</h1>
+    <div>
+        <form th:action="@{/register}" method="POST" enctype="multipart/form-data" th:object="${req}">
+            <fieldset>
+                <legend>Create new account:</legend>
+                <div th:if="${#fields.hasErrors()}">
+                    <span class="error">
+                        Please correct following errors:
+                    </span>
+                </div>
+
+                <label for="username">Username: </label>
+                <input type="text" id="username" th:field="*{username}" autofocus="autofocus"/>
+                <span class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username error</span>
+                <span th:if="${usernameTaken}" class="error">This Username is already taken!</span>
+
+                <label for="email">Email address: </label>
+                <input type="email" id="email" th:field="*{email}"/>
+                <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</span>
+                <span th:if="${emailTaken}" class="error">This Email is already taken!</span>
+
+                <label for="password">Password: </label>
+                <input type="password" id="password" th:field="*{password}"/>
+                <span class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</span>
+
+                <label>Hemisphere: </label>
+                <select name="hemisphere">
+                    <option th:each="hemiOpt : ${T(CritterPicker.Enums.Hemisphere).values()}" th:value="${hemiOpt}" th:text="${hemiOpt}"/>
+                </select>
+
+                <input type="submit" value="Register"/>
+            </fieldset>
+        </form>
+        <p>Already have an account?</p>
+        <a th:href="@{/login}">Click here!</a>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List of all critters</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+<div>
+    <div th:each="fish: ${fishes}">
+        <p th:text="${fish.name}"/>
+    </div>
+</div>
+
+</body>
+</html>

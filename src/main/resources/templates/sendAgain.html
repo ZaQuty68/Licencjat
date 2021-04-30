@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Send Again</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+<div>
+    <h1>Having trouble with confirming your email?</h1>
+    <form th:action="@{/register/sendAgain}" method="post">
+        <fieldset>
+            <legend>Send confirmation email again:</legend>
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email"/>
+            <div>
+                <button type="submit">Send</button>
+            </div>
+        </fieldset>
+    </form>
+    <div th:if="${exist}">User with that email address does not exist!</div>
+    <div th:if="${email}">This email address is already confirmed!</div>
+    <div th:if="${send}">Confirmation email sent!</div>
+    <a th:href="@{/login}">Login</a>
+</div>
+</body>
+</html>

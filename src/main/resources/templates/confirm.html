@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+<div th:if="${email}">
+    <h1>This email address is already confirmed!</h1>
+</div>
+<div th:if="${expired}">
+    <h1>This confirmation link has already expired!</h1>
+    <p>Go to <a th:href="@{register/confirmAgain}">this page</a> to send new confirmation email.</p>
+</div>
+<div th:if="${confirmed}">
+    <h1>Email successfully confirmed! Thank you!</h1>
+</div>
+<a th:href="@{/login}">Login</a>
+</body>
+</html>
