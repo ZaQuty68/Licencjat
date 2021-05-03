@@ -33,10 +33,10 @@ public class AppUser implements UserDetails {
     @Column(length = 256)
     private String email;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private Hemisphere hemisphere;
 
     private Boolean enabled = false;

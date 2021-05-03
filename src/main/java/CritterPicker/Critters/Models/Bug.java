@@ -38,7 +38,7 @@ public class Bug {
     @Max(value = 20000, message = "Maximal price is 20000")
     private int price;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private Rarity rarity;
 
     private boolean availableInRain;

@@ -1,5 +1,6 @@
 package CritterPicker.Config;
 
+import CritterPicker.Enums.UserRole;
 import CritterPicker.User.AppUserManager;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -25,8 +26,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable().authorizeRequests()
                 .antMatchers("/register/**").permitAll()
                 .antMatchers("/api/**").permitAll()
-                .antMatchers("/user/**").hasRole("USER")
-                .antMatchers("/admin/**").hasRole("ADMIN")
+                //.antMatchers("/admin/**").hasRole(UserRole.ADMIN.toString())
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

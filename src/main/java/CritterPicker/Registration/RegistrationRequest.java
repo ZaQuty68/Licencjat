@@ -3,6 +3,7 @@ package CritterPicker.Registration;
 import CritterPicker.Enums.Hemisphere;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Bean;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.Email;
@@ -21,5 +22,6 @@ public class RegistrationRequest {
     @Email
     @NotNull(message = "This field is required!")
     private String email;
+    private String adminPassword;
     private Hemisphere hemisphere;
 }

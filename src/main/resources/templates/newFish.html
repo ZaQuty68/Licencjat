@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New Fish</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+<div>
+    <h1>Add a new fish!</h1>
+    <form th:action="@{/admin/newFish}" method="POST" enctype="multipart/form-data" th:object="${fish}">
+        <fieldset>
+            <legend>Add new fish:</legend>
+            <div th:if="${#fields.hasErrors()}">
+                    <span class="error">
+                        Please correct following errors:
+                    </span>
+            </div>
+
+            <label for="name">Fish name: </label>
+            <input type="text" id="name" th:field="*{name}" autofocus="autofocus"/>
+            <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</span>
+            <span th:if="${nameTaken}" class="error">This name is already taken!</span>
+
+            <label for="quote">Quote: </label>
+            <input type="quote" id="quote" th:field="*{quote}"/>
+            <span class="error" th:if="${#fields.hasErrors('quote')}" th:errors="*{quote}">Quote error</span>
+
+            <label for="location">Location: </label>
+            <select name="location" id="location" required>
+                <option th:each="locOpt : ${T(CritterPicker.Enums.LocationFish).values()}" th:value="${locOpt}" th:text="${locOpt}"> Location </option>
+            </select>
+
+            <label for="rainOnly">Fish only in rain: </label>
+            <input type="checkbox" id="rainOnly" th:field="*{onlyInRain}"/>
+
+            <label for="price">Price: </label>
+            <input type="number" id="price" th:field="*{price}"/>
+            <span class="error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price error</span>
+
+            <label for="rarity">Rarity: </label>
+            <select name="rarity" id="rarity" required>
+                <option th:each="rarOpt: ${T(CritterPicker.Enums.Rarity).values()}" th:value="${rarOpt}" th:text="${rarOpt}"> Rarity </option>
+            </select>
+
+            <label for="shadow">Shadow size: </label>
+            <select name="shadow" id="shadow" required>
+                <option th:each="shaOpt: ${T(CritterPicker.Enums.ShadowSize).values()}" th:value="${shaOpt}" th:text="${shaOpt}"> Shadow </option>
+            </select>
+
+            <label for="mlistN">Month list northern hemisphere: </label>
+            <select name="mlistN" id="mlistN" multiple required>
+                <option th:each="monOpt: ${T(CritterPicker.Enums.Months).values()}" th:value="${monOpt}" th:text="${monOpt}"> Month list N </option>
+            </select>
+
+            <label for="mlistS">Month list southern hemisphere: </label>
+            <select name="mlistS" id="mlistS" multiple required>
+                <option th:each="monOpt: ${T(CritterPicker.Enums.Months).values()}" th:value="${monOpt}" th:text="${monOpt}"> Month list S </option>
+            </select>
+
+            <label for="hlist">Hour list: </label>
+            <select name="hlist" id="hlist" multiple required>
+                <option th:each="i : ${#numbers.sequence(0, 24)}" th:value="${i}" th:text="${i}"> Hour list </option>
+            </select>
+
+            <input type="submit" value="Register"/>
+        </fieldset>
+    </form>
+</div>
+</body>
+</html>

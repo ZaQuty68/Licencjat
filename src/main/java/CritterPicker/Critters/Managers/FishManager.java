@@ -1,20 +1,20 @@
 package CritterPicker.Critters.Managers;
 
-import CritterPicker.Critters.CustomInterfaces.FishInterfaceCustom;
+//import CritterPicker.Critters.CustomInterfaces.FishInterfaceCustom;
 import CritterPicker.Critters.Interfaces.FishInterface;
 import CritterPicker.Critters.Models.Fish;
+import CritterPicker.Enums.Months;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class FishManager implements FishInterfaceCustom {
+@AllArgsConstructor
+public class FishManager{
 
     private FishInterface fi;
 
-    public FishManager(FishInterface fi){ this.fi = fi; }
-
-    @Override
     public void addFish(Fish fish){
         Fish fishToSave = new Fish();
         int id;
@@ -46,12 +46,15 @@ public class FishManager implements FishInterfaceCustom {
         fi.save(fishToSave);
     }
 
-    @Override
+    public void processAddingFish(Fish fish, List<Months> mlistN, List<Months> mlistS, List<Integer> hlist){
+        for(Months month: mlistN){
+            System.out.println(month.toString());
+        }
+    }
+
     public List<Fish> findAll(){ return fi.findAll(); }
 
-    @Override
     public Fish findById(int id){ return fi.findById(id); }
 
-    @Override
     public void deleteById(int id){ fi.deleteById(id); }
 }

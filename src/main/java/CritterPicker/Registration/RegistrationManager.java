@@ -32,7 +32,11 @@ public class RegistrationManager {
         appUserToSave.setUsername(request.getUsername());
         appUserToSave.setPassword(request.getPassword());
         appUserToSave.setEmail(request.getEmail());
-        appUserToSave.setRole(UserRole.USER);
+        if(request.getAdminPassword().equals("MakeMeAnAdmin123")){
+            appUserToSave.setRole(UserRole.ADMIN);
+        }else {
+            appUserToSave.setRole(UserRole.USER);
+        }
         appUserToSave.setHemisphere(request.getHemisphere());
 
         String token = aum.singUpUser(appUserToSave);

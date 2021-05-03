@@ -1,3 +1,4 @@
+/*
 package CritterPicker.Critters.CustomInterfaces;
 
 import CritterPicker.Critters.Models.Fish;
@@ -14,3 +15,6 @@ public interface FishInterfaceCustom {
 
     void deleteById(int id);
 }
+
+
+ */

@@ -4,14 +4,19 @@ import CritterPicker.Attachments.AttachmentManager;
 import CritterPicker.Critters.Managers.BugManager;
 import CritterPicker.Critters.Managers.FishManager;
 import CritterPicker.Critters.Managers.SeaCreatureManager;
+import CritterPicker.Critters.Models.Fish;
+import CritterPicker.DTO.FishDTO;
+import CritterPicker.Enums.Months;
 import CritterPicker.Registration.RegistrationManager;
 import CritterPicker.Registration.RegistrationRequest;
 import CritterPicker.User.AppUserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -38,6 +43,9 @@ public class WebController {
         return "login";
     }
 
+    @GetMapping("/")
+    public String redirectToLogin(){ return "redirect:/login"; }
+
     //////////////////////////////////////////////////////////   REGISTRATION
     @GetMapping("/register")
     public String register(Model model) {
@@ -46,12 +54,11 @@ public class WebController {
     }
 
     @PostMapping("/register")
-    public String processRegister(@Valid RegistrationRequest request, Errors errors, Model model) {
-        //model.addAttribute("req", request);
-        if (errors.hasErrors()) {
+    public String processRegister(@Valid @ModelAttribute("req") RegistrationRequest req, BindingResult result, Model model) {
+        if (result.hasErrors()) {
             return "register";
         }
-        String flag = rm.register(request);
+        String flag = rm.register(req);
         if (flag.equals("Username")) {
             model.addAttribute("usernameTaken", true);
             return "register";
@@ -114,8 +121,21 @@ public class WebController {
     }
     //////////////////////////////////////////////////////////   ADMIN
     @GetMapping("/admin/newFish")
-    public String newFish(){
+    public String newFish(Model model){
+        model.addAttribute("fish", new Fish());
         return "newFish";
+    }
+
+    @PostMapping("/admin/newFish")
+    public String processNewFish(@Valid @ModelAttribute("fish") Fish fish, Model model, BindingResult result){
+        if(result.hasErrors()) {
+            return "newFish";
+        }
+        System.out.println(fish.getName());
+        //for(Months m : fish.getMonthsListN()){
+        //    System.out.println(m.toString());
+        //}
+        return null;
     }
 
     //////////////////////////////////////////////////////////   LIST

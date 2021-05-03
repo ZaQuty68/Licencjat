@@ -39,10 +39,10 @@ public class SeaCreature {
     @Max(value = 20000, message = "Maximal price is 20000")
     private int price;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private Rarity rarity;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private ShadowSize shadowSize;
 
     @NotNull(message = "This field is required")

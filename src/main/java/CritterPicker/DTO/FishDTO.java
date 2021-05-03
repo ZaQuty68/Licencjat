@@ -1,37 +1,30 @@
-package CritterPicker.Critters.Models;
+package CritterPicker.DTO;
 
-import CritterPicker.Attachments.Attachment;
 import CritterPicker.Enums.LocationFish;
+import CritterPicker.Enums.Months;
 import CritterPicker.Enums.Rarity;
 import CritterPicker.Enums.ShadowSize;
-import CritterPicker.User.AppUser;
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Set;
+import java.util.List;
 
-@Entity(name = "Fish")
-@Table(name = "fish")
 @Data
-public class Fish {
-    @Id
-    private int id;
-
+public class FishDTO {
     @NotNull(message = "This field is required")
     @Size(min = 3, max = 50, message = "Fish name should be between 3 to 50 characters long")
-    @Column(length = 50)
     private String name;
 
     @NotNull(message = "This field is required")
     @Size(min = 10, max = 500, message = "Quote should be between 10 to 500 characters long")
-    @Column(length = 500)
     private String quote;
 
-    @Enumerated(EnumType.STRING)
     private LocationFish location;
 
     private boolean onlyInRain;
@@ -41,25 +34,16 @@ public class Fish {
     @Max(value = 20000, message = "Maximal price is 20000")
     private int price;
 
-    @Enumerated(EnumType.STRING)
     private Rarity rarity;
 
-    @Enumerated(EnumType.STRING)
     private ShadowSize shadowSize;
 
-    //@NotNull(message = "This field is required")
-    private String monthListN;
+    @NotNull(message = "This field is required")
+    private List<Months> monthsListN;
 
-    //@NotNull(message = "This field is required")
-    private String monthListS;
+    @NotNull(message = "This field is required")
+    private List<Months> monthListS;
 
-    //@NotNull(message = "This field is required")
-    private String hourList;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "attachment", referencedColumnName = "id")
-    private Attachment attachment;
-
-    @ManyToMany
-    Set<AppUser> users;
+    @NotNull(message = "This field is required")
+    private List<Integer> hourList;
 }
