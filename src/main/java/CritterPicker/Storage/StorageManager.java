@@ -8,6 +8,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -40,6 +41,14 @@ public class StorageManager {
     }
 
     public Path load(String filename) { return rootLocation.resolve(filename); }
+
+    public boolean checkFilename(String filename){
+        File file = new File("upload-dir/" + filename);
+        if(file.exists()){
+            return true;
+        }
+        return false;
+    }
 
     public Resource loadAsResource(String filename){
         try {

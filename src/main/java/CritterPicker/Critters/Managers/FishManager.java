@@ -5,9 +5,9 @@ import CritterPicker.Critters.Interfaces.FishInterface;
 import CritterPicker.Critters.Models.Fish;
 import CritterPicker.DTO.FishDTO;
 import CritterPicker.Enums.Months;
-import CritterPicker.Storage.Attachments.Attachment;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class FishManager{
 
     private final FishInterface fi;
 
-    public String addFish(FishDTO fish, Attachment attachment){
+    public String addFish(FishDTO fish, MultipartFile file){
         boolean fishExists = fi.findByName(fish.getName()).isPresent();
         if(fishExists){
             return "exists";
@@ -65,7 +65,7 @@ public class FishManager{
         }
         fishToSave.setHourList(hlist);
 
-        fishToSave.setAttachment(attachment);
+        fishToSave.setFilename(file.getOriginalFilename());
 
         fi.save(fishToSave);
         return "saved";

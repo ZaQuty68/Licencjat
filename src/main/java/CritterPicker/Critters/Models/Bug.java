@@ -1,6 +1,5 @@
 package CritterPicker.Critters.Models;
 
-import CritterPicker.Storage.Attachments.Attachment;
 import CritterPicker.Enums.Rarity;
 import CritterPicker.User.AppUser;
 import lombok.Data;
@@ -52,9 +51,7 @@ public class Bug {
     @NotNull(message = "This field is required")
     private String hourList;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "attachment", referencedColumnName = "id")
-    private Attachment attachment;
+    private String filename;
 
     @ManyToMany
     Set<AppUser> users;

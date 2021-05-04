@@ -20,7 +20,7 @@
             <label for="name">Fish name: </label>
             <input type="text" id="name" th:field="*{name}" autofocus="autofocus"/>
             <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</span>
-            <span th:if="${exists}" class="error">This name is already taken!</span>
+            <span th:if="${nameTaken}" class="error">This name is already taken!</span>
 
             <label for="quote">Quote: </label>
             <input type="text" id="quote" th:field="*{quote}"/>
@@ -28,6 +28,7 @@
 
             <label for="file">Fish photo: </label>
             <input type="file" name="file" id="file" required accept="image/*"/>
+            <span th:if="${filenameTaken}" class="error">This filename is already taken! Please rename your file!</span>
 
             <label for="location">Location: </label>
             <select name="location" id="location" th:field="*{location}" required>

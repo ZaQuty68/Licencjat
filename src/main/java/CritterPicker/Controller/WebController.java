@@ -1,7 +1,5 @@
 package CritterPicker.Controller;
 
-import CritterPicker.Storage.Attachments.Attachment;
-import CritterPicker.Storage.Attachments.AttachmentManager;
 import CritterPicker.Critters.Managers.BugManager;
 import CritterPicker.Critters.Managers.FishManager;
 import CritterPicker.Critters.Managers.SeaCreatureManager;
@@ -24,8 +22,6 @@ import javax.validation.Valid;
 
 @Controller
 public class WebController {
-    @Autowired
-    AttachmentManager am;
     @Autowired
     BugManager bm;
     @Autowired
@@ -133,11 +129,13 @@ public class WebController {
         if(result.hasErrors()) {
             return "newFish";
         }
-        Attachment attachment = am.addAttachment(file.getOriginalFilename());
-        String flag = fm.addFish(fish, attachment);
+        if(sm.checkFilename(file.getOriginalFilename())){
+            model.addAttribute("filenameTaken", true);
+            return "newFish";
+        }
+        String flag = fm.addFish(fish, file);
         if(flag.equals("exists")){
-            am.deleteById(attachment.getId());
-            model.addAttribute("exists", true);
+            model.addAttribute("nameTaken", true);
             return "newFish";
         }
         sm.store(file);

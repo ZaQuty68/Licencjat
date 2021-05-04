@@ -7,9 +7,30 @@
 </head>
 <body>
 <div>
-    <div th:each="fish: ${fishes}">
-        <p th:text="${fish.name}"/>
-    </div>
+    <table>
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Quote</th>
+            <th>Location</th>
+            <th>Price</th>
+            <th>Rarity</th>
+            <th>Shadow size</th>
+            <th>Months</th>
+            <th>Hours</th>
+        </tr>
+        <tr th:each="fish : ${fishes}">
+            <th th:text="${fish.filename}"/>
+            <th th:text="${fish.name}"/>
+            <th th:text="${fish.quote}"/>
+            <th th:text="${fish.location}"/>
+            <th th:text="${fish.price}"/>
+            <th th:text="${fish.rarity}"/>
+            <th th:text="${fish.shadowSize}"/>
+            <th th:text="${fish.monthListN}"/>
+            <th th:text="${fish.hourList}"/>
+        </tr>
+    </table>
 </div>
 
 </body>
