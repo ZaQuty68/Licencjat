@@ -1,4 +1,4 @@
-package CritterPicker.Attachments;
+package CritterPicker.Storage.Attachments;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class AttachmentManager{
 
-    public AttachmentInterface ai;
+    private final AttachmentInterface ai;
 
-    public  void addAttachment(Attachment attachment){
+    public Attachment addAttachment(String filename){
         Attachment attachmentToSave = new Attachment();
         int id;
         if(ai.findAll().isEmpty()){
@@ -25,8 +25,10 @@ public class AttachmentManager{
             id ++;
         }
         attachmentToSave.setId(id);
-        attachmentToSave.setFilename(attachment.getFilename());
+        attachmentToSave.setFilename(filename);
         ai.save(attachmentToSave);
-
+        return ai.findById(id).get();
     }
+
+    public void deleteById(int id){ ai.deleteById(id); }
 }

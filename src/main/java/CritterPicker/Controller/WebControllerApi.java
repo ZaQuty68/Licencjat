@@ -1,3 +1,4 @@
+/*
 package CritterPicker.Controller;
 
 import CritterPicker.Critters.Managers.BugManager;
@@ -8,6 +9,7 @@ import CritterPicker.Critters.Models.Bug;
 import CritterPicker.Critters.Models.Fish;
 import CritterPicker.Critters.Models.SeaCreature;
 //import CritterPicker.Models.User;
+import CritterPicker.DTO.FishDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +36,7 @@ public class WebControllerApi {
     public Fish getFishById(@PathVariable int id){ return fm.findById(id); }
 
     @PostMapping("/api/fish")
-    public List<Fish> addFish(@RequestBody Fish fish){
+    public List<Fish> addFish(@RequestBody FishDTO fish){
         fm.addFish(fish);
         return fm.findAll();
     }
@@ -92,5 +94,6 @@ public class WebControllerApi {
         um.addUser(user);
         return um.findAll();
     }
-     */
 }
+
+ */

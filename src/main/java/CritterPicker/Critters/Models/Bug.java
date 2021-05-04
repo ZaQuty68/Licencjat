@@ -1,6 +1,6 @@
 package CritterPicker.Critters.Models;
 
-import CritterPicker.Attachments.Attachment;
+import CritterPicker.Storage.Attachments.Attachment;
 import CritterPicker.Enums.Rarity;
 import CritterPicker.User.AppUser;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package CritterPicker.Critters.Models;
 
-import CritterPicker.Attachments.Attachment;
+import CritterPicker.Storage.Attachments.Attachment;
 import CritterPicker.Enums.LocationFish;
 import CritterPicker.Enums.Rarity;
 import CritterPicker.Enums.ShadowSize;

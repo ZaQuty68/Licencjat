@@ -1,24 +1,24 @@
 package CritterPicker.Controller;
 
-import CritterPicker.Attachments.AttachmentManager;
+import CritterPicker.Storage.Attachments.Attachment;
+import CritterPicker.Storage.Attachments.AttachmentManager;
 import CritterPicker.Critters.Managers.BugManager;
 import CritterPicker.Critters.Managers.FishManager;
 import CritterPicker.Critters.Managers.SeaCreatureManager;
-import CritterPicker.Critters.Models.Fish;
 import CritterPicker.DTO.FishDTO;
-import CritterPicker.Enums.Months;
 import CritterPicker.Registration.RegistrationManager;
 import CritterPicker.Registration.RegistrationRequest;
+import CritterPicker.Storage.StorageManager;
 import CritterPicker.User.AppUserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -36,6 +36,8 @@ public class WebController {
     RegistrationManager rm;
     @Autowired
     AppUserManager aum;
+    @Autowired
+    StorageManager sm;
 
     //////////////////////////////////////////////////////////   LOGIN
     @GetMapping("/login")
@@ -122,20 +124,24 @@ public class WebController {
     //////////////////////////////////////////////////////////   ADMIN
     @GetMapping("/admin/newFish")
     public String newFish(Model model){
-        model.addAttribute("fish", new Fish());
+        model.addAttribute("fish", new FishDTO());
         return "newFish";
     }
 
     @PostMapping("/admin/newFish")
-    public String processNewFish(@Valid @ModelAttribute("fish") Fish fish, Model model, BindingResult result){
+    public String processNewFish(@Valid @ModelAttribute("fish") FishDTO fish, @RequestParam("file") MultipartFile file, BindingResult result, Model model){
         if(result.hasErrors()) {
             return "newFish";
         }
-        System.out.println(fish.getName());
-        //for(Months m : fish.getMonthsListN()){
-        //    System.out.println(m.toString());
-        //}
-        return null;
+        Attachment attachment = am.addAttachment(file.getOriginalFilename());
+        String flag = fm.addFish(fish, attachment);
+        if(flag.equals("exists")){
+            am.deleteById(attachment.getId());
+            model.addAttribute("exists", true);
+            return "newFish";
+        }
+        sm.store(file);
+        return "redirect:/homePage";
     }
 
     //////////////////////////////////////////////////////////   LIST

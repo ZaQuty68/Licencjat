@@ -38,12 +38,9 @@ public class FishDTO {
 
     private ShadowSize shadowSize;
 
-    @NotNull(message = "This field is required")
-    private List<Months> monthsListN;
+    private List<String> monthListN;
 
-    @NotNull(message = "This field is required")
-    private List<Months> monthListS;
+    private List<String> monthListS;
 
-    @NotNull(message = "This field is required")
     private List<Integer> hourList;
 }

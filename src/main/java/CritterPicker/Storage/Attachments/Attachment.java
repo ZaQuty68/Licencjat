@@ -1,4 +1,4 @@
-package CritterPicker.Attachments;
+package CritterPicker.Storage.Attachments;
 
 import lombok.Data;
 
@@ -12,5 +12,6 @@ import javax.persistence.Table;
 public class Attachment {
     @Id
     private int id;
+
     private String filename;
 }

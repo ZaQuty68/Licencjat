@@ -3,7 +3,9 @@ package CritterPicker.Critters.Managers;
 //import CritterPicker.Critters.CustomInterfaces.FishInterfaceCustom;
 import CritterPicker.Critters.Interfaces.FishInterface;
 import CritterPicker.Critters.Models.Fish;
+import CritterPicker.DTO.FishDTO;
 import CritterPicker.Enums.Months;
+import CritterPicker.Storage.Attachments.Attachment;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +15,14 @@ import java.util.List;
 @AllArgsConstructor
 public class FishManager{
 
-    private FishInterface fi;
+    private final FishInterface fi;
 
-    public void addFish(Fish fish){
+    public String addFish(FishDTO fish, Attachment attachment){
+        boolean fishExists = fi.findByName(fish.getName()).isPresent();
+        if(fishExists){
+            return "exists";
+        }
+
         Fish fishToSave = new Fish();
         int id;
         if(fi.findAll().isEmpty()){
@@ -39,22 +46,34 @@ public class FishManager{
         fishToSave.setPrice(fish.getPrice());
         fishToSave.setRarity(fish.getRarity());
         fishToSave.setShadowSize(fish.getShadowSize());
-        fishToSave.setMonthListN(fish.getMonthListN());
-        fishToSave.setMonthListS(fish.getMonthListS());
-        fishToSave.setHourList(fish.getHourList());
+
+        String mlistN = "";
+        for(String s : fish.getMonthListN()){
+            mlistN += s + ",";
+        }
+        fishToSave.setMonthListN(mlistN);
+
+        String mlistS = "";
+        for(String s : fish.getMonthListS()){
+            mlistS += s + ",";
+        }
+        fishToSave.setMonthListS(mlistS);
+
+        String hlist = "";
+        for(int i : fish.getHourList()){
+            hlist += i + ",";
+        }
+        fishToSave.setHourList(hlist);
+
+        fishToSave.setAttachment(attachment);
 
         fi.save(fishToSave);
-    }
-
-    public void processAddingFish(Fish fish, List<Months> mlistN, List<Months> mlistS, List<Integer> hlist){
-        for(Months month: mlistN){
-            System.out.println(month.toString());
-        }
+        return "saved";
     }
 
     public List<Fish> findAll(){ return fi.findAll(); }
 
-    public Fish findById(int id){ return fi.findById(id); }
+    public Fish findById(int id){ return fi.findById(id).get(); }
 
     public void deleteById(int id){ fi.deleteById(id); }
 }
