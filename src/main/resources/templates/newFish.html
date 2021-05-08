@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>New Fish</title>
-    <link rel="stylesheet" th:href="@{/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
 <div>
@@ -64,7 +64,7 @@
 
             <label for="hlist">Hour list: </label>
             <select name="hlist" id="hlist" th:field="*{hourList}" multiple required>
-                <option th:each="i : ${#numbers.sequence(0, 24)}" th:value="${i}" th:text="${i}"> Hour list </option>
+                <option th:each="i : ${#numbers.sequence(0, 23)}" th:value="${i}" th:text="|${i}:00 - ${i+1}:00|"> Hour list </option>
             </select>
 
             <input type="submit" value="Add"/>

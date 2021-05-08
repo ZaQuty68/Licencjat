@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Wait for confirm</title>
-    <link rel="stylesheet" th:href="@{/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
+<div class="main">
     <h1>Successfully registered!</h1>
+    <img th:src="@{/images/logo.png}" class="logo"/>
     <h2>Please confirm your email address.</h2>
     <p>Already done?
-        <a th:href="@{/login}">Login</a>
+        <a th:href="@{/login}" class="button">Login</a>
     </p>
+</div>
 </body>
 </html>

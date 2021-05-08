@@ -3,25 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Send Again</title>
-    <link rel="stylesheet" th:href="@{/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
-<div>
+<div class="main">
     <h1>Having trouble with confirming your email?</h1>
+    <img th:src="@{/images/logo.png}" class="logo"/>
     <form th:action="@{/register/sendAgain}" method="post">
         <fieldset>
             <legend>Send confirmation email again:</legend>
+
             <label for="email">Email address</label>
-            <input type="email" id="email" name="email"/>
+            <input type="email" id="email" name="email" required/><br/><br/>
+            <div th:if="${exist}">
+                <span class="error">
+                    User with that email address does not exist!
+                </span><br/><br/>
+            </div>
+            <div th:if="${email}">
+                <span class="error">
+                    This email address is already confirmed!
+                </span><br/><br/>
+            </div>
+            <div th:if="${send}">
+                <span class="error">
+                    Confirmation email sent!
+                </span><br/><br/>
+            </div>
+
             <div>
-                <button type="submit">Send</button>
+                <input type="submit" value="Send"/>
             </div>
         </fieldset>
     </form>
-    <div th:if="${exist}">User with that email address does not exist!</div>
-    <div th:if="${email}">This email address is already confirmed!</div>
-    <div th:if="${send}">Confirmation email sent!</div>
-    <a th:href="@{/login}">Login</a>
+    <br/>
+    <a th:href="@{/login}" class="button">Login</a>
 </div>
 </body>
 </html>

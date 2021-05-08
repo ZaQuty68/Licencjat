@@ -1,0 +1,127 @@
+body {
+  background-color: #ddfee4;
+  align-items: center;
+}
+
+.logo {
+  max-width: 250px;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.main {
+  position: absolute;
+  top: 60px;
+  text-align: center;
+  left: 25%;
+  right: 25%;
+  background-color: #b6fcc5;
+  padding: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  color: #196b69;
+  font-size: large;
+  border-radius: 10px;
+}
+
+ul {
+  list-style-type: none;
+  position: fixed;
+  top: -10px;
+  left: 25%;
+  right: 25%;
+  overflow: hidden;
+  z-index: 1;
+  background-color: #28cc9e;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 10px;
+}
+li {
+  float: right;
+  border-left: 1px solid #ddfee4;
+}
+li a {
+  display: block;
+  color: #ddfee4;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+li a:hover:not(.active) {
+  background-color: #26c094;
+}
+.active {
+  background-color: #b6fcc5;
+  color: #196b69;
+}
+
+.button {
+  background-color: #28cc9e;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #ddfee4;
+  padding: 3px 6px;
+  text-align: center;
+}
+.button:link,
+.button:visited {
+  text-decoration: none;
+}
+.button:hover,
+.button:active {
+  text-decoration: none;
+  background-color: #26c094;
+}
+
+.error {
+  color: red;
+}
+
+fieldset {
+  max-width: max-content;
+  text-align: left;
+  margin: 0 auto;
+}
+legend {
+  background-color: #28cc9e;
+  color: #ddfee4;
+  padding: 3px 6px;
+}
+input {
+  border: 2px solid #28cc9e;
+  border-radius: 5px;
+  background-color: #ddfee4;
+  color: #196b69;
+}
+input[type="submit"] {
+  background-color: #28cc9e;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #ddfee4;
+  padding: 3px 6px;
+  text-align: center;
+  font-size: medium;
+}
+input[type="submit"]:hover,
+input[type="submit"]:active {
+  text-decoration: none;
+  background-color: #26c094;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+.option {
+  border-radius: 20px;
+  background-color: #ddfee4;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  max-width: 250px;
+  padding: 3px 6px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}

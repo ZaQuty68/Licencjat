@@ -23,10 +23,6 @@ public class RegistrationManager {
     private final EmailSender emailSender;
 
     public String register(RegistrationRequest request){
-        boolean isValidEmail = emailValidator.test(request.getEmail());
-        if(!isValidEmail){
-            throw new IllegalStateException("Email not valid!");
-        }
         AppUser appUserToSave = new AppUser();
         appUserToSave.setId(aum.getNewId());
         appUserToSave.setUsername(request.getUsername());

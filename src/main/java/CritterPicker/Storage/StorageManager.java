@@ -21,7 +21,7 @@ import java.nio.file.StandardCopyOption;
 @AllArgsConstructor
 public class StorageManager {
 
-    private final Path rootLocation = Paths.get("upload-dir");
+    private final Path rootLocation = Paths.get("src/main/resources/static/upload-dir");
 
     public void store(MultipartFile file){
         try {
@@ -43,7 +43,7 @@ public class StorageManager {
     public Path load(String filename) { return rootLocation.resolve(filename); }
 
     public boolean checkFilename(String filename){
-        File file = new File("upload-dir/" + filename);
+        File file = new File("src/main/resources/static/upload-dir/" + filename);
         if(file.exists()){
             return true;
         }

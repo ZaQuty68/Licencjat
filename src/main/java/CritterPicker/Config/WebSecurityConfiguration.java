@@ -8,9 +8,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 @Configuration
 @AllArgsConstructor
@@ -22,22 +24,32 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable().authorizeRequests()
+        http.csrf().disable().authorizeRequests()
                 .antMatchers("/register/**").permitAll()
-                .antMatchers("/api/**").permitAll()
-                //.antMatchers("/admin/**").hasRole(UserRole.ADMIN.toString())
+                .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
+
                 .and()
+
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
-                .defaultSuccessUrl("/homePage", true);
+                .defaultSuccessUrl("/homePage", true)
+
+                .and()
+
+                .logout()
+                .logoutUrl("/logout");
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws  Exception{
         auth.authenticationProvider(daoAuthenticationProvider());
+    }
+
+    @Override
+    public void configure(WebSecurity web){
+        web.ignoring().antMatchers("/css/**", "/images/**");
     }
 
     @Bean

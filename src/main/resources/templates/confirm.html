@@ -3,19 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Confirm</title>
-    <link rel="stylesheet" th:href="@{/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
-<div th:if="${email}">
-    <h1>This email address is already confirmed!</h1>
+<div class="main">
+    <div th:if="${email}">
+        <h1>This email address is already confirmed!</h1>
+    </div>
+    <div th:if="${expired}">
+        <h1>This confirmation link has already expired!</h1>
+        <p>Go to
+            <a th:href="@{/register/sendAgain}" class="button">this page</a> to send new confirmation email.
+        </p>
+    </div>
+    <div th:if="${confirmed}">
+        <h1>Email successfully confirmed! Thank you!</h1>
+    </div>
+    <img th:src="@{/images/logo.png}" class="logo"/><br/><br/>
+    <a th:href="@{/login}" class="button">Login</a>
 </div>
-<div th:if="${expired}">
-    <h1>This confirmation link has already expired!</h1>
-    <p>Go to <a th:href="@{register/confirmAgain}">this page</a> to send new confirmation email.</p>
-</div>
-<div th:if="${confirmed}">
-    <h1>Email successfully confirmed! Thank you!</h1>
-</div>
-<a th:href="@{/login}">Login</a>
 </body>
 </html>

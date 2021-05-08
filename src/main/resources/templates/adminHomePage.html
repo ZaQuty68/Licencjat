@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<div class="main">
+    <h1>Welcome to Critter Picker!</h1>
+    <img th:src="@{/images/logo.png}" class="logo"/>
+    <h2>Critter Picker is site for all you Animal Crossing: New Horizons lovers!</h2>
+    <a th:href="@{/logout}" class="button">Logout</a>
+    <div>See the lists of all critters
+        <a th:href="@{/allList}">click</a>
+    </div>
+    <div>See personal critters
+        <a th:href="@{/user/list}">click</a>
+    </div>
+    <div>Use algorithm
+        <a th:href="@{/algorithm}">click</a>
+    </div>
+</div>
+<div>
+
+</div>
+</body>
+</html>

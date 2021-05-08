@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -19,8 +20,8 @@ public class RegistrationRequest {
     @NotNull(message = "This field is required!")
     @Size(min = 8, max = 50, message = "Password should be between 8 to 50 characters long")
     private String password;
-    @Email
     @NotNull(message = "This field is required!")
+    @Email
     private String email;
     private String adminPassword;
     private Hemisphere hemisphere;

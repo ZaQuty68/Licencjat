@@ -7,8 +7,12 @@ import CritterPicker.DTO.FishDTO;
 import CritterPicker.Registration.RegistrationManager;
 import CritterPicker.Registration.RegistrationRequest;
 import CritterPicker.Storage.StorageManager;
+import CritterPicker.User.AppUser;
 import CritterPicker.User.AppUserManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,15 +42,29 @@ public class WebController {
     //////////////////////////////////////////////////////////   LOGIN
     @GetMapping("/login")
     public String login(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication != null && !(authentication instanceof AnonymousAuthenticationToken)){
+            return "redirect:/logout";
+        }
         return "login";
     }
 
     @GetMapping("/")
-    public String redirectToLogin(){ return "redirect:/login"; }
+    public String redirect(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null || authentication instanceof AnonymousAuthenticationToken){
+            return "redirect:/login";
+        }
+        return "redirect:/homePage";
+    }
 
     //////////////////////////////////////////////////////////   REGISTRATION
     @GetMapping("/register")
     public String register(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication != null && !(authentication instanceof AnonymousAuthenticationToken)){
+            return "redirect:/logout";
+        }
         model.addAttribute("req", new RegistrationRequest());
         return "register";
     }
@@ -70,11 +88,19 @@ public class WebController {
 
     @GetMapping("/register/waitForConfirm")
     public String register(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication != null && !(authentication instanceof AnonymousAuthenticationToken)){
+            return "redirect:/logout";
+        }
         return "waitForConfirm";
     }
 
     @GetMapping("/register/confirm")
     public String confirm(@RequestParam("token") String token, Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication != null && !(authentication instanceof AnonymousAuthenticationToken)){
+            return "redirect:/logout";
+        }
         String flag = rm.confirmToken(token);
         if(flag.equals("email")){
             model.addAttribute("email", true);
@@ -90,6 +116,10 @@ public class WebController {
 
     @GetMapping("/register/sendAgain")
     public String sendAgain(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication != null && !(authentication instanceof AnonymousAuthenticationToken)){
+            return "redirect:/logout";
+        }
         return "sendAgain";
     }
 
@@ -109,15 +139,37 @@ public class WebController {
         return "sendAgain";
     }
 
-
-
-
     //////////////////////////////////////////////////////////   HOME PAGE
     @GetMapping("/homePage")
     public String homePage(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String role = ((AppUser)principal).getRole().name();
+        if(role.equals("ADMIN")){
+            return "redirect:/admin/homePage";
+        }
+
         return "homePage";
     }
-    //////////////////////////////////////////////////////////   ADMIN
+
+
+    //////////////////////////////////////////////////////////   LIST
+    @GetMapping("/allList")
+    public String allList(Model model){
+        model.addAttribute("fishes", fm.findAll());
+        model.addAttribute("bugs", bm.findAll());
+        model.addAttribute("seaCreatures", sc.findAll());
+        return "allList";
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////   ADMIN   /////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @GetMapping("/admin/homePage")
+    public String adminHomePage(){
+        return "adminHomePage";
+    }
+
+
     @GetMapping("/admin/newFish")
     public String newFish(Model model){
         model.addAttribute("fish", new FishDTO());
@@ -140,14 +192,5 @@ public class WebController {
         }
         sm.store(file);
         return "redirect:/homePage";
-    }
-
-    //////////////////////////////////////////////////////////   LIST
-    @GetMapping("/allList")
-    public String allList(Model model){
-        model.addAttribute("fishes", fm.findAll());
-        model.addAttribute("bugs", bm.findAll());
-        model.addAttribute("seaCreatures", sc.findAll());
-        return "allList";
     }
 }

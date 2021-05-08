@@ -3,26 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Home Page</title>
-    <link rel="stylesheet" th:href="@{/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
-    <div class="background">
-        <div class="blur">
-            <h1>Welcome to Critter Picker!</h1>
-            <h2>Critter Picker is site for all you Animal Crossing: New Horizons lovers!</h2>
-            <div>See the lists of all critters
-                <a th:href="@{/allList}">click</a>
-            </div>
-            <div>See personal critters
-                <a th:href="@{/user/list}">click</a>
-            </div>
-            <div>Use algorithm
-                <a th:href="@{/algorithm}">click</a>
-            </div>
+<ul>
+    <li>
+        <a class="active" th:href="@{/homePage}">Home</a>
+    </li>
+    <li>
+        <a th:href="@{/allList}">Table of critters</a>
+    </li>
+    <li>
+        <a th:href="@{/user/list}">Personal list</a>
+    </li>
+    <li>
+        <a th:href="@{/algorithm}">Algorithm</a>
+    </li>
+    <li>
+        <a th:href="@{/logout}" class="logout">Logout</a>
+    </li>
+</ul>
+<div class="main">
+    <h1>Welcome to Critter Picker!</h1>
+    <img th:src="@{/images/logo.png}" class="logo"/>
+    <h2>Critter Picker is site for all Animal Crossing: New Horizons lovers!</h2>
+    <h3>What do you want to do?</h3>
+    <div class="container">
+        <div class="option"><br/>
+            <a th:href="@{/allList}" class="button">List of all critters</a>
+            <p>See a list of all in-game critters that you can collect with some of their details such as where or when you can find them.</p>
+        </div>
+        <div class="option"><br/>
+            <a th:href="@{/user/list}" class="button">See personal critter list</a>
+            <p>See a list of critters that you have already collected or still have to collect.</p>
+        </div>
+        <div class="option"><br/>
+            <a th:href="@{/algorithm}" class="button">Use Critter Picker algorithm</a>
+            <p>Use an algorithm that will help you catch uncollected critters or earn in-game money.</p>
         </div>
     </div>
-<div>
-    
 </div>
 </body>
 </html>
