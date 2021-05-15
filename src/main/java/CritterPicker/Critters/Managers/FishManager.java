@@ -1,15 +1,17 @@
 package CritterPicker.Critters.Managers;
 
-//import CritterPicker.Critters.CustomInterfaces.FishInterfaceCustom;
 import CritterPicker.Critters.Interfaces.FishInterface;
 import CritterPicker.Critters.Models.Fish;
 import CritterPicker.Critters.DTO.FishDTO;
+import CritterPicker.Enums.Months;
 import CritterPicker.User.AppUser;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -57,14 +59,34 @@ public class FishManager{
 
         fishToSave.setMonthListN(mlistN);
 
+
+
+        List<Integer> intListS = new ArrayList<>();
+        for(String n : listN){
+            int i = Months.valueOf(n).getOrder() + 6;
+            if(i > 12){
+                i -= 12;
+            }
+            intListS.add(i);
+        }
+        Collections.sort(intListS);
+
+        List<String> listS = new ArrayList<>();
+
+        for(int i : intListS){
+            listS.add(Months.values()[i-1].name());
+        }
+
+
         String mlistS = "";
-        List<String> listS = fish.getMonthListS();
         for(int i=0; i < listS.size() - 1; i++){
             mlistS += listS.get(i) + ", ";
         }
         mlistS += listS.get(listS.size() - 1);
 
         fishToSave.setMonthListS(mlistS);
+
+
 
         List<Integer> list = fish.getHourList();
         int x = list.get(0);
@@ -102,14 +124,14 @@ public class FishManager{
 
     public List<Fish> findAll(){ return fi.findAll(); }
 
-    public Fish findById(int id){ return fi.findById(id).get(); }
+    public Fish findById(int id){ return fi.findById(id); }
 
     public void deleteById(int id){ fi.deleteById(id); }
 
     public List<Fish> findOtherFish(AppUser user) {
         List<Fish> listToReturn = new ArrayList<>();
         for(Fish fish : fi.findAll()){
-            Boolean flag = true;
+            boolean flag = true;
             for(Fish f : user.getFishSet()){
                 if(f == fish){
                     flag = false;

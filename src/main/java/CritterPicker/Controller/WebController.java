@@ -4,6 +4,7 @@ import CritterPicker.Critters.Managers.BugManager;
 import CritterPicker.Critters.Managers.FishManager;
 import CritterPicker.Critters.Managers.SeaCreatureManager;
 import CritterPicker.Critters.DTO.FishDTO;
+import CritterPicker.Enums.Hemisphere;
 import CritterPicker.Registration.RegistrationManager;
 import CritterPicker.Registration.RegistrationRequest;
 import CritterPicker.Storage.StorageManager;
@@ -28,7 +29,7 @@ public class WebController {
     @Autowired
     FishManager fm;
     @Autowired
-    SeaCreatureManager sc;
+    SeaCreatureManager scm;
     @Autowired
     RegistrationManager rm;
     @Autowired
@@ -152,9 +153,16 @@ public class WebController {
 
     @GetMapping("/allList")
     public String allList(Model model){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String role = ((AppUser)principal).getRole().name();
+        if(role.equals("ADMIN")){
+            return "redirect:/admin/allList";
+        }
+        String hemisphere = ((AppUser)principal).getHemisphere().name();
+        model.addAttribute("hemisphere", hemisphere);
         model.addAttribute("fishes", fm.findAll());
         model.addAttribute("bugs", bm.findAll());
-        model.addAttribute("seaCreatures", sc.findAll());
+        model.addAttribute("seaCreatures", scm.findAll());
         return "allList";
     }
 
@@ -163,11 +171,10 @@ public class WebController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int id = ((AppUser)principal).getId();
         AppUser user = aum.findById(id);
-
         model.addAttribute("user", user);
         model.addAttribute("fishes", fm.findOtherFish(user));
-        model.addAttribute("bugs", bm.findAll());
-        model.addAttribute("seaCreatures", sc.findAll());
+        model.addAttribute("bugs", bm.findOtherBugs(user));
+        model.addAttribute("seaCreatures", scm.findOtherSeaCreatures(user));
         return "userList";
     }
 
@@ -185,6 +192,36 @@ public class WebController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int idU = ((AppUser)principal).getId();
         aum.removeFish(idU, fm.findById(id));
+        return "redirect:/userList";
+    }
+
+    @GetMapping("/userBug")
+    public String userBug(@RequestParam("id") int id){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int idU = ((AppUser)principal).getId();
+        aum.addBug(idU, bm.findById(id));
+        return "redirect:/userList";
+    }
+    @GetMapping("/userBugDelete")
+    public String userBugDelete(@RequestParam("id") int id){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int idU = ((AppUser)principal).getId();
+        aum.removeBug(idU, bm.findById(id));
+        return "redirect:/userList";
+    }
+
+    @GetMapping("/userSeaCreature")
+    public String userSeaCreature(@RequestParam("id") int id){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int idU = ((AppUser)principal).getId();
+        aum.addSeaCreature(idU, scm.findById(id));
+        return "redirect:/userList";
+    }
+    @GetMapping("/userSeaCreatureDelete")
+    public String userSeaCreatureDelete(@RequestParam("id") int id){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int idU = ((AppUser)principal).getId();
+        aum.removeSeaCreature(idU, scm.findById(id));
         return "redirect:/userList";
     }
 

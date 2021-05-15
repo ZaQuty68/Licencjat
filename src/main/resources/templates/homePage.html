@@ -8,21 +8,22 @@
 <body>
 <ul>
     <li>
-        <a class="active" th:href="@{/homePage}">Home</a>
+        <a th:href="@{/logout}" class="logout">Logout</a>
     </li>
     <li>
-        <a th:href="@{/allList}">Table of critters</a>
+        <a th:href="@{/algorithmInput}">Algorithm</a>
     </li>
     <li>
         <a th:href="@{/userList}">Personal list</a>
     </li>
     <li>
-        <a th:href="@{/algorithm}">Algorithm</a>
+        <a th:href="@{/allList}">Table of critters</a>
     </li>
     <li>
-        <a th:href="@{/logout}" class="logout">Logout</a>
+        <a class="active" th:href="@{/homePage}">Home</a>
     </li>
 </ul>
+
 <div class="main">
     <h1>Welcome to Critter Picker!</h1>
     <img th:src="@{/images/logo.png}" class="logo"/>
@@ -38,7 +39,7 @@
             <p>See a list of critters that you have already collected or still have to collect.</p>
         </div>
         <div class="option"><br/>
-            <a th:href="@{/algorithm}" class="button">Use Critter Picker algorithm</a>
+            <a th:href="@{/algorithmInput}" class="button">Use Critter Picker algorithm</a>
             <p>Use an algorithm that will help you catch uncollected critters or earn in-game money.</p>
         </div>
     </div>

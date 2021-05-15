@@ -18,8 +18,6 @@ public interface AppUserInterface extends JpaRepository<AppUser, Integer> {
 
     Optional<AppUser> findByUsername(String username);
 
-    void deleteById(int id);
-
     @Modifying
     @Query("UPDATE AppUser a " +
             "SET a.enabled = TRUE WHERE a.email = ?1")

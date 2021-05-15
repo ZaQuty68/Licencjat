@@ -1,29 +1,38 @@
 package CritterPicker.Critters.Managers;
 
-import CritterPicker.Critters.CustomInterfaces.SeaCreatureInterfaceCustom;
+import CritterPicker.Critters.DTO.SeaCreatureDTO;
 import CritterPicker.Critters.Interfaces.SeaCreatureInterface;
 import CritterPicker.Critters.Models.SeaCreature;
+import CritterPicker.Enums.Months;
+import CritterPicker.User.AppUser;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
-public class SeaCreatureManager implements SeaCreatureInterfaceCustom {
+@AllArgsConstructor
+public class SeaCreatureManager{
 
-    private SeaCreatureInterface si;
+    private final SeaCreatureInterface sci;
 
-    public SeaCreatureManager(SeaCreatureInterface si){ this.si = si; }
+    public String addSeaCreature(SeaCreatureDTO seaCreature, MultipartFile file){
+        boolean scExists = sci.findByName(seaCreature.getName()).isPresent();
+        if(scExists){
+            return "exists";
+        }
 
-    @Override
-    public void addSeaCreature(SeaCreature seaCreature){
         SeaCreature seaCreatureToSave = new SeaCreature();
         int id;
-        if(si.findAll().isEmpty()){
+        if(sci.findAll().isEmpty()){
             id = 1;
         }
         else{
-            id = si.findAll().get(0).getId();
-            for(SeaCreature seaCreatureId : si.findAll()){
+            id = sci.findAll().get(0).getId();
+            for(SeaCreature seaCreatureId : sci.findAll()){
                 if(seaCreatureId.getId() > id){
                     id = seaCreatureId.getId();
                 }
@@ -34,23 +43,101 @@ public class SeaCreatureManager implements SeaCreatureInterfaceCustom {
         seaCreatureToSave.setId(id);
         seaCreatureToSave.setName(seaCreature.getName());
         seaCreatureToSave.setQuote(seaCreature.getQuote());
-        seaCreatureToSave.setSwimmingPattern(seaCreature.getSwimmingPattern());
         seaCreatureToSave.setPrice(seaCreature.getPrice());
         seaCreatureToSave.setRarity(seaCreature.getRarity());
         seaCreatureToSave.setShadowSize(seaCreature.getShadowSize());
-        seaCreatureToSave.setMonthListN(seaCreature.getMonthListN());
-        seaCreatureToSave.setMonthListS(seaCreature.getMonthListS());
-        seaCreatureToSave.setHourList(seaCreature.getHourList());
 
-        si.save(seaCreatureToSave);
+        String mlistN = "";
+        List<String> listN = seaCreature.getMonthListN();
+        for(int i = 0; i < listN.size() - 1; i++){
+            mlistN += listN.get(i) + ", ";
+        }
+        mlistN += listN.get(listN.size() - 1);
+
+        seaCreatureToSave.setMonthListN(mlistN);
+
+
+
+        List<Integer> intListS = new ArrayList<>();
+        for(String n : listN){
+            int i = Months.valueOf(n).getOrder() + 6;
+            if(i > 12){
+                i -= 12;
+            }
+            intListS.add(i);
+        }
+        Collections.sort(intListS);
+
+        List<String> listS = new ArrayList<>();
+
+        for(int i : intListS){
+            listS.add(Months.values()[i-1].name());
+        }
+
+
+        String mlistS = "";
+        for(int i=0; i < listS.size() - 1; i++){
+            mlistS += listS.get(i) + ", ";
+        }
+        mlistS += listS.get(listS.size() - 1);
+
+        seaCreatureToSave.setMonthListS(mlistS);
+
+
+
+        List<Integer> list = seaCreature.getHourList();
+        int x = list.get(0);
+        int y = x;
+        String hlist = "";
+
+        for(int i = 0; i<list.size(); i++){
+            int temp = list.get(i);
+            if(i == list.size() - 1){
+                if(temp == y + 1){
+                    hlist += x + ":00 - " + (temp + 1) + ":00";
+                }
+                else{
+                    if(list.size() == 1){
+                        hlist += x + ":00 - " + (y + 1) + ":00";
+                    }
+                    hlist += x + ":00 - " + (y + 1) + ":00, " + temp + ":00 - " + (temp + 1) + ":00";
+                }
+            }
+            else{
+                if(temp != y + 1 && i != 0){
+                    hlist += x + ":00 - " + (y + 1) + ":00, ";
+                    x = temp;
+                }
+                y = temp;
+            }
+        }
+        seaCreatureToSave.setHourList(hlist);
+
+        seaCreatureToSave.setFilename(file.getOriginalFilename());
+
+        sci.save(seaCreatureToSave);
+        return "saved";
     }
 
-    @Override
-    public List<SeaCreature> findAll(){ return si.findAll(); }
+    public List<SeaCreature> findAll(){ return sci.findAll(); }
 
-    @Override
-    public SeaCreature findById(int id){ return si.findById(id); }
+    public SeaCreature findById(int id){ return sci.findById(id); }
 
-    @Override
-    public void deleteById(int id){ si.deleteById(id); }
+    public void deleteById(int id){ sci.deleteById(id); }
+
+    public List<SeaCreature> findOtherSeaCreatures(AppUser user){
+        List<SeaCreature> listToReturn = new ArrayList<>();
+        for(SeaCreature seaCreature : sci.findAll()){
+            boolean flag = true;
+            for(SeaCreature sc : user.getSeaCreatureSet()){
+                if(sc == seaCreature){
+                    flag = false;
+                }
+            }
+            if(flag){
+                listToReturn.add(seaCreature);
+            }
+        }
+        return listToReturn;
+    }
 }

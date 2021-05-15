@@ -1,6 +1,8 @@
 package CritterPicker.User;
 
+import CritterPicker.Critters.Models.Bug;
 import CritterPicker.Critters.Models.Fish;
+import CritterPicker.Critters.Models.SeaCreature;
 import CritterPicker.User.AppUserInterface;
 import CritterPicker.User.AppUser;
 import CritterPicker.Registration.Token.ConfirmationToken;
@@ -114,15 +116,38 @@ public class AppUserManager implements UserDetailsService {
         return id;
     }
 
-    public void addFish(int idU, Fish fish){
-        AppUser userToEdit = aui.findById(idU);
+    public void addFish(int id, Fish fish){
+        AppUser userToEdit = aui.findById(id);
         userToEdit.getFishSet().add(fish);
         aui.save(userToEdit);
     }
 
-    public void removeFish(int idU, Fish fish){
-        AppUser userToEdit = aui.findById(idU);
+    public void removeFish(int id, Fish fish){
+        AppUser userToEdit = aui.findById(id);
         userToEdit.getFishSet().remove(fish);
+        aui.save(userToEdit);
+    }
+
+    public void addBug(int id, Bug bug){
+        AppUser userToEdit = aui.findById(id);
+        userToEdit.getBugSet().add(bug);
+        aui.save(userToEdit);
+    }
+
+    public void removeBug(int id, Bug bug){
+        AppUser userToEdit = aui.findById(id);
+        userToEdit.getBugSet().remove(bug);
+        aui.save(userToEdit);
+    }
+    public void addSeaCreature(int id, SeaCreature seaCreature){
+        AppUser userToEdit = aui.findById(id);
+        userToEdit.getSeaCreatureSet().add(seaCreature);
+        aui.save(userToEdit);
+    }
+
+    public void removeSeaCreature(int id, SeaCreature seaCreature){
+        AppUser userToEdit = aui.findById(id);
+        userToEdit.getSeaCreatureSet().remove(seaCreature);
         aui.save(userToEdit);
     }
 

@@ -10,7 +10,7 @@ public interface FishInterface extends JpaRepository<Fish, Integer> {
 
     List<Fish> findAll();
 
-    Optional<Fish> findById(int id);
+    Fish findById(int id);
 
     void deleteById(int id);
 
