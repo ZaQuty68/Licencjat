@@ -1,14 +1,10 @@
-package CritterPicker.DTO;
+package CritterPicker.Critters.DTO;
 
 import CritterPicker.Enums.LocationFish;
-import CritterPicker.Enums.Months;
 import CritterPicker.Enums.Rarity;
 import CritterPicker.Enums.ShadowSize;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -39,8 +35,6 @@ public class FishDTO {
     private ShadowSize shadowSize;
 
     private List<String> monthListN;
-
-    private List<String> monthListS;
 
     private List<Integer> hourList;
 }

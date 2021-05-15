@@ -6,7 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
-<div>
+<div class="main">
     <h1>Add a new fish!</h1>
     <form th:action="@{/admin/newFish}" method="POST" enctype="multipart/form-data" th:object="${fish}">
         <fieldset>
@@ -14,58 +14,78 @@
             <div th:if="${#fields.hasErrors()}">
                     <span class="error">
                         Please correct following errors:
-                    </span>
+                    </span><br/><br/>
             </div>
 
             <label for="name">Fish name: </label>
-            <input type="text" id="name" th:field="*{name}" autofocus="autofocus"/>
-            <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</span>
-            <span th:if="${nameTaken}" class="error">This name is already taken!</span>
+            <input type="text" id="name" th:field="*{name}" autofocus="autofocus"/><br/><br/>
+            <div th:if="${#fields.hasErrors('name')}">
+                <span class="error" th:errors="*{name}">
+                    Name error
+                </span><br/><br/>
+            </div>
+            <div th:if="${nameTaken}">
+                <span class="error">
+                    This name is already taken!
+                </span><br/><br/>
+            </div>
 
             <label for="quote">Quote: </label>
-            <input type="text" id="quote" th:field="*{quote}"/>
-            <span class="error" th:if="${#fields.hasErrors('quote')}" th:errors="*{quote}">Quote error</span>
+            <input type="text" id="quote" th:field="*{quote}"/><br/><br/>
+            <div th:if="${#fields.hasErrors('quote')}">
+                <span class="error" th:errors="*{quote}">
+                    Quote error
+                </span><br/><br/>
+            </div>
 
             <label for="file">Fish photo: </label>
-            <input type="file" name="file" id="file" required accept="image/*"/>
-            <span th:if="${filenameTaken}" class="error">This filename is already taken! Please rename your file!</span>
+            <input type="file" name="file" id="file" required accept="image/*"/><br/><br/>
+            <div th:if="${filenameTaken}">
+                <span class="error">
+                    This filename is already taken! Please rename your file!
+                </span><br/><br/>
+            </div>
 
             <label for="location">Location: </label>
             <select name="location" id="location" th:field="*{location}" required>
-                <option th:each="locOpt : ${T(CritterPicker.Enums.LocationFish).values()}" th:value="${locOpt}" th:text="${locOpt}">Location </option>
-            </select>
+                <option th:each="locOpt : ${T(CritterPicker.Enums.LocationFish).values()}" th:value="${locOpt}" th:text="${locOpt}"/>
+            </select><br/><br/>
 
             <label for="rainOnly">Fish only in rain: </label>
-            <input type="checkbox" id="rainOnly" th:field="*{onlyInRain}"/>
+            <input type="checkbox" id="rainOnly" th:field="*{onlyInRain}"/><br/><br/>
 
             <label for="price">Price: </label>
-            <input type="number" id="price" th:field="*{price}"/>
-            <span class="error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price error</span>
+            <input type="number" id="price" th:field="*{price}"/><br/><br/>
+            <div th:if="${#fields.hasErrors('price')}">
+                <span class="error" th:errors="*{price}">
+                    Price error
+                </span><br/><br/>
+            </div>
 
             <label for="rarity">Rarity: </label>
             <select name="rarity" id="rarity" th:field="*{rarity}" required>
                 <option th:each="rarOpt: ${T(CritterPicker.Enums.Rarity).values()}" th:value="${rarOpt}" th:text="${rarOpt}"> Rarity </option>
-            </select>
+            </select><br/><br/>
 
             <label for="shadow">Shadow size: </label>
             <select name="shadow" id="shadow" th:field="*{shadowSize}" required>
                 <option th:each="shaOpt: ${T(CritterPicker.Enums.ShadowSize).values()}" th:value="${shaOpt}" th:text="${shaOpt}"> Shadow </option>
-            </select>
+            </select><br/><br/>
 
             <label for="mlistN">Month list northern hemisphere: </label>
             <select name="mlistN" id="mlistN" th:field="*{monthListN}" multiple required>
                 <option th:each="monOpt: ${T(CritterPicker.Enums.Months).values()}" th:value="${monOpt}" th:text="${monOpt}"> Month list N </option>
-            </select>
+            </select><br/><br/>
 
             <label for="mlistS">Month list southern hemisphere: </label>
             <select name="mlistS" id="mlistS" th:field="*{monthListS}" multiple required>
                 <option th:each="monOpt: ${T(CritterPicker.Enums.Months).values()}" th:value="${monOpt}" th:text="${monOpt}"> Month list S </option>
-            </select>
+            </select><br/><br/>
 
             <label for="hlist">Hour list: </label>
             <select name="hlist" id="hlist" th:field="*{hourList}" multiple required>
                 <option th:each="i : ${#numbers.sequence(0, 23)}" th:value="${i}" th:text="|${i}:00 - ${i+1}:00|"> Hour list </option>
-            </select>
+            </select><br/><br/>
 
             <input type="submit" value="Add"/>
         </fieldset>

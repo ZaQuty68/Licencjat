@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List of all critters</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<div class="main">
+    <h1>List of all fishes:</h1>
+    <div class="table">
+        <table>
+            <tr>
+                <th>Move to uncollected fish</th>
+                <th>Image</th>
+                <th>Name</th>
+            </tr>
+            <tr th:each="fish : ${user.fishSet}">
+                <td><a th:href="@{/userFishDelete(id=${fish.id})}" class="button">X</a></td>
+                <td><img th:src="@{${'/upload-dir/' + fish.filename}}" class="tableIMG"/></td>
+                <td th:text="${fish.name}"/>
+            </tr>
+        </table>
+    </div>
+    <div class="table">
+        <table>
+            <tr>
+                <th>Move to collected fish</th>
+                <th>Image</th>
+                <th>Name</th>
+            </tr>
+            <tr th:each="fish : ${fishes}">
+                <td><a th:href="@{/userFish(id=${fish.id})}" class="button">X</a></td>
+                <td><img th:src="@{${'/upload-dir/' + fish.filename}}" class="tableIMG"/></td>
+                <td th:text="${fish.name}"/>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

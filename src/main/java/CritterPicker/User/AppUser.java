@@ -5,9 +5,7 @@ import CritterPicker.Critters.Models.Fish;
 import CritterPicker.Critters.Models.SeaCreature;
 import CritterPicker.Enums.Hemisphere;
 import CritterPicker.Enums.UserRole;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +18,8 @@ import java.util.*;
 
 @Entity(name = "AppUser")
 @Table(name = "appUser")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class AppUser implements UserDetails {
 
@@ -41,14 +40,29 @@ public class AppUser implements UserDetails {
 
     private Boolean enabled = false;
 
-    @ManyToMany
-    Set<Fish> fishSet;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_fish",
+            joinColumns = @JoinColumn(name = "app_user_id"),
+            inverseJoinColumns = @JoinColumn(name = "fish_id")
+    )
+    Set<Fish> fishSet = new HashSet<>();
 
-    @ManyToMany
-    Set<Bug> bugSet;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_bug",
+            joinColumns = @JoinColumn(name = "app_user_id"),
+            inverseJoinColumns = @JoinColumn(name = "bug_id")
+    )
+    Set<Bug> bugSet = new HashSet<>();
 
-    @ManyToMany
-    Set<SeaCreature> seaCreatureSet;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_sea_creature",
+            joinColumns = @JoinColumn(name = "app_user_id"),
+            inverseJoinColumns = @JoinColumn(name = "sea_creature_id")
+    )
+    Set<SeaCreature> seaCreatureSet = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

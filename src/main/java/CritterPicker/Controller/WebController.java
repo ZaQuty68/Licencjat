@@ -3,7 +3,7 @@ package CritterPicker.Controller;
 import CritterPicker.Critters.Managers.BugManager;
 import CritterPicker.Critters.Managers.FishManager;
 import CritterPicker.Critters.Managers.SeaCreatureManager;
-import CritterPicker.DTO.FishDTO;
+import CritterPicker.Critters.DTO.FishDTO;
 import CritterPicker.Registration.RegistrationManager;
 import CritterPicker.Registration.RegistrationRequest;
 import CritterPicker.Storage.StorageManager;
@@ -16,10 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -139,7 +136,9 @@ public class WebController {
         return "sendAgain";
     }
 
-    //////////////////////////////////////////////////////////   HOME PAGE
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////   USER   //////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @GetMapping("/homePage")
     public String homePage(){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -151,8 +150,6 @@ public class WebController {
         return "homePage";
     }
 
-
-    //////////////////////////////////////////////////////////   LIST
     @GetMapping("/allList")
     public String allList(Model model){
         model.addAttribute("fishes", fm.findAll());
@@ -160,6 +157,43 @@ public class WebController {
         model.addAttribute("seaCreatures", sc.findAll());
         return "allList";
     }
+
+    @GetMapping("/userList")
+    public String userList(Model model){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int id = ((AppUser)principal).getId();
+        AppUser user = aum.findById(id);
+
+        model.addAttribute("user", user);
+        model.addAttribute("fishes", fm.findOtherFish(user));
+        model.addAttribute("bugs", bm.findAll());
+        model.addAttribute("seaCreatures", sc.findAll());
+        return "userList";
+    }
+
+    //////////////////////////////////////////////////////////   ADDING AND REMOVING CRITTERS FROM USER
+
+    @GetMapping("/userFish")
+    public String userFish(@RequestParam("id") int id){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int idU = ((AppUser)principal).getId();
+        aum.addFish(idU, fm.findById(id));
+        return "redirect:/userList";
+    }
+    @GetMapping("/userFishDelete")
+    public String userFishDelete(@RequestParam("id") int id){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int idU = ((AppUser)principal).getId();
+        aum.removeFish(idU, fm.findById(id));
+        return "redirect:/userList";
+    }
+
+    //////////////////////////////////////////////////////////   ALGORITHM
+    @GetMapping("/algorithmInput")
+    public String algorithmInput(){
+        return "algorithmInput";
+    }
+
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////   ADMIN   /////////////////////////////////////////////
@@ -177,7 +211,7 @@ public class WebController {
     }
 
     @PostMapping("/admin/newFish")
-    public String processNewFish(@Valid @ModelAttribute("fish") FishDTO fish, @RequestParam("file") MultipartFile file, BindingResult result, Model model){
+    public String processNewFish(@Valid @ModelAttribute("fish") FishDTO fish, BindingResult result, @RequestParam("file") MultipartFile file, Model model){
         if(result.hasErrors()) {
             return "newFish";
         }

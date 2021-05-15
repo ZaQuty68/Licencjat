@@ -5,17 +5,21 @@ import CritterPicker.Enums.Rarity;
 import CritterPicker.Enums.ShadowSize;
 import CritterPicker.User.AppUser;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "Fish")
 @Table(name = "fish")
-@Data
+@Getter
+@Setter
 public class Fish {
     @Id
     private int id;
@@ -47,6 +51,6 @@ public class Fish {
 
     private String filename;
 
-    @ManyToMany
-    Set<AppUser> users;
+    @ManyToMany(mappedBy = "fishSet", fetch = FetchType.LAZY)
+    Set<AppUser> users = new HashSet<>();
 }

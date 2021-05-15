@@ -9,7 +9,7 @@ import CritterPicker.Critters.Models.Bug;
 import CritterPicker.Critters.Models.Fish;
 import CritterPicker.Critters.Models.SeaCreature;
 //import CritterPicker.Models.User;
-import CritterPicker.DTO.FishDTO;
+import CritterPicker.Critters.DTO.FishDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

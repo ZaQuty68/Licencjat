@@ -1,5 +1,6 @@
 package CritterPicker.User;
 
+import CritterPicker.Critters.Models.Fish;
 import CritterPicker.User.AppUserInterface;
 import CritterPicker.User.AppUser;
 import CritterPicker.Registration.Token.ConfirmationToken;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -111,4 +113,18 @@ public class AppUserManager implements UserDetailsService {
         }
         return id;
     }
+
+    public void addFish(int idU, Fish fish){
+        AppUser userToEdit = aui.findById(idU);
+        userToEdit.getFishSet().add(fish);
+        aui.save(userToEdit);
+    }
+
+    public void removeFish(int idU, Fish fish){
+        AppUser userToEdit = aui.findById(idU);
+        userToEdit.getFishSet().remove(fish);
+        aui.save(userToEdit);
+    }
+
+    public AppUser findById(int id){ return aui.findById(id); }
 }
