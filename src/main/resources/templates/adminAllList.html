@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List of all critters</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<ul>
+    <li>
+        <a th:href="@{/logout}" class="logout">Logout</a>
+    </li>
+    <li>
+        <a th:href="@{/algorithmInput}">Algorithm</a>
+    </li>
+    <li>
+        <a th:href="@{/userList}">Personal list</a>
+    </li>
+    <li>
+        <a class="active" th:href="@{/admin/allList}">Table of critters</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/newSeaCreature}">Add new sea creature</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/newBug}">Add new bug</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/newFish}">Add new fish</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/homePage}">Home</a>
+    </li>
+</ul>
+
+<div class="main">
+    <h1>List of all fishes:</h1>
+    <h2><a th:href="@{/admin/newFish}" class="button">Add a new fish</a></h2>
+    <div class="table">
+        <table>
+            <tr>
+                <th></th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Quote</th>
+                <th>Location</th>
+                <th>Price</th>
+                <th>Rarity</th>
+                <th>Shadow size</th>
+                <th>Months</th>
+                <th>Hours</th>
+            </tr>
+            <tr th:each="fish : ${fishes}">
+                <td>
+                    <a th:href="@{/admin/editFish(id=${fish.id})}" class="button">Edit</a><br/><br/>
+                    <a th:href="@{/admin/deleteFishConfirm(id=${fish.id})}" class="button">Delete</a>
+                </td>
+                <td><img th:src="@{${'/upload-dir/' + fish.filename}}" class="tableIMG"/></td>
+                <td th:text="${fish.name}"/>
+                <td th:text="${fish.quote}"/>
+                <td th:text="${fish.onlyInRain} ? |${fish.location} (Raining)| : ${fish.location}"/>
+                <td th:text="${fish.price}"/>
+                <td th:text="${fish.rarity == T(CritterPicker.Enums.Rarity).FairlyCommon} ? 'Fairly Common' : ${fish.rarity}"/>
+                <td th:text="${fish.shadowSize == T(CritterPicker.Enums.ShadowSize).VeryLarge} ? 'Very Large' : ${fish.shadowSize}"/>
+                <td th:text="${hemisphere == 'NORTH'} ? ${fish.monthListN} : ${fish.monthListS}"/>
+                <td th:text="${fish.hourList}"/>
+            </tr>
+        </table>
+    </div>
+
+    <h1>List of all bugs:</h1>
+    <div class="table">
+        <table>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Quote</th>
+                <th>Spawning condition</th>
+                <th>Available in rain</th>
+                <th>Price</th>
+                <th>Rarity</th>
+                <th>Months</th>
+                <th>Hours</th>
+            </tr>
+            <tr th:each="bug : ${bugs}">
+                <td><img th:src="@{${'/upload-dir/' + bug.filename}}" class="tableIMG"/></td>
+                <td th:text="${bug.name}"/>
+                <td th:text="${bug.quote}"/>
+                <td th:text="${bug.spawningCondition}"/>
+                <td th:text="${bug.availableInRain} ? 'Yes' : 'No'"/>
+                <td th:text="${bug.price}"/>
+                <td th:text="${bug.rarity == T(CritterPicker.Enums.Rarity).FairlyCommon} ? 'Fairly Common' : ${bug.rarity}"/>
+                <td th:text="${hemisphere == 'NORTH'} ? ${bug.monthListN} : ${bug.monthListS}"/>
+                <td th:text="${bug.hourList}"/>
+            </tr>
+        </table>
+    </div>
+
+    <h1>List of all sea creatures:</h1>
+    <div class="table">
+        <table>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Quote</th>
+                <th>Price</th>
+                <th>Rarity</th>
+                <th>Shadow size</th>
+                <th>Months</th>
+                <th>Hours</th>
+            </tr>
+            <tr th:each="sc : ${seaCreatures}">
+                <td><img th:src="@{${'/upload-dir/' + sc.filename}}" class="tableIMG"/></td>
+                <td th:text="${sc.name}"/>
+                <td th:text="${sc.quote}"/>
+                <td th:text="${sc.price}"/>
+                <td th:text="${sc.rarity == T(CritterPicker.Enums.Rarity).FairlyCommon} ? 'Fairly Common' : ${sc.rarity}"/>
+                <td th:text="${sc.shadowSize == T(CritterPicker.Enums.ShadowSize).VeryLarge} ? 'Very Large' : ${sc.shadowSize}"/>
+                <td th:text="${hemisphere == 'NORTH'} ? ${sc.monthListN} : ${sc.monthListS}"/>
+                <td th:text="${sc.hourList}"/>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

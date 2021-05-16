@@ -43,7 +43,7 @@ public class StorageManager {
     public Path load(String filename) { return rootLocation.resolve(filename); }
 
     public boolean checkFilename(String filename){
-        File file = new File("src/main/resources/static/upload-dir/" + filename);
+        File file = new File(rootLocation + "/" + filename);
         if(file.exists()){
             return true;
         }
@@ -63,5 +63,10 @@ public class StorageManager {
         } catch (MalformedURLException e){
             throw new StorageFileNotFoundException("Could not read file: " + filename, e);
         }
+    }
+
+    public void deleteFile(String filename){
+        File file = new File(rootLocation + "/" + filename);
+        file.delete();
     }
 }

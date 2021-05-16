@@ -1,5 +1,7 @@
 package CritterPicker.Controller;
 
+import CritterPicker.Critters.DTO.BugDTO;
+import CritterPicker.Critters.DTO.SeaCreatureDTO;
 import CritterPicker.Critters.Managers.BugManager;
 import CritterPicker.Critters.Managers.FishManager;
 import CritterPicker.Critters.Managers.SeaCreatureManager;
@@ -240,7 +242,18 @@ public class WebController {
         return "adminHomePage";
     }
 
+    @GetMapping("/admin/allList")
+    public String adminAllList(Model model){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String hemisphere = ((AppUser)principal).getHemisphere().name();
+        model.addAttribute("hemisphere", hemisphere);
+        model.addAttribute("fishes", fm.findAll());
+        model.addAttribute("bugs", bm.findAll());
+        model.addAttribute("seaCreatures", scm.findAll());
+        return "adminAllList";
+    }
 
+    //////////////////////////////////////////////////////////   ADDING NEW CRITTERS
     @GetMapping("/admin/newFish")
     public String newFish(Model model){
         model.addAttribute("fish", new FishDTO());
@@ -262,6 +275,104 @@ public class WebController {
             return "newFish";
         }
         sm.store(file);
-        return "redirect:/homePage";
+        return "redirect:/admin/allList";
+    }
+
+    @GetMapping("/admin/newBug")
+    public String newBug(Model model){
+        model.addAttribute("bug", new BugDTO());
+        return "newBug";
+    }
+
+    @PostMapping("/admin/newBug")
+    public String processNewBug(@Valid @ModelAttribute("bug") BugDTO bug, BindingResult result, @RequestParam("file") MultipartFile file, Model model){
+        if(result.hasErrors()) {
+            return "newBug";
+        }
+        if(sm.checkFilename(file.getOriginalFilename())){
+            model.addAttribute("filenameTaken", true);
+            return "newBug";
+        }
+        String flag = bm.addBug(bug, file);
+        if(flag.equals("exists")){
+            model.addAttribute("nameTaken", true);
+            return "newBug";
+        }
+        sm.store(file);
+        return "redirect:/admin/allList";
+    }
+
+    @GetMapping("/admin/newSeaCreature")
+    public String newSeaCreature(Model model){
+        model.addAttribute("seaCreature", new SeaCreatureDTO());
+        return "newSeaCreature";
+    }
+
+    @PostMapping("/admin/newSeaCreature")
+    public String processNewSeaCreature(@Valid @ModelAttribute("seaCreature") SeaCreatureDTO seaCreature, BindingResult result, @RequestParam("file") MultipartFile file, Model model){
+        if(result.hasErrors()) {
+            return "newSeaCreature";
+        }
+        if(sm.checkFilename(file.getOriginalFilename())){
+            model.addAttribute("filenameTaken", true);
+            return "newSeaCreature";
+        }
+        String flag = scm.addSeaCreature(seaCreature, file);
+        if(flag.equals("exists")){
+            model.addAttribute("nameTaken", true);
+            return "newSeaCreature";
+        }
+        sm.store(file);
+        return "redirect:/admin/allList";
+    }
+
+    //////////////////////////////////////////////////////////   EDITING CRITTERS
+    @GetMapping("/admin/editFish")
+    public String editFish(Model model, @RequestParam("id") int id){
+        model.addAttribute("fish", fm.toDto(fm.findById(id)));
+        model.addAttribute("id", id);
+        return "editFish";
+    }
+
+    @PostMapping("/admin/editFish")
+    public String processEditFish(@Valid @ModelAttribute("fish") FishDTO fish, BindingResult result, @RequestParam("file") MultipartFile file, Model model, @RequestParam("id") int id){
+        if(result.hasErrors()) {
+            model.addAttribute("fish", fm.toDto(fm.findById(id)));
+            model.addAttribute("id", id);
+            return "editFish";
+        }
+        String oldFilename = fm.findById(id).getFilename();
+        if(sm.checkFilename(file.getOriginalFilename()) && !(oldFilename.equals(file.getOriginalFilename()))){
+            model.addAttribute("filenameTaken", true);
+            model.addAttribute("fish", fm.toDto(fm.findById(id)));
+            model.addAttribute("id", id);
+            return "editFish";
+        }
+        String flag = fm.editFish(fish, id, file);
+        if(flag.equals("exists")){
+            model.addAttribute("nameTaken", true);
+            model.addAttribute("fish", fm.toDto(fm.findById(id)));
+            model.addAttribute("id", id);
+            return "editFish";
+        }
+        sm.deleteFile(oldFilename);
+        sm.store(file);
+        return "redirect:/admin/allList";
+    }
+
+
+    //////////////////////////////////////////////////////////   DELETING CRITTERS
+    @GetMapping("/admin/deleteFishConfirm")
+    public String deleteFishConfirm(@RequestParam("id") int id, Model model){
+        model.addAttribute("fish", fm.findById(id));
+        return "deleteFishConfirm";
+    }
+
+    @GetMapping("/admin/deleteFish")
+    public String deleteFish(@RequestParam("id") int id){
+        sm.deleteFile(fm.findById(id).getFilename());
+        aum.deleteFish(fm.findById(id));
+        fm.deleteById(id);
+        return "redirect:/admin/allList";
     }
 }

@@ -2,7 +2,7 @@
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>New Fish</title>
+    <title>Edit Fish</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
@@ -26,7 +26,7 @@
         <a th:href="@{/admin/newBug}">Add new bug</a>
     </li>
     <li>
-        <a class="active" th:href="@{/admin/newFish}">Add new fish</a>
+        <a th:href="@{/admin/newFish}">Add new fish</a>
     </li>
     <li>
         <a th:href="@{/admin/homePage}">Home</a>
@@ -34,10 +34,10 @@
 </ul>
 
 <div class="main">
-    <h1>Add a new fish!</h1>
-    <form th:action="@{/admin/newFish}" method="POST" enctype="multipart/form-data" th:object="${fish}">
+    <h1>Edit fish!</h1>
+    <form th:action="@{/admin/editFish(id=${id})}" method="POST" enctype="multipart/form-data" th:object="${fish}">
         <fieldset>
-            <legend>Add new fish:</legend>
+            <legend>Edit fish:</legend>
             <div th:if="${#fields.hasErrors()}">
                     <span class="error">
                         Please correct following errors:
@@ -109,7 +109,7 @@
                 <option th:each="i : ${#numbers.sequence(0, 23)}" th:value="${i}" th:text="|${i}:00 - ${i+1}:00|"> Hour list </option>
             </select><br/><br/>
 
-            <input type="submit" value="Add"/><br/><br/>
+            <input type="submit" value="Edit"/><br/><br/>
             <a th:href="@{/admin/allList}" class="button">Cancel</a>
         </fieldset>
     </form>

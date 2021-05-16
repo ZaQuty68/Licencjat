@@ -119,7 +119,7 @@ select {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-  align-items: flex-start;
+  align-items: stretch;
 }
 .option {
   border-radius: 20px;
@@ -162,6 +162,7 @@ th {
   color: #ddfee4;
 }
 .tableIMG {
-  max-width: 100px;
+  width: 64px;
+  height: 64px;
   border-radius: 5px;
 }

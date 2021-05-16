@@ -152,4 +152,25 @@ public class AppUserManager implements UserDetailsService {
     }
 
     public AppUser findById(int id){ return aui.findById(id); }
+
+    public void deleteFish(Fish fish){
+        for(AppUser user: aui.findAll()){
+            user.getFishSet().remove(fish);
+            aui.save(user);
+        }
+    }
+
+    public void deleteBug(Bug bug){
+        for(AppUser user: aui.findAll()){
+            user.getBugSet().remove(bug);
+            aui.save(user);
+        }
+    }
+
+    public void deleteSeaCreature(SeaCreature seaCreature){
+        for(AppUser user: aui.findAll()){
+            user.getSeaCreatureSet().remove(seaCreature);
+            aui.save(user);
+        }
+    }
 }

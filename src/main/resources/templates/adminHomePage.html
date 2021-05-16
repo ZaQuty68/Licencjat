@@ -6,19 +6,51 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
+<ul>
+    <li>
+        <a th:href="@{/logout}" class="logout">Logout</a>
+    </li>
+    <li>
+        <a th:href="@{/algorithmInput}">Algorithm</a>
+    </li>
+    <li>
+        <a th:href="@{/userList}">Personal list</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/allList}">Table of critters</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/newSeaCreature}">Add new sea creature</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/newBug}">Add new bug</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/newFish}">Add new fish</a>
+    </li>
+    <li>
+        <a class="active" th:href="@{/admin/homePage}">Home</a>
+    </li>
+</ul>
+
 <div class="main">
     <h1>Welcome to Critter Picker!</h1>
     <img th:src="@{/images/logo.png}" class="logo"/>
-    <h2>Critter Picker is site for all you Animal Crossing: New Horizons lovers!</h2>
-    <a th:href="@{/logout}" class="button">Logout</a>
-    <div>See the lists of all critters
-        <a th:href="@{/allList}">click</a>
-    </div>
-    <div>See personal critters
-        <a th:href="@{/user/list}">click</a>
-    </div>
-    <div>Use algorithm
-        <a th:href="@{/algorithm}">click</a>
+    <h2>You are an administrator on Critter Picker!</h2>
+    <h3>What do you want to do?</h3>
+    <div class="container">
+        <div class="option"><br/>
+            <a th:href="@{/admin/allList}" class="button">List of all critters</a>
+            <p>See a list of all in-game critters, where you can delete, edit and add new ones!</p>
+        </div>
+        <div class="option"><br/>
+            <a th:href="@{/userList}" class="button">Personal critter list</a>
+            <p>See and manage lists of critters that you have already collected or still have to collect.</p>
+        </div>
+        <div class="option"><br/>
+            <a th:href="@{/algorithmInput}" class="button">Use Critter Picker algorithm</a>
+            <p>Use an algorithm that will help you catch uncollected critters or earn in-game money.</p>
+        </div>
     </div>
 </div>
 <div>

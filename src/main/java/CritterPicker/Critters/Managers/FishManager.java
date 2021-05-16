@@ -93,25 +93,30 @@ public class FishManager{
         int y = x;
         String hlist = "";
 
-        for(int i = 0; i<list.size(); i++){
-            int temp = list.get(i);
-            if(i == list.size() - 1){
-                if(temp == y + 1){
-                    hlist += x + ":00 - " + (temp + 1) + ":00";
+        if(list.size() == 1){
+            hlist += x + ":00 - " + (y+1) + ":00";
+        }
+        else{
+            for(int i = 0; i<list.size(); i++){
+                int temp = list.get(i);
+                if(i == list.size() - 1){
+                    if(temp == y + 1){
+                        hlist += x + ":00 - " + (temp + 1) + ":00";
+                    }
+                    else{
+                        if(list.size() == 1){
+                            hlist += x + ":00 - " + (y + 1) + ":00";
+                        }
+                        hlist += x + ":00 - " + (y + 1) + ":00, " + temp + ":00 - " + (temp + 1) + ":00";
+                    }
                 }
                 else{
-                    if(list.size() == 1){
-                        hlist += x + ":00 - " + (y + 1) + ":00";
+                    if(temp != y + 1 && i != 0){
+                        hlist += x + ":00 - " + (y + 1) + ":00, ";
+                        x = temp;
                     }
-                    hlist += x + ":00 - " + (y + 1) + ":00, " + temp + ":00 - " + (temp + 1) + ":00";
+                    y = temp;
                 }
-            }
-            else{
-                if(temp != y + 1 && i != 0){
-                    hlist += x + ":00 - " + (y + 1) + ":00, ";
-                    x = temp;
-                }
-                y = temp;
             }
         }
         fishToSave.setHourList(hlist);
@@ -142,6 +147,119 @@ public class FishManager{
             }
         }
         return listToReturn;
+    }
+
+    public FishDTO toDto(Fish fish){
+        FishDTO fishDTO = new FishDTO();
+
+        fishDTO.setName(fish.getName());
+        fishDTO.setQuote(fish.getQuote());
+        fishDTO.setLocation(fish.getLocation());
+        fishDTO.setOnlyInRain(fish.isOnlyInRain());
+        fishDTO.setPrice(fish.getPrice());
+        fishDTO.setRarity(fish.getRarity());
+        fishDTO.setShadowSize(fish.getShadowSize());
+
+        String mlistN = fish.getMonthListN();
+        List<String> listN = new ArrayList<>();
+        for(String n : mlistN.split(", ")){
+            listN.add(n);
+        }
+        fishDTO.setMonthListN(listN);
+
+        return fishDTO;
+    }
+
+    public String editFish(FishDTO fish, int id, MultipartFile file){
+        boolean fishExists = fi.findByName(fish.getName()).isPresent();
+        if(fishExists && !(fish.getName().equals(fi.findById(id).getName()))){
+            return "exists";
+        }
+
+        Fish fishToSave = fi.findById(id);
+
+        fishToSave.setName(fish.getName());
+        fishToSave.setQuote(fish.getQuote());
+        fishToSave.setLocation(fish.getLocation());
+        fishToSave.setOnlyInRain(fish.isOnlyInRain());
+        fishToSave.setPrice(fish.getPrice());
+        fishToSave.setRarity(fish.getRarity());
+        fishToSave.setShadowSize(fish.getShadowSize());
+
+        String mlistN = "";
+        List<String> listN = fish.getMonthListN();
+        for(int i = 0; i < listN.size() - 1; i++){
+            mlistN += listN.get(i) + ", ";
+        }
+        mlistN += listN.get(listN.size() - 1);
+
+        fishToSave.setMonthListN(mlistN);
+
+
+
+        List<Integer> intListS = new ArrayList<>();
+        for(String n : listN){
+            int i = Months.valueOf(n).getOrder() + 6;
+            if(i > 12){
+                i -= 12;
+            }
+            intListS.add(i);
+        }
+        Collections.sort(intListS);
+
+        List<String> listS = new ArrayList<>();
+
+        for(int i : intListS){
+            listS.add(Months.values()[i-1].name());
+        }
+
+
+        String mlistS = "";
+        for(int i=0; i < listS.size() - 1; i++){
+            mlistS += listS.get(i) + ", ";
+        }
+        mlistS += listS.get(listS.size() - 1);
+
+        fishToSave.setMonthListS(mlistS);
+
+
+
+        List<Integer> list = fish.getHourList();
+        int x = list.get(0);
+        int y = x;
+        String hlist = "";
+        if(list.size() == 1){
+            hlist += x + ":00 - " + (y+1) + ":00";
+        }
+        else{
+            for(int i = 0; i<list.size(); i++){
+                int temp = list.get(i);
+                if(i == list.size() - 1){
+                    if(temp == y + 1){
+                        hlist += x + ":00 - " + (temp + 1) + ":00";
+                    }
+                    else{
+                        if(list.size() == 1){
+                            hlist += x + ":00 - " + (y + 1) + ":00";
+                        }
+                        hlist += x + ":00 - " + (y + 1) + ":00, " + temp + ":00 - " + (temp + 1) + ":00";
+                    }
+                }
+                else{
+                    if(temp != y + 1 && i != 0){
+                        hlist += x + ":00 - " + (y + 1) + ":00, ";
+                        x = temp;
+                    }
+                    y = temp;
+                }
+            }
+        }
+        fishToSave.setHourList(hlist);
+
+        fishToSave.setFilename(file.getOriginalFilename());
+
+        fi.save(fishToSave);
+        return "saved";
     }
 
 }
