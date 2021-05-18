@@ -149,7 +149,7 @@ public class FishManager{
         return listToReturn;
     }
 
-    public FishDTO toDto(Fish fish){
+    public FishDTO toDTO(Fish fish){
         FishDTO fishDTO = new FishDTO();
 
         fishDTO.setName(fish.getName());

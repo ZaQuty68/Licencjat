@@ -2,7 +2,7 @@
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Fish</title>
+    <title>Edit Sea Creature</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
@@ -34,17 +34,17 @@
 </ul>
 
 <div class="main">
-    <h1>Edit a fish!</h1>
-    <form th:action="@{/admin/editFish(id=${id})}" method="POST" enctype="multipart/form-data" th:object="${fish}">
+    <h1>Edit a sea creature!</h1>
+    <form th:action="@{/admin/editSeaCreature(id=${id})}" method="POST" enctype="multipart/form-data" th:object="${seaCreature}">
         <fieldset>
-            <legend>Edit fish:</legend>
+            <legend>Edit sea creature:</legend>
             <div th:if="${#fields.hasErrors()}">
                     <span class="error">
                         Please correct following errors:
                     </span><br/><br/>
             </div>
 
-            <label for="name">Fish name: </label>
+            <label for="name">Sea creature name: </label>
             <input type="text" id="name" th:field="*{name}" autofocus="autofocus"/><br/><br/>
             <div th:if="${#fields.hasErrors('name')}">
                 <span class="error" th:errors="*{name}">
@@ -65,21 +65,13 @@
                 </span><br/><br/>
             </div>
 
-            <label for="file">Fish photo: </label>
+            <label for="file">Sea creature photo: </label>
             <input type="file" name="file" id="file" required accept="image/*"/><br/><br/>
             <div th:if="${filenameTaken}">
                 <span class="error">
                     This filename is already taken! Please rename your file!
                 </span><br/><br/>
             </div>
-
-            <label for="location">Location: </label>
-            <select name="location" id="location" th:field="*{location}" required>
-                <option th:each="locOpt : ${T(CritterPicker.Enums.LocationFish).values()}" th:value="${locOpt}" th:text="${locOpt}"/>
-            </select><br/><br/>
-
-            <label for="rainOnly">Fish only in rain: </label>
-            <input type="checkbox" id="rainOnly" th:field="*{onlyInRain}"/><br/><br/>
 
             <label for="price">Price: </label>
             <input type="number" id="price" th:field="*{price}"/><br/><br/>

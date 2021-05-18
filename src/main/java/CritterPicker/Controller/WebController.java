@@ -329,7 +329,7 @@ public class WebController {
     //////////////////////////////////////////////////////////   EDITING CRITTERS
     @GetMapping("/admin/editFish")
     public String editFish(Model model, @RequestParam("id") int id){
-        model.addAttribute("fish", fm.toDto(fm.findById(id)));
+        model.addAttribute("fish", fm.toDTO(fm.findById(id)));
         model.addAttribute("id", id);
         return "editFish";
     }
@@ -337,23 +337,89 @@ public class WebController {
     @PostMapping("/admin/editFish")
     public String processEditFish(@Valid @ModelAttribute("fish") FishDTO fish, BindingResult result, @RequestParam("file") MultipartFile file, Model model, @RequestParam("id") int id){
         if(result.hasErrors()) {
-            model.addAttribute("fish", fm.toDto(fm.findById(id)));
+            model.addAttribute("fish", fm.toDTO(fm.findById(id)));
             model.addAttribute("id", id);
             return "editFish";
         }
         String oldFilename = fm.findById(id).getFilename();
         if(sm.checkFilename(file.getOriginalFilename()) && !(oldFilename.equals(file.getOriginalFilename()))){
             model.addAttribute("filenameTaken", true);
-            model.addAttribute("fish", fm.toDto(fm.findById(id)));
+            model.addAttribute("fish", fm.toDTO(fm.findById(id)));
             model.addAttribute("id", id);
             return "editFish";
         }
         String flag = fm.editFish(fish, id, file);
         if(flag.equals("exists")){
             model.addAttribute("nameTaken", true);
-            model.addAttribute("fish", fm.toDto(fm.findById(id)));
+            model.addAttribute("fish", fm.toDTO(fm.findById(id)));
             model.addAttribute("id", id);
             return "editFish";
+        }
+        sm.deleteFile(oldFilename);
+        sm.store(file);
+        return "redirect:/admin/allList";
+    }
+
+    @GetMapping("/admin/editBug")
+    public String editBug(Model model, @RequestParam("id") int id){
+        model.addAttribute("bug", bm.toDTO(bm.findById(id)));
+        model.addAttribute("id", id);
+        return "editBug";
+    }
+
+    @PostMapping("/admin/editBug")
+    public String processEditFish(@Valid @ModelAttribute("bug") BugDTO bug, BindingResult result, @RequestParam("file") MultipartFile file, Model model, @RequestParam("id") int id){
+        if(result.hasErrors()) {
+            model.addAttribute("bug", bm.toDTO(bm.findById(id)));
+            model.addAttribute("id", id);
+            return "editBug";
+        }
+        String oldFilename = bm.findById(id).getFilename();
+        if(sm.checkFilename(file.getOriginalFilename()) && !(oldFilename.equals(file.getOriginalFilename()))){
+            model.addAttribute("filenameTaken", true);
+            model.addAttribute("bug", bm.toDTO(bm.findById(id)));
+            model.addAttribute("id", id);
+            return "editBug";
+        }
+        String flag = bm.editBug(bug, id, file);
+        if(flag.equals("exists")){
+            model.addAttribute("nameTaken", true);
+            model.addAttribute("bug", bm.toDTO(bm.findById(id)));
+            model.addAttribute("id", id);
+            return "editBug";
+        }
+        sm.deleteFile(oldFilename);
+        sm.store(file);
+        return "redirect:/admin/allList";
+    }
+
+    @GetMapping("/admin/editSeaCreature")
+    public String editSeaCreature(Model model, @RequestParam("id") int id){
+        model.addAttribute("seaCreature", scm.toDTO(scm.findById(id)));
+        model.addAttribute("id", id);
+        return "editSeaCreature";
+    }
+
+    @PostMapping("/admin/editSeaCreature")
+    public String processEditSeaCreature(@Valid @ModelAttribute("seaCreature") SeaCreatureDTO seaCreature, BindingResult result, @RequestParam("file") MultipartFile file, Model model, @RequestParam("id") int id){
+        if(result.hasErrors()) {
+            model.addAttribute("seaCreature", scm.toDTO(scm.findById(id)));
+            model.addAttribute("id", id);
+            return "editSeaCreature";
+        }
+        String oldFilename = scm.findById(id).getFilename();
+        if(sm.checkFilename(file.getOriginalFilename()) && !(oldFilename.equals(file.getOriginalFilename()))){
+            model.addAttribute("filenameTaken", true);
+            model.addAttribute("seaCreature", scm.toDTO(scm.findById(id)));
+            model.addAttribute("id", id);
+            return "editSeaCreature";
+        }
+        String flag = scm.editSeaCreature(seaCreature, id, file);
+        if(flag.equals("exists")){
+            model.addAttribute("nameTaken", true);
+            model.addAttribute("seaCreature", scm.toDTO(scm.findById(id)));
+            model.addAttribute("id", id);
+            return "editSeaCreature";
         }
         sm.deleteFile(oldFilename);
         sm.store(file);
@@ -373,6 +439,34 @@ public class WebController {
         sm.deleteFile(fm.findById(id).getFilename());
         aum.deleteFish(fm.findById(id));
         fm.deleteById(id);
+        return "redirect:/admin/allList";
+    }
+
+    @GetMapping("/admin/deleteBugConfirm")
+    public String deleteBugConfirm(@RequestParam("id") int id, Model model){
+        model.addAttribute("bug", bm.findById(id));
+        return "deleteBugConfirm";
+    }
+
+    @GetMapping("/admin/deleteBug")
+    public String deleteBug(@RequestParam("id") int id){
+        sm.deleteFile(bm.findById(id).getFilename());
+        aum.deleteBug(bm.findById(id));
+        bm.deleteById(id);
+        return "redirect:/admin/allList";
+    }
+
+    @GetMapping("/admin/deleteSeaCreatureConfirm")
+    public String deleteSeaCreatureConfirm(@RequestParam("id") int id, Model model){
+        model.addAttribute("seaCreature", scm.findById(id));
+        return "deleteSeaCreatureConfirm";
+    }
+
+    @GetMapping("/admin/deleteSeaCreature")
+    public String deleteSeaCreature(@RequestParam("id") int id){
+        sm.deleteFile(scm.findById(id).getFilename());
+        aum.deleteSeaCreature(scm.findById(id));
+        scm.deleteById(id);
         return "redirect:/admin/allList";
     }
 }

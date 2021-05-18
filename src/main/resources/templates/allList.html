@@ -94,15 +94,15 @@
                 <th>Months</th>
                 <th>Hours</th>
             </tr>
-            <tr th:each="sc : ${seaCreatures}">
-                <td><img th:src="@{${'/upload-dir/' + sc.filename}}" class="tableIMG"/></td>
-                <td th:text="${sc.name}"/>
-                <td th:text="${sc.quote}"/>
-                <td th:text="${sc.price}"/>
-                <td th:text="${sc.rarity == T(CritterPicker.Enums.Rarity).FairlyCommon} ? 'Fairly Common' : ${sc.rarity}"/>
-                <td th:text="${sc.shadowSize == T(CritterPicker.Enums.ShadowSize).VeryLarge} ? 'Very Large' : ${sc.shadowSize}"/>
-                <td th:text="${hemisphere == 'NORTH'} ? ${sc.monthListN} : ${sc.monthListS}"/>
-                <td th:text="${sc.hourList}"/>
+            <tr th:each="seaCreature : ${seaCreatures}">
+                <td><img th:src="@{${'/upload-dir/' + seaCreature.filename}}" class="tableIMG"/></td>
+                <td th:text="${seaCreature.name}"/>
+                <td th:text="${seaCreature.quote}"/>
+                <td th:text="${seaCreature.price}"/>
+                <td th:text="${seaCreature.rarity == T(CritterPicker.Enums.Rarity).FairlyCommon} ? 'Fairly Common' : ${seaCreature.rarity}"/>
+                <td th:text="${seaCreature.shadowSize == T(CritterPicker.Enums.ShadowSize).VeryLarge} ? 'Very Large' : ${seaCreature.shadowSize}"/>
+                <td th:text="${hemisphere == 'NORTH'} ? ${seaCreature.monthListN} : ${seaCreature.monthListS}"/>
+                <td th:text="${seaCreature.hourList}"/>
             </tr>
         </table>
     </div>

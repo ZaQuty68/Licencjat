@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Sea Creature</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<ul>
+    <li>
+        <a th:href="@{/logout}" class="logout">Logout</a>
+    </li>
+    <li>
+        <a th:href="@{/algorithmInput}">Algorithm</a>
+    </li>
+    <li>
+        <a th:href="@{/userList}">Personal list</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/allList}">Table of critters</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/newSeaCreature}">Add new sea creature</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/newBug}">Add new bug</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/newFish}">Add new fish</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/homePage}">Home</a>
+    </li>
+</ul>
+
+<div class="main">
+    <h1>Are you sure, you want to delete this sea creature?</h1>
+    <div class="table">
+        <table>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Quote</th>
+                <th>Price</th>
+                <th>Rarity</th>
+                <th>Shadow size</th>
+                <th>Months</th>
+                <th>Hours</th>
+            </tr>
+            <tr>
+                <td><img th:src="@{${'/upload-dir/' + seaCreature.filename}}" class="tableIMG"/></td>
+                <td th:text="${seaCreature.name}"/>
+                <td th:text="${seaCreature.quote}"/>
+                <td th:text="${seaCreature.price}"/>
+                <td th:text="${seaCreature.rarity == T(CritterPicker.Enums.Rarity).FairlyCommon} ? 'Fairly Common' : ${seaCreature.rarity}"/>
+                <td th:text="${seaCreature.shadowSize == T(CritterPicker.Enums.ShadowSize).VeryLarge} ? 'Very Large' : ${seaCreature.shadowSize}"/>
+                <td th:text="${hemisphere == 'NORTH'} ? ${seaCreature.monthListN} : ${seaCreature.monthListS}"/>
+                <td th:text="${seaCreature.hourList}"/>
+            </tr>
+        </table>
+    </div>
+
+    <h1><a th:href="@{/admin/deleteSeaCreature(id=${seaCreature.id})}" class="button">Yes</a>      <a th:href="@{/admin/allList}" class="button">No</a></h1>
+</div>
+
+</body>
+</html>

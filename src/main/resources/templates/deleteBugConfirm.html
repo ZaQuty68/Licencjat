@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Bug</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<ul>
+    <li>
+        <a th:href="@{/logout}" class="logout">Logout</a>
+    </li>
+    <li>
+        <a th:href="@{/algorithmInput}">Algorithm</a>
+    </li>
+    <li>
+        <a th:href="@{/userList}">Personal list</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/allList}">Table of critters</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/newSeaCreature}">Add new sea creature</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/newBug}">Add new bug</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/newFish}">Add new fish</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/homePage}">Home</a>
+    </li>
+</ul>
+
+<div class="main">
+    <h1>Are you sure, you want to delete this bug?</h1>
+    <div class="table">
+        <table>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Quote</th>
+                <th>Spawning condition</th>
+                <th>Available in rain</th>
+                <th>Price</th>
+                <th>Rarity</th>
+                <th>Months</th>
+                <th>Hours</th>
+            </tr>
+            <tr>
+                <td><img th:src="@{${'/upload-dir/' + bug.filename}}" class="tableIMG"/></td>
+                <td th:text="${bug.name}"/>
+                <td th:text="${bug.quote}"/>
+                <td th:text="${bug.spawningCondition}"/>
+                <td th:text="${bug.availableInRain} ? 'Yes' : 'No'"/>
+                <td th:text="${bug.price}"/>
+                <td th:text="${bug.rarity == T(CritterPicker.Enums.Rarity).FairlyCommon} ? 'Fairly Common' : ${bug.rarity}"/>
+                <td th:text="${hemisphere == 'NORTH'} ? ${bug.monthListN} : ${bug.monthListS}"/>
+                <td th:text="${bug.hourList}"/>
+            </tr>
+        </table>
+    </div>
+
+    <h1><a th:href="@{/admin/deleteBug(id=${bug.id})}" class="button">Yes</a>      <a th:href="@{/admin/allList}" class="button">No</a></h1>
+</div>
+
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Fish</title>
+    <title>New Bug</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
@@ -23,7 +23,7 @@
         <a th:href="@{/admin/newSeaCreature}">Add new sea creature</a>
     </li>
     <li>
-        <a th:href="@{/admin/newBug}">Add new bug</a>
+        <a class="active" th:href="@{/admin/newBug}">Add new bug</a>
     </li>
     <li>
         <a th:href="@{/admin/newFish}">Add new fish</a>
@@ -34,17 +34,17 @@
 </ul>
 
 <div class="main">
-    <h1>Edit a fish!</h1>
-    <form th:action="@{/admin/editFish(id=${id})}" method="POST" enctype="multipart/form-data" th:object="${fish}">
+    <h1>Add a new bug!</h1>
+    <form th:action="@{/admin/newBug}" method="POST" enctype="multipart/form-data" th:object="${bug}">
         <fieldset>
-            <legend>Edit fish:</legend>
+            <legend>Add new bug:</legend>
             <div th:if="${#fields.hasErrors()}">
                     <span class="error">
                         Please correct following errors:
                     </span><br/><br/>
             </div>
 
-            <label for="name">Fish name: </label>
+            <label for="name">Bug name: </label>
             <input type="text" id="name" th:field="*{name}" autofocus="autofocus"/><br/><br/>
             <div th:if="${#fields.hasErrors('name')}">
                 <span class="error" th:errors="*{name}">
@@ -65,7 +65,7 @@
                 </span><br/><br/>
             </div>
 
-            <label for="file">Fish photo: </label>
+            <label for="file">Bug photo: </label>
             <input type="file" name="file" id="file" required accept="image/*"/><br/><br/>
             <div th:if="${filenameTaken}">
                 <span class="error">
@@ -73,13 +73,16 @@
                 </span><br/><br/>
             </div>
 
-            <label for="location">Location: </label>
-            <select name="location" id="location" th:field="*{location}" required>
-                <option th:each="locOpt : ${T(CritterPicker.Enums.LocationFish).values()}" th:value="${locOpt}" th:text="${locOpt}"/>
-            </select><br/><br/>
+            <label for="spawningCondition">Spawning condition: </label>
+            <input type="text" id="spawningCondition" th:field="*{spawningCondition}"/><br/><br/>
+            <div th:if="${#fields.hasErrors('spawningCondition')}">
+                <span class="error" th:errors="*{spawningCondition}">
+                    Spawning condition error
+                </span><br/><br/>
+            </div>
 
-            <label for="rainOnly">Fish only in rain: </label>
-            <input type="checkbox" id="rainOnly" th:field="*{onlyInRain}"/><br/><br/>
+            <label for="availableInRain">Bug available in rain: </label>
+            <input type="checkbox" id="availableInRain" th:field="*{availableInRain}"/><br/><br/>
 
             <label for="price">Price: </label>
             <input type="number" id="price" th:field="*{price}"/><br/><br/>
@@ -94,11 +97,6 @@
                 <option th:each="rarOpt: ${T(CritterPicker.Enums.Rarity).values()}" th:value="${rarOpt}" th:text="${rarOpt}"> Rarity </option>
             </select><br/><br/>
 
-            <label for="shadow">Shadow size: </label>
-            <select name="shadow" id="shadow" th:field="*{shadowSize}" required>
-                <option th:each="shaOpt: ${T(CritterPicker.Enums.ShadowSize).values()}" th:value="${shaOpt}" th:text="${shaOpt}"> Shadow </option>
-            </select><br/><br/>
-
             <label for="mlistN">Month list (northern hemisphere): </label>
             <select name="mlistN" id="mlistN" th:field="*{monthListN}" multiple required>
                 <option th:each="monOpt: ${T(CritterPicker.Enums.Months).values()}" th:value="${monOpt}" th:text="${monOpt}"> Month list N </option>
@@ -109,7 +107,7 @@
                 <option th:each="i : ${#numbers.sequence(0, 23)}" th:value="${i}" th:text="|${i}:00 - ${i+1}:00|"> Hour list </option>
             </select><br/><br/>
 
-            <input type="submit" value="Edit"/><br/><br/>
+            <input type="submit" value="Add"/><br/><br/>
             <a th:href="@{/admin/allList}" class="button">Cancel</a>
         </fieldset>
     </form>
