@@ -26,9 +26,6 @@ public class Bug {
     private String name;
 
     @Column(length = 500)
-    private String quote;
-
-    @Column(length = 500)
     private String spawningCondition;
 
     private boolean availableInRain;

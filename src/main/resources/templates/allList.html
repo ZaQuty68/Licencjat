@@ -11,6 +11,9 @@
         <a th:href="@{/logout}" class="logout">Logout</a>
     </li>
     <li>
+        <a th:href="@{/homePage}">Home</a>
+    </li>
+    <li>
         <a th:href="@{/algorithmInput}">Algorithm</a>
     </li>
     <li>
@@ -18,9 +21,6 @@
     </li>
     <li>
         <a class="active" th:href="@{/allList}">Table of critters</a>
-    </li>
-    <li>
-        <a th:href="@{/homePage}">Home</a>
     </li>
 </ul>
 
@@ -31,7 +31,6 @@
             <tr>
                 <th>Image</th>
                 <th>Name</th>
-                <th>Quote</th>
                 <th>Location</th>
                 <th>Price</th>
                 <th>Rarity</th>
@@ -42,7 +41,6 @@
             <tr th:each="fish : ${fishes}">
                 <td><img th:src="@{${'/upload-dir/' + fish.filename}}" class="tableIMG"/></td>
                 <td th:text="${fish.name}"/>
-                <td th:text="${fish.quote}"/>
                 <td th:text="${fish.onlyInRain} ? |${fish.location} (Raining)| : ${fish.location}"/>
                 <td th:text="${fish.price}"/>
                 <td th:text="${fish.rarity == T(CritterPicker.Enums.Rarity).FairlyCommon} ? 'Fairly Common' : ${fish.rarity}"/>
@@ -59,7 +57,6 @@
             <tr>
                 <th>Image</th>
                 <th>Name</th>
-                <th>Quote</th>
                 <th>Spawning condition</th>
                 <th>Available in rain</th>
                 <th>Price</th>
@@ -70,7 +67,6 @@
             <tr th:each="bug : ${bugs}">
                 <td><img th:src="@{${'/upload-dir/' + bug.filename}}" class="tableIMG"/></td>
                 <td th:text="${bug.name}"/>
-                <td th:text="${bug.quote}"/>
                 <td th:text="${bug.spawningCondition}"/>
                 <td th:text="${bug.availableInRain} ? 'Yes' : 'No'"/>
                 <td th:text="${bug.price}"/>
@@ -87,7 +83,6 @@
             <tr>
                 <th>Image</th>
                 <th>Name</th>
-                <th>Quote</th>
                 <th>Price</th>
                 <th>Rarity</th>
                 <th>Shadow size</th>
@@ -97,7 +92,6 @@
             <tr th:each="seaCreature : ${seaCreatures}">
                 <td><img th:src="@{${'/upload-dir/' + seaCreature.filename}}" class="tableIMG"/></td>
                 <td th:text="${seaCreature.name}"/>
-                <td th:text="${seaCreature.quote}"/>
                 <td th:text="${seaCreature.price}"/>
                 <td th:text="${seaCreature.rarity == T(CritterPicker.Enums.Rarity).FairlyCommon} ? 'Fairly Common' : ${seaCreature.rarity}"/>
                 <td th:text="${seaCreature.shadowSize == T(CritterPicker.Enums.ShadowSize).VeryLarge} ? 'Very Large' : ${seaCreature.shadowSize}"/>

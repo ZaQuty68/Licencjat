@@ -8,10 +8,15 @@ body {
   border-radius: 20px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+.logoNavbar {
+  max-width: 50px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
 
 .main {
   position: absolute;
-  top: 60px;
+  top: 70px;
   text-align: center;
   left: 15%;
   right: 15%;
@@ -29,7 +34,9 @@ ul {
   top: -10px;
   left: 15%;
   right: 15%;
+  height: 45px;
   overflow: hidden;
+  overflow-x: auto;
   z-index: 1;
   background-color: #28cc9e;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);

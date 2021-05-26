@@ -1,8 +1,10 @@
 package CritterPicker.Critters.Managers;
 
 import CritterPicker.Critters.DTO.BugDTO;
+import CritterPicker.Critters.DTO.FishDTO;
 import CritterPicker.Critters.Interfaces.BugInterface;
 import CritterPicker.Critters.Models.Bug;
+import CritterPicker.Critters.Models.Fish;
 import CritterPicker.Enums.Months;
 import CritterPicker.User.AppUser;
 import lombok.AllArgsConstructor;
@@ -12,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @AllArgsConstructor
@@ -42,7 +46,6 @@ public class BugManager{
 
         bugToSave.setId(id);
         bugToSave.setName(bug.getName());
-        bugToSave.setQuote(bug.getQuote());
         bugToSave.setSpawningCondition(bug.getSpawningCondition());
         bugToSave.setPrice(bug.getPrice());
         bugToSave.setRarity(bug.getRarity());
@@ -145,24 +148,53 @@ public class BugManager{
         return listToReturn;
     }
 
-    public BugDTO toDTO(Bug bug){
+    public BugDTO toDTO(Bug bug, boolean flag){
         BugDTO bugDTO = new BugDTO();
 
         bugDTO.setName(bug.getName());
-        bugDTO.setQuote(bug.getQuote());
         bugDTO.setSpawningCondition(bug.getSpawningCondition());
         bugDTO.setPrice(bug.getPrice());
         bugDTO.setRarity(bug.getRarity());
         bugDTO.setAvailableInRain(bug.isAvailableInRain());
 
-        String mlistN = bug.getMonthListN();
+        String mlistN = "";
+        if(flag) {
+            mlistN = bug.getMonthListS();
+        }
+        else {
+            mlistN = bug.getMonthListN();
+        }
         List<String> listN = new ArrayList<>();
         for(String n : mlistN.split(", ")){
             listN.add(n);
         }
         bugDTO.setMonthListN(listN);
 
+        String hList = bug.getHourList();
+        List<Integer> hListInt = new ArrayList<>();
+        for(String s : hList.split(", ")){
+            List<Integer> helper = new ArrayList<>();
+            Matcher m = Pattern.compile("[0-9]{1,2}:").matcher(s);
+            while (m.find()){
+                helper.add(Integer.parseInt(m.group().substring(0, m.group().length() -1)));
+            }
+            int x = helper.get(0);
+            int y = helper.get(1);
+            for(int i = x; i < y; i ++){
+                hListInt.add(i);
+            }
+        }
+        bugDTO.setHourList(hListInt);
+
         return bugDTO;
+    }
+
+    public List<BugDTO> toDTOList(List<Bug> bugList, boolean flag){
+        List<BugDTO> DTOList = new ArrayList<>();
+        for(Bug bug : bugList){
+            DTOList.add(toDTO(bug, flag));
+        }
+        return DTOList;
     }
 
     public String editBug(BugDTO bug, int id, MultipartFile file){
@@ -174,7 +206,6 @@ public class BugManager{
         Bug bugToSave = bi.findById(id);
 
         bugToSave.setName(bug.getName());
-        bugToSave.setQuote(bug.getQuote());
         bugToSave.setSpawningCondition(bug.getSpawningCondition());
         bugToSave.setPrice(bug.getPrice());
         bugToSave.setRarity(bug.getRarity());

@@ -1,5 +1,6 @@
 package CritterPicker.Controller;
 
+import CritterPicker.Algorithm.AlgorithmManager;
 import CritterPicker.Critters.DTO.BugDTO;
 import CritterPicker.Critters.DTO.SeaCreatureDTO;
 import CritterPicker.Critters.Managers.BugManager;
@@ -38,6 +39,8 @@ public class WebController {
     AppUserManager aum;
     @Autowired
     StorageManager sm;
+    @Autowired
+    AlgorithmManager am;
 
     //////////////////////////////////////////////////////////   LOGIN
     @GetMapping("/login")
@@ -229,7 +232,11 @@ public class WebController {
 
     //////////////////////////////////////////////////////////   ALGORITHM
     @GetMapping("/algorithmInput")
-    public String algorithmInput(){
+    public String algorithmInput(Model model){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int id = ((AppUser)principal).getId();
+        AppUser user = aum.findById(id);
+        model.addAttribute("user", user);
         return "algorithmInput";
     }
 
@@ -329,7 +336,7 @@ public class WebController {
     //////////////////////////////////////////////////////////   EDITING CRITTERS
     @GetMapping("/admin/editFish")
     public String editFish(Model model, @RequestParam("id") int id){
-        model.addAttribute("fish", fm.toDTO(fm.findById(id)));
+        model.addAttribute("fish", fm.toDTO(fm.findById(id), false));
         model.addAttribute("id", id);
         return "editFish";
     }
@@ -337,21 +344,21 @@ public class WebController {
     @PostMapping("/admin/editFish")
     public String processEditFish(@Valid @ModelAttribute("fish") FishDTO fish, BindingResult result, @RequestParam("file") MultipartFile file, Model model, @RequestParam("id") int id){
         if(result.hasErrors()) {
-            model.addAttribute("fish", fm.toDTO(fm.findById(id)));
+            model.addAttribute("fish", fm.toDTO(fm.findById(id),false));
             model.addAttribute("id", id);
             return "editFish";
         }
         String oldFilename = fm.findById(id).getFilename();
         if(sm.checkFilename(file.getOriginalFilename()) && !(oldFilename.equals(file.getOriginalFilename()))){
             model.addAttribute("filenameTaken", true);
-            model.addAttribute("fish", fm.toDTO(fm.findById(id)));
+            model.addAttribute("fish", fm.toDTO(fm.findById(id),false));
             model.addAttribute("id", id);
             return "editFish";
         }
         String flag = fm.editFish(fish, id, file);
         if(flag.equals("exists")){
             model.addAttribute("nameTaken", true);
-            model.addAttribute("fish", fm.toDTO(fm.findById(id)));
+            model.addAttribute("fish", fm.toDTO(fm.findById(id),false));
             model.addAttribute("id", id);
             return "editFish";
         }
@@ -362,7 +369,7 @@ public class WebController {
 
     @GetMapping("/admin/editBug")
     public String editBug(Model model, @RequestParam("id") int id){
-        model.addAttribute("bug", bm.toDTO(bm.findById(id)));
+        model.addAttribute("bug", bm.toDTO(bm.findById(id), false));
         model.addAttribute("id", id);
         return "editBug";
     }
@@ -370,21 +377,21 @@ public class WebController {
     @PostMapping("/admin/editBug")
     public String processEditFish(@Valid @ModelAttribute("bug") BugDTO bug, BindingResult result, @RequestParam("file") MultipartFile file, Model model, @RequestParam("id") int id){
         if(result.hasErrors()) {
-            model.addAttribute("bug", bm.toDTO(bm.findById(id)));
+            model.addAttribute("bug", bm.toDTO(bm.findById(id), false));
             model.addAttribute("id", id);
             return "editBug";
         }
         String oldFilename = bm.findById(id).getFilename();
         if(sm.checkFilename(file.getOriginalFilename()) && !(oldFilename.equals(file.getOriginalFilename()))){
             model.addAttribute("filenameTaken", true);
-            model.addAttribute("bug", bm.toDTO(bm.findById(id)));
+            model.addAttribute("bug", bm.toDTO(bm.findById(id), false));
             model.addAttribute("id", id);
             return "editBug";
         }
         String flag = bm.editBug(bug, id, file);
         if(flag.equals("exists")){
             model.addAttribute("nameTaken", true);
-            model.addAttribute("bug", bm.toDTO(bm.findById(id)));
+            model.addAttribute("bug", bm.toDTO(bm.findById(id), false));
             model.addAttribute("id", id);
             return "editBug";
         }
@@ -395,7 +402,7 @@ public class WebController {
 
     @GetMapping("/admin/editSeaCreature")
     public String editSeaCreature(Model model, @RequestParam("id") int id){
-        model.addAttribute("seaCreature", scm.toDTO(scm.findById(id)));
+        model.addAttribute("seaCreature", scm.toDTO(scm.findById(id), false));
         model.addAttribute("id", id);
         return "editSeaCreature";
     }
@@ -403,21 +410,21 @@ public class WebController {
     @PostMapping("/admin/editSeaCreature")
     public String processEditSeaCreature(@Valid @ModelAttribute("seaCreature") SeaCreatureDTO seaCreature, BindingResult result, @RequestParam("file") MultipartFile file, Model model, @RequestParam("id") int id){
         if(result.hasErrors()) {
-            model.addAttribute("seaCreature", scm.toDTO(scm.findById(id)));
+            model.addAttribute("seaCreature", scm.toDTO(scm.findById(id), false));
             model.addAttribute("id", id);
             return "editSeaCreature";
         }
         String oldFilename = scm.findById(id).getFilename();
         if(sm.checkFilename(file.getOriginalFilename()) && !(oldFilename.equals(file.getOriginalFilename()))){
             model.addAttribute("filenameTaken", true);
-            model.addAttribute("seaCreature", scm.toDTO(scm.findById(id)));
+            model.addAttribute("seaCreature", scm.toDTO(scm.findById(id),false));
             model.addAttribute("id", id);
             return "editSeaCreature";
         }
         String flag = scm.editSeaCreature(seaCreature, id, file);
         if(flag.equals("exists")){
             model.addAttribute("nameTaken", true);
-            model.addAttribute("seaCreature", scm.toDTO(scm.findById(id)));
+            model.addAttribute("seaCreature", scm.toDTO(scm.findById(id),false));
             model.addAttribute("id", id);
             return "editSeaCreature";
         }

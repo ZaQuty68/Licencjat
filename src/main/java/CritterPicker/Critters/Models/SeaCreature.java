@@ -26,9 +26,6 @@ public class SeaCreature {
     @Column(length = 50)
     private String name;
 
-    @Column(length = 500)
-    private String quote;
-
     private int price;
 
     @Enumerated(EnumType.STRING)

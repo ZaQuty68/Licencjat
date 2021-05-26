@@ -2,25 +2,51 @@
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Home Page</title>
+    <title>Algorithm</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
-<ul>
+<ul th:if="${user.role == T(CritterPicker.Enums.UserRole).USER}">
     <li>
         <a th:href="@{/logout}" class="logout">Logout</a>
     </li>
     <li>
-        <a class="active" th:href="@{/homePage}">Home</a>
+        <a th:href="@{/homePage}">Home</a>
     </li>
     <li>
-        <a th:href="@{/algorithmInput}">Algorithm</a>
+        <a class="active" th:href="@{/algorithmInput}">Algorithm</a>
     </li>
     <li>
         <a th:href="@{/userList}">Personal list</a>
     </li>
     <li>
         <a th:href="@{/allList}">Table of critters</a>
+    </li>
+</ul>
+<ul th:if="${user.role == T(CritterPicker.Enums.UserRole).ADMIN}">
+    <li>
+        <a th:href="@{/logout}" class="logout">Logout</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/homePage}">Home</a>
+    </li>
+    <li>
+        <a class="active" th:href="@{/algorithmInput}">Algorithm</a>
+    </li>
+    <li>
+        <a th:href="@{/userList}">Personal list</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/allList}">Table of critters</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/newSeaCreature}">Add new sea creature</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/newBug}">Add new bug</a>
+    </li>
+    <li>
+        <a th:href="@{/admin/newFish}">Add new fish</a>
     </li>
 </ul>
 

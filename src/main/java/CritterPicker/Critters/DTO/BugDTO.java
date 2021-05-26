@@ -22,10 +22,6 @@ public class BugDTO {
     private String name;
 
     @NotNull(message = "This field is required")
-    @Size(min = 10, max = 500, message = "Quote should be between 10 to 500 characters long")
-    private String quote;
-
-    @NotNull(message = "This field is required")
     @Size(min = 3, max = 500, message = "Bug spawning condition should be between 3 and 500 characters long")
     private String spawningCondition;
 

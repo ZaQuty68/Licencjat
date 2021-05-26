@@ -1,7 +1,9 @@
 package CritterPicker.Critters.Managers;
 
+import CritterPicker.Critters.DTO.FishDTO;
 import CritterPicker.Critters.DTO.SeaCreatureDTO;
 import CritterPicker.Critters.Interfaces.SeaCreatureInterface;
+import CritterPicker.Critters.Models.Fish;
 import CritterPicker.Critters.Models.SeaCreature;
 import CritterPicker.Enums.Months;
 import CritterPicker.User.AppUser;
@@ -12,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @AllArgsConstructor
@@ -42,7 +46,6 @@ public class SeaCreatureManager{
 
         seaCreatureToSave.setId(id);
         seaCreatureToSave.setName(seaCreature.getName());
-        seaCreatureToSave.setQuote(seaCreature.getQuote());
         seaCreatureToSave.setPrice(seaCreature.getPrice());
         seaCreatureToSave.setRarity(seaCreature.getRarity());
         seaCreatureToSave.setShadowSize(seaCreature.getShadowSize());
@@ -146,23 +149,52 @@ public class SeaCreatureManager{
         return listToReturn;
     }
 
-    public SeaCreatureDTO toDTO(SeaCreature seaCreature){
+    public SeaCreatureDTO toDTO(SeaCreature seaCreature, boolean flag){
         SeaCreatureDTO seaCreatureDTO = new SeaCreatureDTO();
 
         seaCreatureDTO.setName(seaCreature.getName());
-        seaCreatureDTO.setQuote(seaCreature.getQuote());
         seaCreatureDTO.setPrice(seaCreature.getPrice());
         seaCreatureDTO.setRarity(seaCreature.getRarity());
         seaCreatureDTO.setShadowSize(seaCreature.getShadowSize());
 
-        String mlistN = seaCreature.getMonthListN();
+        String mlistN = "";
+        if(flag) {
+            mlistN = seaCreature.getMonthListS();
+        }
+        else{
+            mlistN = seaCreature.getMonthListN();
+        }
         List<String> listN = new ArrayList<>();
         for(String n : mlistN.split(", ")){
             listN.add(n);
         }
         seaCreatureDTO.setMonthListN(listN);
 
+        String hList = seaCreature.getHourList();
+        List<Integer> hListInt = new ArrayList<>();
+        for(String s : hList.split(", ")){
+            List<Integer> helper = new ArrayList<>();
+            Matcher m = Pattern.compile("[0-9]{1,2}:").matcher(s);
+            while (m.find()){
+                helper.add(Integer.parseInt(m.group().substring(0, m.group().length() -1)));
+            }
+            int x = helper.get(0);
+            int y = helper.get(1);
+            for(int i = x; i < y; i ++){
+                hListInt.add(i);
+            }
+        }
+        seaCreatureDTO.setHourList(hListInt);
+
         return seaCreatureDTO;
+    }
+
+    public List<SeaCreatureDTO> toDTOList(List<SeaCreature> seaCreatureList, boolean flag){
+        List<SeaCreatureDTO> DTOList = new ArrayList<>();
+        for(SeaCreature seaCreature : seaCreatureList){
+            DTOList.add(toDTO(seaCreature, flag));
+        }
+        return DTOList;
     }
 
     public String editSeaCreature(SeaCreatureDTO seaCreature, int id, MultipartFile file){
@@ -174,7 +206,6 @@ public class SeaCreatureManager{
         SeaCreature seaCreatureToSave = sci.findById(id);
 
         seaCreatureToSave.setName(seaCreature.getName());
-        seaCreatureToSave.setQuote(seaCreature.getQuote());
         seaCreatureToSave.setPrice(seaCreature.getPrice());
         seaCreatureToSave.setRarity(seaCreature.getRarity());
         seaCreatureToSave.setShadowSize(seaCreature.getShadowSize());

@@ -11,6 +11,9 @@
         <a th:href="@{/logout}" class="logout">Logout</a>
     </li>
     <li>
+        <a th:href="@{/admin/homePage}">Home</a>
+    </li>
+    <li>
         <a th:href="@{/algorithmInput}">Algorithm</a>
     </li>
     <li>
@@ -28,9 +31,6 @@
     <li>
         <a th:href="@{/admin/newFish}">Add new fish</a>
     </li>
-    <li>
-        <a th:href="@{/admin/homePage}">Home</a>
-    </li>
 </ul>
 
 <div class="main">
@@ -40,7 +40,6 @@
             <tr>
                 <th>Image</th>
                 <th>Name</th>
-                <th>Quote</th>
                 <th>Price</th>
                 <th>Rarity</th>
                 <th>Shadow size</th>
@@ -50,7 +49,6 @@
             <tr>
                 <td><img th:src="@{${'/upload-dir/' + seaCreature.filename}}" class="tableIMG"/></td>
                 <td th:text="${seaCreature.name}"/>
-                <td th:text="${seaCreature.quote}"/>
                 <td th:text="${seaCreature.price}"/>
                 <td th:text="${seaCreature.rarity == T(CritterPicker.Enums.Rarity).FairlyCommon} ? 'Fairly Common' : ${seaCreature.rarity}"/>
                 <td th:text="${seaCreature.shadowSize == T(CritterPicker.Enums.ShadowSize).VeryLarge} ? 'Very Large' : ${seaCreature.shadowSize}"/>

@@ -17,10 +17,6 @@ public class FishDTO {
     @Size(min = 3, max = 50, message = "Fish name should be between 3 to 50 characters long")
     private String name;
 
-    @NotNull(message = "This field is required")
-    @Size(min = 10, max = 500, message = "Quote should be between 10 to 500 characters long")
-    private String quote;
-
     private LocationFish location;
 
     private boolean onlyInRain;

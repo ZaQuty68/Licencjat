@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @AllArgsConstructor
@@ -43,7 +45,6 @@ public class FishManager{
 
         fishToSave.setId(id);
         fishToSave.setName(fish.getName());
-        fishToSave.setQuote(fish.getQuote());
         fishToSave.setLocation(fish.getLocation());
         fishToSave.setOnlyInRain(fish.isOnlyInRain());
         fishToSave.setPrice(fish.getPrice());
@@ -149,25 +150,55 @@ public class FishManager{
         return listToReturn;
     }
 
-    public FishDTO toDTO(Fish fish){
+    public FishDTO toDTO(Fish fish, boolean flag){
         FishDTO fishDTO = new FishDTO();
 
         fishDTO.setName(fish.getName());
-        fishDTO.setQuote(fish.getQuote());
         fishDTO.setLocation(fish.getLocation());
         fishDTO.setOnlyInRain(fish.isOnlyInRain());
         fishDTO.setPrice(fish.getPrice());
         fishDTO.setRarity(fish.getRarity());
         fishDTO.setShadowSize(fish.getShadowSize());
 
-        String mlistN = fish.getMonthListN();
+        String mlistN = "";
+        if(flag){
+            mlistN = fish.getMonthListS();
+        }
+        else{
+            mlistN = fish.getMonthListN();
+        }
         List<String> listN = new ArrayList<>();
         for(String n : mlistN.split(", ")){
             listN.add(n);
         }
         fishDTO.setMonthListN(listN);
 
+        String hList = fish.getHourList();
+        List<Integer> hListInt = new ArrayList<>();
+        for(String s : hList.split(", ")){
+            List<Integer> helper = new ArrayList<>();
+            Matcher m = Pattern.compile("[0-9]{1,2}:").matcher(s);
+            while (m.find()){
+                helper.add(Integer.parseInt(m.group().substring(0, m.group().length() -1)));
+            }
+            int x = helper.get(0);
+            int y = helper.get(1);
+            for(int i = x; i < y; i ++){
+                hListInt.add(i);
+            }
+        }
+        fishDTO.setHourList(hListInt);
+
+
         return fishDTO;
+    }
+
+    public List<FishDTO> toDTOList(List<Fish> fishList, boolean flag){
+        List<FishDTO> DTOList = new ArrayList<>();
+        for(Fish fish : fishList){
+            DTOList.add(toDTO(fish, flag));
+        }
+        return DTOList;
     }
 
     public String editFish(FishDTO fish, int id, MultipartFile file){
@@ -179,7 +210,6 @@ public class FishManager{
         Fish fishToSave = fi.findById(id);
 
         fishToSave.setName(fish.getName());
-        fishToSave.setQuote(fish.getQuote());
         fishToSave.setLocation(fish.getLocation());
         fishToSave.setOnlyInRain(fish.isOnlyInRain());
         fishToSave.setPrice(fish.getPrice());

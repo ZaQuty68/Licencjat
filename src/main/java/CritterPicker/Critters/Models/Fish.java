@@ -27,9 +27,6 @@ public class Fish {
     @Column(length = 50)
     private String name;
 
-    @Column(length = 500)
-    private String quote;
-
     @Enumerated(EnumType.STRING)
     private LocationFish location;
 

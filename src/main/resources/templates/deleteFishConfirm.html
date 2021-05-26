@@ -11,6 +11,9 @@
         <a th:href="@{/logout}" class="logout">Logout</a>
     </li>
     <li>
+        <a th:href="@{/admin/homePage}">Home</a>
+    </li>
+    <li>
         <a th:href="@{/algorithmInput}">Algorithm</a>
     </li>
     <li>
@@ -28,9 +31,6 @@
     <li>
         <a th:href="@{/admin/newFish}">Add new fish</a>
     </li>
-    <li>
-        <a th:href="@{/admin/homePage}">Home</a>
-    </li>
 </ul>
 
 <div class="main">
@@ -40,7 +40,6 @@
             <tr>
                 <th>Image</th>
                 <th>Name</th>
-                <th>Quote</th>
                 <th>Location</th>
                 <th>Price</th>
                 <th>Rarity</th>
@@ -52,7 +51,6 @@
             <tr>
                 <td><img th:src="@{${'/upload-dir/' + fish.filename}}" class="tableIMG"/></td>
                 <td th:text="${fish.name}"/>
-                <td th:text="${fish.quote}"/>
                 <td th:text="${fish.onlyInRain} ? |${fish.location} (Raining)| : ${fish.location}"/>
                 <td th:text="${fish.price}"/>
                 <td th:text="${fish.rarity == T(CritterPicker.Enums.Rarity).FairlyCommon} ? 'Fairly Common' : ${fish.rarity}"/>
