@@ -39,9 +39,11 @@ public class StorageManager {
             throw new StorageException("Failed to store file!", e);
         }
     }
-
+/*
     public Path load(String filename) { return rootLocation.resolve(filename); }
 
+
+ */
     public boolean checkFilename(String filename){
         File file = new File(rootLocation + "/" + filename);
         if(file.exists()){
@@ -49,7 +51,7 @@ public class StorageManager {
         }
         return false;
     }
-
+/*
     public Resource loadAsResource(String filename){
         try {
             Path file = load(filename);
@@ -65,6 +67,8 @@ public class StorageManager {
         }
     }
 
+
+ */
     public void deleteFile(String filename){
         File file = new File(rootLocation + "/" + filename);
         file.delete();
