@@ -1,0 +1,589 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 13.1
+-- Dumped by pg_dump version 13.1
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: app_user; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.app_user (
+    id integer NOT NULL,
+    email character varying(256),
+    enabled boolean,
+    hemisphere character varying(255),
+    password character varying(256),
+    role character varying(255),
+    username character varying(256)
+);
+
+
+ALTER TABLE public.app_user OWNER TO postgres;
+
+--
+-- Name: bug; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.bug (
+    id integer NOT NULL,
+    available_in_rain boolean NOT NULL,
+    filename character varying(255),
+    hour_list character varying(255),
+    month_listn character varying(255),
+    month_lists character varying(255),
+    name character varying(50),
+    price integer NOT NULL,
+    rarity character varying(255),
+    spawning_condition character varying(500)
+);
+
+
+ALTER TABLE public.bug OWNER TO postgres;
+
+--
+-- Name: fish; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.fish (
+    id integer NOT NULL,
+    filename character varying(255),
+    hour_list character varying(255),
+    location character varying(255),
+    month_listn character varying(255),
+    month_lists character varying(255),
+    name character varying(50),
+    only_in_rain boolean NOT NULL,
+    price integer NOT NULL,
+    rarity character varying(255),
+    shadow_size character varying(255)
+);
+
+
+ALTER TABLE public.fish OWNER TO postgres;
+
+--
+-- Name: sea_creature; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.sea_creature (
+    id integer NOT NULL,
+    filename character varying(255),
+    hour_list character varying(255),
+    month_listn character varying(255),
+    month_lists character varying(255),
+    name character varying(50),
+    price integer NOT NULL,
+    rarity character varying(255),
+    shadow_size character varying(255)
+);
+
+
+ALTER TABLE public.sea_creature OWNER TO postgres;
+
+--
+-- Name: token; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.token (
+    id integer NOT NULL,
+    confirmed_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    expires_at timestamp without time zone NOT NULL,
+    token character varying(255) NOT NULL,
+    app_user_id integer NOT NULL
+);
+
+
+ALTER TABLE public.token OWNER TO postgres;
+
+--
+-- Name: user_bug; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.user_bug (
+    app_user_id integer NOT NULL,
+    bug_id integer NOT NULL
+);
+
+
+ALTER TABLE public.user_bug OWNER TO postgres;
+
+--
+-- Name: user_fish; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.user_fish (
+    app_user_id integer NOT NULL,
+    fish_id integer NOT NULL
+);
+
+
+ALTER TABLE public.user_fish OWNER TO postgres;
+
+--
+-- Name: user_sea_creature; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.user_sea_creature (
+    app_user_id integer NOT NULL,
+    sea_creature_id integer NOT NULL
+);
+
+
+ALTER TABLE public.user_sea_creature OWNER TO postgres;
+
+--
+-- Data for Name: app_user; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.app_user (id, email, enabled, hemisphere, password, role, username) FROM stdin;
+1	zaquty68@gmail.com	t	NORTH	$2a$10$3Nz2ehkuzWsejeG6nThQMuliQ6ANsqggc8NrE1TfFdy4/gmpEKLgi	ADMIN	ZaQuty68
+2	user1@user.com	t	NORTH	$2a$10$KUwSFmYF0/M9JbO787a3UOY7xdDjfXAEd2WAKoz//aUwIUveYMZ22	USER	user1
+3	user2@user.com	t	SOUTH	$2a$10$0oE6iCHwboKZQ.HJL6ZAgekMkJ1hTwIdJuW/1Fzn3JVLfTDJtolt6	USER	user2
+\.
+
+
+--
+-- Data for Name: bug; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.bug (id, available_in_rain, filename, hour_list, month_listn, month_lists, name, price, rarity, spawning_condition) FROM stdin;
+34	f	NH-Icon-bandeddragonfly.png	8:00 - 17:00	May, June, July, August, September, October	January, February, March, April, November, December	Banded dragonfly	4500	Scarce	Flying in the air
+1	f	NH-Icon-commonbutterfly.png	4:00 - 19:00	January, February, March, April, May, June, September, October, November, December	March, April, May, June, July, August, September, October, November, December	Common butterfly	160	Common	Flying in the air
+2	f	NH-Icon-yellowbutterfly.png	4:00 - 19:00	March, April, May, June, September, October	March, April, September, October, November, December	Yellow butterfly	160	Common	Flying in the air
+3	f	NH-Icon-tigerbutterfly.png	4:00 - 19:00	March, April, May, June, July, August, September	January, February, March, September, October, November, December	Tiger butterfly	240	Uncommon	Flying in the air
+4	f	NH-Icon-peacockbutterfly.png	4:00 - 19:00	March, April, May, June	September, October, November, December	Peacock butterfly	2500	Uncommon	Flying by Hybrid Flowers
+5	f	NH-Icon-commonbluebottle.png	4:00 - 19:00	April, May, June, July, August	January, February, October, November, December	Common bluebottle	300	Common	Flying in the air
+6	f	NH-Icon-paperkitebutterfly.png	8:00 - 19:00	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Paper kite butterfly	1000	FairlyCommon	Flying in the air
+7	f	NH-Icon-greatpurpleemperor.png	4:00 - 19:00	May, June, July, August	January, February, November, December	Great purple emperor	3000	Scarce	Flying in the air
+8	f	NH-Icon-monarchbutterfly.png	4:00 - 17:00	September, October, November	March, April, May	Monarch butterfly	140	FairlyCommon	Flying in the air
+9	f	NH-Icon-emperorbutterfly.png	0:00 - 8:00, 17:00 - 24:00	January, February, March, June, July, August, September, December	January, February, March, June, July, August, September, December	Emperor butterfly	4000	Scarce	Flying in the air
+10	f	NH-Icon-agriasbutterfly.png	8:00 - 17:00	April, May, June, July, August, September	January, February, March, October, November, December	Agrias butterfly	3000	Scarce	Flying in the air
+11	f	NH-Icon-rajahbrookesbirdwing.png	8:00 - 17:00	January, February, April, May, June, July, August, September, December	January, February, March, June, July, August, October, November, December	Rajah Brooke's birdwing	2500	Scarce	Flying in the air
+12	f	NH-Icon-queenalexandrasbirdwing.png	8:00 - 16:00	May, June, July, August, September	January, February, March, November, December	Queen Alexandra's birdwing	4000	Uncommon	Flying in the air
+13	f	NH-Icon-moth.png	0:00 - 4:00, 19:00 - 24:00	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Moth	130	Common	Flying by Light
+14	t	NH-Icon-atlasmoth.png	0:00 - 4:00, 19:00 - 24:00	April, May, June, July, August, September	January, February, March, October, November, December	Atlas moth	3000	Rare	On Trees
+15	f	NH-Icon-madagascansunsetmoth.png	8:00 - 16:00	April, May, June, July, August, September	January, February, March, October, November, December	Madagascan sunset moth	2500	FairlyCommon	Flying in the air
+16	t	NH-Icon-longlocust.png	8:00 - 19:00	April, May, June, July, August, September, October, November	January, February, March, April, May, October, November, December	Long locust	200	FairlyCommon	On the Ground
+17	f	NH-Icon-migratorylocust.png	8:00 - 19:00	August, September, October, November	February, March, April, May	Migratory locust	600	Uncommon	On the Ground
+18	t	NH-Icon-ricegrasshopper.png	8:00 - 19:00	August, September, October, November	February, March, April, May	Rice grasshopper	160	Uncommon	On the Ground
+19	f	NH-Icon-grasshopper.png	8:00 - 17:00	July, August, September	January, February, March	Grasshopper	160	FairlyCommon	On the Ground
+20	f	NH-Icon-cricket.png	0:00 - 8:00, 17:00 - 24:00	September, October, November	March, April, May	Cricket	130	Common	On the Ground
+21	f	NH-Icon-bellcricket.png	0:00 - 8:00, 17:00 - 24:00	September, October	March, April	Bell cricket	430	Uncommon	On the Ground
+22	f	NH-Icon-mantis.png	8:00 - 17:00	March, April, May, June, July, August, September, October, November	January, February, March, April, May, September, October, November, December	Mantis	430	Uncommon	On Flowers
+23	f	NH-Icon-orchidmantis.png	8:00 - 17:00	March, April, May, June, July, August, September, October, November	January, February, March, April, May, September, October, November, December	Orchid mantis	2400	Scarce	On White Flowers
+24	f	NH-Icon-honeybee.png	8:00 - 17:00	March, April, May, June, July	January, September, October, November, December	Honeybee	200	Common	Flying in the air
+25	t	NH-Icon-wasp.png	0:00 - 24:00	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Wasp	2500	FairlyCommon	Shaking Trees
+26	t	NH-Icon-browncicada.png	8:00 - 17:00	July, August	January, February	Brown cicada	250	Common	On Trees
+27	t	NH-Icon-robustcicada.png	8:00 - 17:00	July, August	January, February	Robust cicada	300	FairlyCommon	On Trees
+28	t	NH-Icon-giantcicada.png	8:00 - 17:00	July, August	January, February	Giant cicada	500	Uncommon	On Trees
+29	t	NH-Icon-walkercicada.png	8:00 - 17:00	August, September	February, March	Walker cicada	400	Scarce	On Trees
+30	t	NH-Icon-eveningcicada.png	4:00 - 8:00, 16:00 - 19:00	July, August	January, February	Evening cicada	550	FairlyCommon	On Trees
+31	t	NH-Icon-cicadashell.png	0:00 - 24:00	July, August	January, February	Cicada shell	10	Uncommon	On Trees
+32	f	NH-Icon-reddragonfly.png	8:00 - 19:00	September, October	March, April	Red dragonfly	180	Common	Flying in the air
+33	f	NH-Icon-darnerdragonfly.png	8:00 - 17:00	April, May, June, July, August, September, October	January, February, March, April, October, November, December	Darner dragonfly	230	FairlyCommon	Flying in the air
+35	f	NH-Icon-damselfly.png	0:00 - 24:00	January, February, November, December	May, June, July, August	Demselfly	500	Common	Flying in the air
+36	f	NH-Icon-firefly.png	0:00 - 4:00, 19:00 - 24:00	June	December	Firefly	300	Common	Flying in the air
+37	t	NH-Icon-molecricket.png	0:00 - 24:00	January, February, March, April, May, November, December	May, June, July, August, September, October, November	Mole cricket	500	FairlyCommon	Underground
+38	t	NH-Icon-pondskater.png	8:00 - 19:00	May, June, July, August, September	January, February, March, November, December	Pondskater	130	Uncommon	On Ponds and Rivers
+39	t	NH-Icon-divingbeetle.png	8:00 - 19:00	May, June, July, August, September	January, February, March, November, December	Diving beetle	800	Uncommon	On Ponds and Rivers
+40	t	NH-Icon-giantwaterbug.png	0:00 - 8:00, 19:00 - 24:00	April, May, June, July, August, September	January, February, March, October, November, December	Giant water bug	2000	Uncommon	On Ponds and Rivers
+41	t	NH-Icon-stinkbug.png	0:00 - 24:00	March, April, May, June, July, August, September, October	January, February, March, April, September, October, November, December	Stinkbug	120	Uncommon	On Flowers
+42	t	NH-Icon-manfacedstinkbug.png	0:00 - 8:00, 19:00 - 24:00	March, April, May, June, July, August, September, October	January, February, March, April, September, October, November, December	Man-faced stink bug	1000	FairlyCommon	On Flowers
+43	t	NH-Icon-ladybug.png	8:00 - 17:00	March, April, May, June, October	April, September, October, November, December	Ladybug	200	Common	On Flowers
+44	t	NH-Icon-tigerbeetle.png	0:00 - 24:00	February, March, April, May, June, July, August, September, October	January, February, March, April, August, September, October, November, December	Tiger beetle	1500	Uncommon	On the Ground
+45	t	NH-Icon-jewelbeetle.png	0:00 - 24:00	April, May, June, July, August	January, February, October, November, December	Jewel beetle	2400	Scarce	On Tree Stumps
+46	t	NH-Icon-violinbeetle.png	0:00 - 24:00	May, June, September, October, November	March, April, May, November, December	Violin beetle	450	Uncommon	On Tree Stumps
+47	f	NH-Icon-citruslonghornedbeetle.png	0:00 - 24:00	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Citrus long-horned beetle	350	FairlyCommon	On Tree Stumps
+48	f	NH-Icon-rosaliabatesibeetle.png	0:00 - 24:00	May, June, July, August, September	January, February, March, November, December	Rosalia batesi beetle	3000	Uncommon	On Tree Stumps
+49	t	NH-Icon-blueweevilbeetle.png	0:00 - 24:00	July, August	January, February	Blue weevil beetle	800	Uncommon	On Coconut Trees
+50	t	NH-Icon-dungbeetle.png	0:00 - 24:00	January, February, December	June, July, August	Dung beetle	3000	Uncommon	On The Ground rolling snowballs
+51	t	NH-Icon-earthboringdungbeetle.png	0:00 - 24:00	July, August, September	January, February, March	Earth-boring dung beetle	300	FairlyCommon	On the Ground
+52	t	NH-Icon-scarabbeetle.png	0:00 - 8:00, 23:00 - 24:00	July, August	January, February	Scarab beetle	10000	Scarce	On Trees
+53	t	NH-Icon-dronebeetle.png	0:00 - 24:00	June, July, August	January, February, December	Drone beetle	200	Common	On Trees
+54	t	NH-Icon-goliathbeetle.png	0:00 - 8:00, 17:00 - 24:00	June, July, August, September	January, February, March, December	Goliath beetle	8000	Scarce	On Coconut Trees
+55	t	NH-Icon-sawstag.png	0:00 - 24:00	July, August	January, February	Saw stag	2000	Uncommon	On Trees
+56	t	NH-Icon-miyamastag.png	0:00 - 24:00	July, August	January, February	Miyama stag	1000	Common	On Trees
+57	t	NH-Icon-giantstag.png	0:00 - 8:00, 23:00 - 24:00	July, August	January, February	Giant stag	10000	Scarce	On Trees
+58	t	NH-Icon-rainbowstag.png	0:00 - 8:00, 19:00 - 24:00	June, July, August, September	January, February, March, December	Rainbow stag	6000	Scarce	On Trees
+59	t	NH-Icon-cyclommatusstag.png	0:00 - 8:00, 17:00 - 24:00	July, August	January, February	Cyclommatus stag	8000	Uncommon	On Coconut Trees
+60	t	NH-Icon-goldenstag.png	0:00 - 8:00, 17:00 - 24:00	July, August	January, February	Golden stag	12000	Rare	On Coconut Trees
+61	t	NH-Icon-giraffestag.png	0:00 - 8:00, 17:00 - 24:00	July, August	January, February	Giraffe stag	12000	Rare	On Coconut Trees
+62	t	NH-Icon-horneddynastid.png	0:00 - 8:00, 17:00 - 24:00	July, August	January, February	Horned dynastid	1350	FairlyCommon	On Trees
+63	t	NH-Icon-hornedatlas.png	0:00 - 8:00, 17:00 - 24:00	July, August	January, February	Horned atlas	8000	Scarce	On Coconut Trees
+64	t	NH-Icon-hornedelephant.png	0:00 - 8:00, 17:00 - 24:00	July, August	January, February	Horned elephant	8000	Scarce	On Coconut Trees
+65	t	NH-Icon-hornedhercules.png	0:00 - 8:00, 17:00 - 24:00	July, August	January, February	Horned hercules	12000	Rare	On Coconut Trees
+66	t	NH-Icon-walkingstick.png	4:00 - 8:00, 17:00 - 19:00	July, August, September, October, November	January, February, March, April, May	Walking stick	600	Uncommon	On Trees
+67	t	NH-Icon-walkingleaf.png	0:00 - 24:00	July, August, September	January, February, March	Walking leaf	600	Scarce	Under Trees Disguised as Leaves
+68	f	NH-Icon-bagworm.png	0:00 - 24:00	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Bagworm	600	Uncommon	Shaking Trees
+69	f	NH-Icon-ant.png	0:00 - 24:00	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Ant	80	Common	On rotten food
+70	t	NH-Icon-hermitcrab.png	0:00 - 8:00, 19:00 - 24:00	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Hermit crab	1000	Scarce	On Beach Disguised as Shells
+71	t	NH-Icon-wharfroach.png	0:00 - 24:00	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Wharf roach	200	Uncommon	On Beach Rocks
+72	f	NH-Icon-fly.png	0:00 - 24:00	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Fly	60	Common	On Trash Items
+73	f	NH-Icon-mosquito.png	0:00 - 4:00, 17:00 - 24:00	June, July, August, September	January, February, March, December	Mosquito	130	FairlyCommon	Flying in the air
+74	t	NH-Icon-flea.png	0:00 - 24:00	April, May, June, July, August, September, October, November	January, February, March, April, May, October, November, December	Flea	70	Scarce	On Villager's Heads
+75	t	NH-Icon-snail.png	0:00 - 24:00	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Snail	250	Scarce	On Rocks and Bushes During Rain
+76	t	NH-Icon-pillbug.png	0:00 - 16:00, 23:00 - 24:00	January, February, March, April, May, June, September, October, November, December	March, April, May, June, July, August, September, October, November, December	Pill bug	250	Uncommon	Hitting Rocks
+77	t	NH-Icon-centipede.png	16:00 - 23:00	January, February, March, April, May, June, September, October, November, December	March, April, May, June, July, August, September, October, November, December	Centipede	300	Scarce	Hitting Rocks
+78	t	NH-Icon-spider.png	0:00 - 8:00, 19:00 - 24:00	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Spider	600	Uncommon	Shaking Trees
+79	t	NH-Icon-tarantula.png	0:00 - 4:00, 19:00 - 24:00	January, February, March, April, November, December	May, June, July, August, September, October	Tarantula	8000	Rare	On the Ground
+80	t	NH-Icon-scorpion.png	0:00 - 4:00, 19:00 - 24:00	May, June, July, August, September, October	January, February, March, April, November, December	Scorpion	8000	Rare	On the Ground
+\.
+
+
+--
+-- Data for Name: fish; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.fish (id, filename, hour_list, location, month_listn, month_lists, name, only_in_rain, price, rarity, shadow_size) FROM stdin;
+28	NH-Icon-char.png	0:00 - 9:00, 16:00 - 24:00	Clifftop	March, April, May, June, September, October, November	March, April, May, September, October, November, December	Char	f	3800	Uncommon	Medium
+29	NH-Icon-goldentrout.png	0:00 - 9:00, 16:00 - 24:00	Clifftop	March, April, May, September, October, November	March, April, May, September, October, November	Golden trout	f	15000	Rare	Medium
+1	NH-Icon-bitterling.png	0:00 - 24:00	River	January, February, March, November, December	May, June, July, August, September	Bitterling	f	900	Common	Tiny
+2	NH-Icon-palechub.png	9:00 - 16:00	River	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Pale chub	f	200	Uncommon	Tiny
+3	NH-Icon-cruciancarp.png	0:00 - 24:00	River	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Crucian carp	f	160	FairlyCommon	Small
+4	NH-Icon-dace.png	0:00 - 9:00, 16:00 - 24:00	River	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Dace	f	240	FairlyCommon	Medium
+5	NH-Icon-carp.png	0:00 - 24:00	Pond	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Carp	f	300	FairlyCommon	Large
+6	NH-Icon-koi.png	0:00 - 9:00, 16:00 - 24:00	Pond	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Koi	f	4000	Scarce	Large
+7	NH-Icon-goldfish.png	0:00 - 24:00	Pond	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Goldfish	f	1300	Scarce	Tiny
+8	NH-Icon-popeyedgoldfish.png	9:00 - 16:00	Pond	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Pop-eyed goldfish	f	1300	Scarce	Tiny
+9	NH-Icon-ranchugoldfish.png	9:00 - 16:00	Pond	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Ranchu goldfish	f	4500	Rare	Small
+10	NH-Icon-killifish.png	0:00 - 24:00	Pond	April, May, June, July, August	January, February, October, November, December	Killifish	f	300	Uncommon	Tiny
+11	NH-Icon-crawfish.png	0:00 - 24:00	Pond	April, May, June, July, August, September	January, February, March, October, November, December	Crawfish	f	200	Common	Small
+12	NH-Icon-softshelledturtle.png	0:00 - 9:00, 16:00 - 24:00	River	August, September	February, March	Soft-shelled turtle	f	3750	Scarce	Large
+13	NH-Icon-snappingturtle.png	0:00 - 4:00, 21:00 - 24:00	River	April, May, June, July, August, September, October	January, February, March, April, October, November, December	Snapping turtle	f	5000	Uncommon	Large
+14	NH-Icon-tadpole.png	0:00 - 24:00	Pond	March, April, May, June, July	January, September, October, November, December	Tadpole	f	100	Common	Tiny
+15	NH-Icon-frog.png	0:00 - 24:00	Pond	May, June, July, August	January, February, November, December	Frog	f	120	Common	Small
+16	NH-Icon-freshwatergoby.png	0:00 - 9:00, 16:00 - 24:00	River	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Freshwater goby	f	400	Uncommon	Small
+17	NH-Icon-loach.png	0:00 - 24:00	River	March, April, May	September, October, November	Loach	f	400	Common	Small
+18	NH-Icon-catfish.png	0:00 - 9:00, 16:00 - 24:00	Pond	May, June, July, August, September, October	January, February, March, April, November, December	Catfish	f	800	FairlyCommon	Large
+19	NH-Icon-giantsnakehead.png	9:00 - 16:00	Pond	June, July, August	January, February, December	Giant snakehead	f	5500	Uncommon	Large
+20	NH-Icon-bluegill.png	8:00 - 16:00	River	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Bluegil	f	180	Uncommon	Small
+21	NH-Icon-yellowperch.png	0:00 - 24:00	River	January, February, March, October, November, December	April, May, June, July, August, September	Yellow perch	f	300	FairlyCommon	Medium
+22	NH-Icon-blackbass.png	0:00 - 24:00	River	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Black bass	f	400	Common	Large
+23	NH-Icon-tilapia.png	0:00 - 24:00	River	June, July, August, September, October	January, February, March, April, December	Tilapia	f	800	FairlyCommon	Medium
+24	NH-Icon-pike.png	0:00 - 24:00	River	September, October, November, December	March, April, May, June	Pike	f	1800	Uncommon	VeryLarge
+25	NH-Icon-pondsmelt.png	0:00 - 24:00	River	January, February, December	June, July, August	Pond smelt	f	500	Common	Small
+26	NH-Icon-sweetfish.png	0:00 - 24:00	River	July, August, September	January, February, March	Sweetfish	f	900	FairlyCommon	Medium
+27	NH-Icon-cherrysalmon.png	0:00 - 9:00, 16:00 - 24:00	Clifftop	March, April, May, June, September, October, November	March, April, May, September, October, November, December	Cherry salmon	f	1000	Uncommon	Medium
+30	NH-Icon-stringfish.png	0:00 - 9:00, 16:00 - 24:00	Clifftop	January, February, March, December	June, July, August, September	Stringfish	f	15000	Rare	VeryLarge
+31	NH-Icon-salmon.png	0:00 - 24:00	Mouth	September	March	Salmon	f	700	Common	Large
+32	NH-Icon-kingsalmon.png	0:00 - 24:00	Mouth	September	March	King salmon	f	1800	Scarce	VeryLarge
+33	NH-Icon-mittencrab.png	0:00 - 9:00, 16:00 - 24:00	River	September, October, November	March, April, May	Mitten crab	f	2000	Scarce	Small
+34	NH-Icon-guppy.png	9:00 - 16:00	River	April, May, June, July, August, September, October, November	January, February, March, April, May, October, November, December	Guppy	f	1300	Scarce	Tiny
+35	NH-Icon-nibblefish.png	9:00 - 16:00	River	May, June, July, August, September	January, February, March, November, December	Nibble fish	f	1500	Scarce	Tiny
+36	NH-Icon-angelfish.png	0:00 - 9:00, 16:00 - 24:00	River	May, June, July, August, September, October	January, February, March, April, November, December	Angelfish	f	3000	Uncommon	Small
+37	NH-Icon-betta.png	9:00 - 16:00	River	May, June, July, August, September, October	January, February, March, April, November, December	Betta	f	2500	Uncommon	Small
+38	NH-Icon-neontetra.png	9:00 - 16:00	River	April, May, June, July, August, September, October, November	January, February, March, April, May, October, November, December	Neon tetra	f	500	Uncommon	Tiny
+39	NH-Icon-rainbowfish.png	9:00 - 16:00	River	May, June, July, August, September, October	January, February, March, April, November, December	Rainbowfish	f	800	Uncommon	Tiny
+40	NH-Icon-piranha.png	0:00 - 4:00, 9:00 - 16:00, 21:00 - 24:00	River	June, July, August, September	January, February, March, December	Piranha	f	2500	Scarce	Small
+41	NH-Icon-arowana.png	0:00 - 9:00, 16:00 - 24:00	River	June, July, August, September	January, February, March, December	Arowana	f	10000	Rare	Large
+42	NH-Icon-dorado.png	4:00 - 21:00	River	June, July, August, September	January, February, March, December	Dorado	f	15000	Scarce	VeryLarge
+43	NH-Icon-gar.png	0:00 - 9:00, 16:00 - 24:00	Pond	June, July, August, September	January, February, March, December	Gar	f	6000	Scarce	VeryLarge
+44	NH-Icon-arapaima.png	0:00 - 9:00, 16:00 - 24:00	River	June, July, August, September	January, February, March, December	Arapaima	f	10000	Rare	Huge
+45	NH-Icon-saddledbichir.png	0:00 - 4:00, 21:00 - 24:00	River	June, July, August, September	January, February, March, December	Saddled bichir	f	4000	Rare	Large
+46	NH-Icon-sturgeon.png	0:00 - 24:00	Mouth	January, February, March, September, October, November, December	March, April, May, June, July, August, September	Sturgeon	f	10000	Scarce	Huge
+47	NH-Icon-seabutterfly.png	0:00 - 24:00	Sea	January, February, March, December	June, July, August, September	Sea butterfly	f	1000	Uncommon	Tiny
+48	NH-Icon-seahorse.png	0:00 - 24:00	Sea	April, May, June, July, August, September, October, November	January, February, March, April, May, October, November, December	Sea horse	f	1100	Uncommon	Tiny
+49	NH-Icon-clownfish.png	0:00 - 24:00	Sea	April, May, June, July, August, September	January, February, March, October, November, December	Clown fish	f	650	Uncommon	Tiny
+50	NH-Icon-surgeonfish.png	0:00 - 24:00	Sea	April, May, June, July, August, September	January, February, March, October, November, December	Surgeonfish	f	1000	Uncommon	Small
+51	NH-Icon-butterflyfish.png	0:00 - 24:00	Sea	April, May, June, July, August, September	January, February, March, October, November, December	Butterfly fish	f	1000	Uncommon	Small
+52	NH-Icon-napoleonfish.png	4:00 - 21:00	Sea	July, August	January, February	Napoleonfish	f	10000	Scarce	Huge
+53	NH-Icon-zebraturkeyfish.png	0:00 - 24:00	Sea	April, May, June, July, August, September, October, November	January, February, March, April, May, October, November, December	Zebra turkeyfish	f	500	Common	Medium
+54	NH-Icon-blowfish.png	0:00 - 4:00, 21:00 - 24:00	Sea	January, February, November, December	May, June, July, August	Blowfish	f	5000	Scarce	Medium
+55	NH-Icon-pufferfish.png	0:00 - 24:00	Sea	July, August, September	January, February, March	Puffer fish	f	250	Uncommon	Medium
+56	NH-Icon-anchovy.png	4:00 - 21:00	Sea	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Anchovy	f	200	Uncommon	Small
+57	NH-Icon-horsemackerel.png	0:00 - 24:00	Sea	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Horse mackerel	f	150	Common	Small
+58	NH-Icon-barredknifejaw.png	0:00 - 24:00	Sea	March, April, May, June, July, August, September, October, November	January, February, March, April, May, September, October, November, December	Barred knifejaw	f	5000	Scarce	Medium
+59	NH-Icon-seabass.png	0:00 - 24:00	Sea	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Sea bass	f	400	Common	VeryLarge
+60	NH-Icon-redsnapper.png	0:00 - 24:00	Sea	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Red snapper	f	3000	Uncommon	Large
+61	NH-Icon-dab.png	0:00 - 24:00	Sea	January, February, March, April, October, November, December	April, May, June, July, August, September, October	Dab	f	300	FairlyCommon	Medium
+62	NH-Icon-oliveflounder.png	0:00 - 24:00	Sea	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Olive flounder	f	800	Uncommon	VeryLarge
+63	NH-Icon-squid.png	0:00 - 24:00	Sea	January, February, March, April, May, June, July, August, December	January, February, June, July, August, September, October, November, December	Squid	f	500	FairlyCommon	Medium
+64	NH-Icon-morayeel.png	0:00 - 24:00	Sea	August, September, October	February, March, April	Moray eel	f	2000	Rare	Narrow
+65	NH-Icon-ribboneel.png	0:00 - 24:00	Sea	June, July, August, September, October	January, February, March, April, December	Ribbon eel	f	600	Uncommon	Narrow
+66	NH-Icon-tuna.png	0:00 - 24:00	Pier	January, February, March, April, November, December	May, June, July, August, September, October	Tuna	f	7000	Scarce	Huge
+67	NH-Icon-bluemarlin.png	0:00 - 24:00	Pier	January, February, March, April, July, August, September, November, December	January, February, March, May, June, July, August, September, October	Blue marlin	f	10000	Scarce	Huge
+68	NH-Icon-gianttrevally.png	0:00 - 24:00	Pier	May, June, July, August, September, October	January, February, March, April, November, December	Giant trevally	f	4500	Scarce	VeryLarge
+69	NH-Icon-mahimahi.png	0:00 - 24:00	Pier	May, June, July, August, September, October	January, February, March, April, November, December	Mahi-mahi	f	6000	Rare	VeryLarge
+70	NH-Icon-oceansunfish.png	4:00 - 21:00	Sea	July, August, September	January, February, March	Ocean sunfish	f	4000	Rare	HugeFin
+71	NH-Icon-ray.png	4:00 - 21:00	Sea	August, September, October, November	February, March, April, May	Ray	f	3000	Scarce	VeryLarge
+72	NH-Icon-sawshark.png	0:00 - 9:00, 16:00 - 24:00	Sea	June, July, August, September	January, February, March, December	Saw shark	f	12000	Scarce	HugeFin
+73	NH-Icon-hammerheadshark.png	0:00 - 9:00, 16:00 - 24:00	Sea	June, July, August, September	January, February, March, December	Hammerhead shark	f	8000	Scarce	HugeFin
+74	NH-Icon-greatwhiteshark.png	0:00 - 9:00, 16:00 - 24:00	Sea	June, July, August, September	January, February, March, December	Great white shark	f	15000	Rare	HugeFin
+75	NH-Icon-whaleshark.png	0:00 - 24:00	Sea	June, July, August, September	January, February, March, December	Whale shark	f	13000	Scarce	HugeFin
+76	NH-Icon-suckerfish.png	0:00 - 24:00	Sea	June, July, August, September	January, February, March, December	Suckerfish	f	1500	Uncommon	HugeFin
+77	NH-Icon-footballfish.png	0:00 - 9:00, 16:00 - 24:00	Sea	January, February, March, November, December	May, June, July, August, September	Football fish	f	2500	Uncommon	Large
+78	NH-Icon-oarfish.png	0:00 - 24:00	Sea	January, February, March, April, May, December	June, July, August, September, October, November	Oarfish	f	9000	Scarce	Huge
+79	NH-Icon-barreleye.png	0:00 - 4:00, 21:00 - 24:00	Sea	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Barreleye	f	15000	Rare	Small
+80	NH-Icon-coelacanth.png	0:00 - 24:00	Sea	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Coelacanth	t	15000	Rare	Huge
+\.
+
+
+--
+-- Data for Name: sea_creature; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.sea_creature (id, filename, hour_list, month_listn, month_lists, name, price, rarity, shadow_size) FROM stdin;
+33	NH-Icon-spinylobster.png	0:00 - 4:00, 21:00 - 24:00	October, November, December	April, May, June	Spiny lobster	5000	Rare	Large
+1	NH-Icon-seaweed.png	0:00 - 24:00	January, February, March, April, May, June, July, October, November, December	January, April, May, June, July, August, September, October, November, December	Seaweed	600	Common	Large
+2	NH-Icon-seagrapes.png	0:00 - 24:00	June, July, August, September	January, February, March, December	Sea grapes	900	Common	Small
+3	NH-Icon-seacucumber.png	0:00 - 24:00	January, February, March, April, November, December	May, June, July, August, September, October	Sea cucumber	500	FairlyCommon	Medium
+4	NH-Icon-seapig.png	0:00 - 9:00, 16:00 - 24:00	January, February, November, December	May, June, July, August	Sea pig	10000	Rare	Small
+5	NH-Icon-seastar.png	0:00 - 24:00	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Sea star	500	FairlyCommon	Small
+6	NH-Icon-seaurchin.png	0:00 - 24:00	May, June, July, August, September	January, February, March, November, December	Sea urchin	1700	FairlyCommon	Small
+7	NH-Icon-slatepencilurchin.png	0:00 - 9:00, 16:00 - 24:00	May, June, July, August, September	January, February, March, November, December	Slate pencil urchin	2000	Uncommon	Medium
+8	NH-Icon-seaanemone.png	0:00 - 24:00	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Sea anemone	500	Common	Large
+9	NH-Icon-moonjellyfish.png	0:00 - 24:00	July, August, September	January, February, March	Moon jellyfish	600	FairlyCommon	Small
+10	NH-Icon-seaslug.png	0:00 - 24:00	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Sea slug	600	FairlyCommon	Tiny
+11	NH-Icon-pearloyster.png	0:00 - 24:00	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Pearl oyster 	2800	Uncommon	Small
+12	NH-Icon-mussel.png	0:00 - 24:00	June, July, August, September, October, November, December	January, February, March, April, May, June, December	Mussel	1500	FairlyCommon	Small
+13	NH-Icon-oyster.png	0:00 - 24:00	January, February, September, October, November, December	March, April, May, June, July, August	Oyster	1100	Uncommon	Small
+14	NH-Icon-scallop.png	0:00 - 24:00	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Scallop	1200	FairlyCommon	Medium
+15	NH-Icon-whelk.png	0:00 - 24:00	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Whelk	1000	FairlyCommon	Small
+16	NH-Icon-turbanshell.png	0:00 - 24:00	March, April, May, September, October, November, December	March, April, May, June, September, October, November	Turban shell	1000	FairlyCommon	Small
+17	NH-Icon-abalone.png	0:00 - 9:00, 16:00 - 24:00	January, June, July, August, September, October, November, December	January, February, March, April, May, June, July, December	Abalone	2000	Uncommon	Medium
+18	NH-Icon-gigasgiantclam.png	0:00 - 24:00	May, June, July, August, September	January, February, March, November, December	Gigas giant clam	15000	Rare	Huge
+19	NH-Icon-chamberednautilus.png	0:00 - 9:00, 16:00 - 24:00	March, April, May, June, September, October, November	March, April, May, September, October, November, December	Chambered nautilus	1800	FairlyCommon	Medium
+20	NH-Icon-octopus.png	0:00 - 24:00	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Octopus	1200	Uncommon	Medium
+21	NH-Icon-umbrellaoctopus.png	0:00 - 24:00	March, April, May, September, October, November	March, April, May, September, October, November	Umbrella octopus	6000	Scarce	Small
+22	NH-Icon-vampiresquid.png	0:00 - 9:00, 17:00 - 24:00	May, June, July, August	January, February, November, December	Vampire squid	10000	Rare	Medium
+23	NH-Icon-fireflysquid.png	0:00 - 4:00, 21:00 - 24:00	March, April, May, June	September, October, November, December	Firefly squid	1400	FairlyCommon	Tiny
+24	NH-Icon-gazamicrab.png	0:00 - 24:00	June, July, August, September, October, November	January, February, March, April, May, December	Gazami crab	2200	Uncommon	Medium
+25	NH-Icon-dungenesscrab.png	0:00 - 24:00	January, February, March, April, May, November, December	May, June, July, August, September, October, November	Dungeness crab	1900	Uncommon	Medium
+26	NH-Icon-snowcrab.png	0:00 - 24:00	January, February, March, April, November, December	May, June, July, August, September, October	Snow crab	6000	Scarce	Large
+27	NH-Icon-redkingcrab.png	0:00 - 24:00	January, February, March, November, December	May, June, July, August, September	Red king crab	8000	Scarce	Large
+28	NH-Icon-acornbarnacle.png	0:00 - 24:00	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Acorn barnacle	600	Common	Tiny
+29	NH-Icon-spidercrab.png	0:00 - 24:00	March, April	September, October	Spider crab	12000	Rare	Huge
+30	NH-Icon-tigerprawn.png	0:00 - 9:00, 16:00 - 24:00	June, July, August, September	January, February, March, December	Tiger prawn	3000	Uncommon	Small
+31	NH-Icon-sweetshrimp.png	0:00 - 9:00, 16:00 - 24:00	January, February, September, October, November, December	March, April, May, June, July, August	Sweet shrimp	1400	FairlyCommon	Small
+32	NH-Icon-mantisshrimp.png	0:00 - 9:00, 16:00 - 24:00	January, February, March, April, May, June, July, August, September, October, November, December	January, February, March, April, May, June, July, August, September, October, November, December	Mantis shrimp	2500	Scarce	Small
+34	NH-Icon-lobster.png	0:00 - 24:00	January, April, May, June, December	June, July, October, November, December	Lobster	4500	Scarce	Large
+35	NH-Icon-giantisopod.png	0:00 - 4:00, 9:00 - 16:00, 21:00 - 24:00	July, August, September, October	January, February, March, April	Giant isopod	12000	Rare	Medium
+36	NH-Icon-horseshoecrab.png	0:00 - 4:00, 21:00 - 24:00	July, August, September	January, February, March	Horseshoe crab	2500	Scarce	Medium
+37	NH-Icon-seapineapple.png	0:00 - 24:00	April, May, June, July, August	January, February, October, November, December	Sea pineapple	1500	FairlyCommon	Small
+38	NH-Icon-spottedgardeneel.png	4:00 - 21:00	May, June, July, August, September, October	January, February, March, April, November, December	Spotted garden eel	1100	FairlyCommon	Small
+39	NH-Icon-flatworm.png	0:00 - 9:00, 16:00 - 24:00	August, September	February, March	Flatworm	700	FairlyCommon	Tiny
+40	NH-Icon-venusflowerbasket.png	0:00 - 24:00	January, February, October, November, December	April, May, June, July, August	Venus flower basket	5000	Scarce	Medium
+\.
+
+
+--
+-- Data for Name: token; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.token (id, confirmed_at, created_at, expires_at, token, app_user_id) FROM stdin;
+1	2021-05-25 17:28:49.66084	2021-05-25 17:28:27.237944	2021-05-25 17:43:27.238941	472f7141-bdc0-45fa-9eaa-c0557b1f5c8d	1
+2	2021-05-26 19:24:24.694875	2021-05-26 19:23:59.214037	2021-05-26 19:38:59.215034	bd78a09d-d702-4eea-b924-8de58116bc7d	2
+3	2021-05-26 19:24:27.326915	2021-05-26 19:24:19.706816	2021-05-26 19:39:19.706816	2ce2fbe1-575f-4734-a05c-427f845524ab	3
+\.
+
+
+--
+-- Data for Name: user_bug; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.user_bug (app_user_id, bug_id) FROM stdin;
+1	7
+1	34
+1	1
+1	2
+1	22
+2	50
+\.
+
+
+--
+-- Data for Name: user_fish; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.user_fish (app_user_id, fish_id) FROM stdin;
+1	6
+1	7
+1	8
+1	9
+1	11
+1	12
+1	14
+1	15
+1	28
+1	77
+1	18
+2	28
+1	29
+\.
+
+
+--
+-- Data for Name: user_sea_creature; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.user_sea_creature (app_user_id, sea_creature_id) FROM stdin;
+1	4
+1	1
+2	34
+1	33
+1	2
+1	6
+1	7
+1	8
+1	10
+1	13
+1	14
+1	15
+1	18
+1	19
+1	20
+1	22
+1	23
+1	27
+1	29
+1	30
+1	31
+1	32
+1	35
+1	36
+1	39
+\.
+
+
+--
+-- Name: app_user app_user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.app_user
+    ADD CONSTRAINT app_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: bug bug_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bug
+    ADD CONSTRAINT bug_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: fish fish_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.fish
+    ADD CONSTRAINT fish_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sea_creature sea_creature_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sea_creature
+    ADD CONSTRAINT sea_creature_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: token token_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.token
+    ADD CONSTRAINT token_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_bug user_bug_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_bug
+    ADD CONSTRAINT user_bug_pkey PRIMARY KEY (app_user_id, bug_id);
+
+
+--
+-- Name: user_fish user_fish_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_fish
+    ADD CONSTRAINT user_fish_pkey PRIMARY KEY (app_user_id, fish_id);
+
+
+--
+-- Name: user_sea_creature user_sea_creature_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_sea_creature
+    ADD CONSTRAINT user_sea_creature_pkey PRIMARY KEY (app_user_id, sea_creature_id);
+
+
+--
+-- Name: token fk42hg94d53f3nm6o9s0bfca2ud; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.token
+    ADD CONSTRAINT fk42hg94d53f3nm6o9s0bfca2ud FOREIGN KEY (app_user_id) REFERENCES public.app_user(id);
+
+
+--
+-- Name: user_fish fki9gdu3e3d3mtnkp4vo1psid09; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_fish
+    ADD CONSTRAINT fki9gdu3e3d3mtnkp4vo1psid09 FOREIGN KEY (fish_id) REFERENCES public.fish(id);
+
+
+--
+-- Name: user_sea_creature fkit56rtlj4lt5ife1qggok0o9k; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_sea_creature
+    ADD CONSTRAINT fkit56rtlj4lt5ife1qggok0o9k FOREIGN KEY (app_user_id) REFERENCES public.app_user(id);
+
+
+--
+-- Name: user_fish fkolw790q4w23l8nwnuo22u0fv5; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_fish
+    ADD CONSTRAINT fkolw790q4w23l8nwnuo22u0fv5 FOREIGN KEY (app_user_id) REFERENCES public.app_user(id);
+
+
+--
+-- Name: user_sea_creature fkp9wjula1nor6f5wpa9c7yox86; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_sea_creature
+    ADD CONSTRAINT fkp9wjula1nor6f5wpa9c7yox86 FOREIGN KEY (sea_creature_id) REFERENCES public.sea_creature(id);
+
+
+--
+-- Name: user_bug fkqygfaimi9o9r5s5ewqg0l0skk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_bug
+    ADD CONSTRAINT fkqygfaimi9o9r5s5ewqg0l0skk FOREIGN KEY (app_user_id) REFERENCES public.app_user(id);
+
+
+--
+-- Name: user_bug fkuikj0jena7gk0vfc238fhh2b; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_bug
+    ADD CONSTRAINT fkuikj0jena7gk0vfc238fhh2b FOREIGN KEY (bug_id) REFERENCES public.bug(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+

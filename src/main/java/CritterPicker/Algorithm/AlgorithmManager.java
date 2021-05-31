@@ -398,25 +398,6 @@ public class AlgorithmManager {
         float pool = getPoolFish(listForPool);
         float sum = 0;
         for (FishDTO fish : listFish){
-            int x = 0;
-            switch (fish.getRarity()) {
-                case Rare:
-                    x = rare * (raritySum - rare);
-                    break;
-                case Scarce:
-                    x = scarce * (raritySum - scarce);
-                    break;
-                case Uncommon:
-                    x = uncommon * (raritySum - uncommon);
-                    break;
-                case FairlyCommon:
-                    x = fairlyCommon * (raritySum - fairlyCommon);
-                    break;
-                case Common:
-                    x = common * (raritySum - common);
-                    break;
-            }
-
             int monthsLeft = 0;
             int y = -1;
             for(String m : fish.getMonthListN()){
@@ -439,7 +420,24 @@ public class AlgorithmManager {
                     }
                 }
             }
-            sum += x * (12 - monthsLeft) * 10;
+
+            switch (fish.getRarity()) {
+                case Rare:
+                    sum += rare * ((raritySum - rare) + (12-monthsLeft) * 10);
+                    break;
+                case Scarce:
+                    sum += scarce * ((raritySum - scarce) + (12-monthsLeft) * 10);
+                    break;
+                case Uncommon:
+                    sum += uncommon * ((raritySum - uncommon) + (12-monthsLeft) * 10);
+                    break;
+                case FairlyCommon:
+                    sum += fairlyCommon * ((raritySum - fairlyCommon) + (12-monthsLeft) * 10);
+                    break;
+                case Common:
+                    sum += common * ((raritySum - common) + (12-monthsLeft) * 10);
+                    break;
+            }
         }
         return sum / pool;
     }
@@ -448,25 +446,6 @@ public class AlgorithmManager {
         float pool = getPoolSeaCreature(listForPool);
         float sum = 0;
         for (SeaCreatureDTO seaCreature : listSeaCreature){
-            int x = 0;
-            switch (seaCreature.getRarity()) {
-                case Rare:
-                    x = rare * (raritySum - rare);
-                    break;
-                case Scarce:
-                    x = scarce * (raritySum - scarce);
-                    break;
-                case Uncommon:
-                    x = uncommon * (raritySum - uncommon);
-                    break;
-                case FairlyCommon:
-                    x = fairlyCommon * (raritySum - fairlyCommon);
-                    break;
-                case Common:
-                    x = common * (raritySum - common);
-                    break;
-            }
-
             int monthsLeft = 0;
             int y = -1;
             for(String m : seaCreature.getMonthListN()){
@@ -489,7 +468,25 @@ public class AlgorithmManager {
                     }
                 }
             }
-            sum += x * (12 - monthsLeft) * 10;
+
+            switch (seaCreature.getRarity()) {
+                case Rare:
+                    sum += rare * ((raritySum - rare) + (12-monthsLeft) * 10);
+                    break;
+                case Scarce:
+                    sum += scarce * ((raritySum - scarce) + (12-monthsLeft) * 10);
+                    break;
+                case Uncommon:
+                    sum += uncommon * ((raritySum - uncommon) + (12-monthsLeft) * 10);
+                    break;
+                case FairlyCommon:
+                    sum += fairlyCommon * ((raritySum - fairlyCommon) + (12-monthsLeft) * 10);
+                    break;
+                case Common:
+                    sum += common * ((raritySum - common) + (12-monthsLeft) * 10);
+                    break;
+            }
+
         }
         return sum / pool;
     }
