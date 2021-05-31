@@ -6,12 +6,12 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
-<ul th:if="${user.role == T(CritterPicker.Enums.UserRole).USER}">
+<ul>
     <li>
         <a th:href="@{/logout}" class="logout">Logout</a>
     </li>
     <li>
-        <a th:href="@{/admin/homePage}">Home</a>
+        <a th:href="@{/homePage}">Home</a>
     </li>
     <li>
         <a th:href="@{/algorithmInput}">Algorithm</a>
@@ -22,126 +22,127 @@
     <li>
         <a th:href="@{/allList}">Table of critters</a>
     </li>
-    <li>
-        <a th:href="@{/homePage}">Home</a>
-    </li>
-</ul>
-<ul th:if="${user.role == T(CritterPicker.Enums.UserRole).ADMIN}">
-    <li>
-        <a th:href="@{/logout}" class="logout">Logout</a>
-    </li>
-    <li>
-        <a th:href="@{/algorithmInput}">Algorithm</a>
-    </li>
-    <li>
-        <a class="active" th:href="@{/userList}">Personal list</a>
-    </li>
-    <li>
-        <a th:href="@{/admin/allList}">Table of critters</a>
-    </li>
-    <li>
+    <li th:if="${user.role == T(CritterPicker.Enums.UserRole).ADMIN}">
         <a th:href="@{/admin/newSeaCreature}">Add new sea creature</a>
     </li>
-    <li>
+    <li th:if="${user.role == T(CritterPicker.Enums.UserRole).ADMIN}">
         <a th:href="@{/admin/newBug}">Add new bug</a>
     </li>
-    <li>
+    <li th:if="${user.role == T(CritterPicker.Enums.UserRole).ADMIN}">
         <a th:href="@{/admin/newFish}">Add new fish</a>
     </li>
 </ul>
 
 <div class="main">
-    <h1>List of collected fishes:</h1>
-    <div class="table">
-        <table>
-            <tr>
-                <th>Move to uncollected fishes</th>
-                <th>Image</th>
-                <th>Name</th>
-            </tr>
-            <tr th:each="fish : ${user.fishSet}">
-                <td><a th:href="@{/userFishDelete(id=${fish.id})}" class="button">X</a></td>
-                <td><img th:src="@{${'/upload-dir/' + fish.filename}}" class="tableIMG"/></td>
-                <td th:text="${fish.name}"/>
-            </tr>
-        </table>
-    </div>
-    <h1>List of uncollected fishes:</h1>
-    <div class="table">
-        <table>
-            <tr>
-                <th>Move to collected fishes</th>
-                <th>Image</th>
-                <th>Name</th>
-            </tr>
-            <tr th:each="fish : ${fishes}">
-                <td><a th:href="@{/userFish(id=${fish.id})}" class="button">X</a></td>
-                <td><img th:src="@{${'/upload-dir/' + fish.filename}}" class="tableIMG"/></td>
-                <td th:text="${fish.name}"/>
-            </tr>
-        </table>
-    </div>
-
-    <h1>List of collected bugs:</h1>
-    <div class="table">
-        <table>
-            <tr>
-                <th>Move to uncollected bugs</th>
-                <th>Image</th>
-                <th>Name</th>
-            </tr>
-            <tr th:each="bug : ${user.bugSet}">
-                <td><a th:href="@{/userBugDelete(id=${bug.id})}" class="button">X</a></td>
-                <td><img th:src="@{${'/upload-dir/' + bug.filename}}" class="tableIMG"/></td>
-                <td th:text="${bug.name}"/>
-            </tr>
-        </table>
-    </div>
-    <h1>List of uncollected bugs:</h1>
-    <div class="table">
-        <table>
-            <tr>
-                <th>Move to collected bug</th>
-                <th>Image</th>
-                <th>Name</th>
-            </tr>
-            <tr th:each="bug : ${bugs}">
-                <td><a th:href="@{/userBug(id=${bug.id})}" class="button">X</a></td>
-                <td><img th:src="@{${'/upload-dir/' + bug.filename}}" class="tableIMG"/></td>
-                <td th:text="${bug.name}"/>
-            </tr>
-        </table>
+    <div class="personalContainerBig" th:if="${showFish}">
+        <div class="personalContainer">
+            <h1>List of collected fishes:</h1>
+            <div class="table">
+                <table>
+                    <tr>
+                        <th>Move to uncollected fishes</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                    </tr>
+                    <tr th:each="fish : ${user.fishSet}">
+                        <td><a th:href="@{/userFishDelete(id=${fish.id})}" class="button">X</a></td>
+                        <td><img th:src="@{${'/upload-dir/' + fish.filename}}" class="tableIMG"/></td>
+                        <td th:text="${fish.name}"/>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="personalContainer">
+            <h1>List of uncollected fishes:</h1>
+            <div class="table">
+                <table>
+                    <tr>
+                        <th>Move to collected fishes</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                    </tr>
+                    <tr th:each="fish : ${fishes}">
+                        <td><a th:href="@{/userFish(id=${fish.id})}" class="button">X</a></td>
+                        <td><img th:src="@{${'/upload-dir/' + fish.filename}}" class="tableIMG"/></td>
+                        <td th:text="${fish.name}"/>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
 
-    <h1>List of collected sea creatures:</h1>
-    <div class="table">
-        <table>
-            <tr>
-                <th>Move to uncollected sea creatures</th>
-                <th>Image</th>
-                <th>Name</th>
-            </tr>
-            <tr th:each="seaCreature : ${user.seaCreatureSet}">
-                <td><a th:href="@{/userSeaCreatureDelete(id=${seaCreature.id})}" class="button">X</a></td>
-                <td><img th:src="@{${'/upload-dir/' + seaCreature.filename}}" class="tableIMG"/></td>
-                <td th:text="${seaCreature.name}"/>
-            </tr>
-        </table>
+    <div class="personalContainerBig" th:if="${showBug}">
+        <div class="personalContainer">
+            <h1>List of collected bugs:</h1>
+            <div class="table">
+                <table>
+                    <tr>
+                        <th>Move to uncollected bugs</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                    </tr>
+                    <tr th:each="bug : ${user.bugSet}">
+                        <td><a th:href="@{/userBugDelete(id=${bug.id})}" class="button">X</a></td>
+                        <td><img th:src="@{${'/upload-dir/' + bug.filename}}" class="tableIMG"/></td>
+                        <td th:text="${bug.name}"/>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="personalContainer">
+            <h1>List of uncollected bugs:</h1>
+            <div class="table">
+                <table>
+                    <tr>
+                        <th>Move to collected bug</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                    </tr>
+                    <tr th:each="bug : ${bugs}">
+                        <td><a th:href="@{/userBug(id=${bug.id})}" class="button">X</a></td>
+                        <td><img th:src="@{${'/upload-dir/' + bug.filename}}" class="tableIMG"/></td>
+                        <td th:text="${bug.name}"/>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
-    <h1>List of uncollected sea creatures:</h1>
-    <div class="table">
-        <table>
-            <tr>
-                <th>Move to collected sea creatures</th>
-                <th>Image</th>
-                <th>Name</th>
-            </tr>
-            <tr th:each="seaCreature : ${seaCreatures}">
-                <td><a th:href="@{/userSeaCreature(id=${seaCreature.id})}" class="button">X</a></td>
-                <td><img th:src="@{${'/upload-dir/' + seaCreature.filename}}" class="tableIMG"/></td>
-                <td th:text="${seaCreature.name}"/>
-            </tr>
-        </table>
+
+    <div class="personalContainerBig" th:if="${showSeaCreature}">
+        <div class="personalContainer">
+            <h1>List of collected sea creatures:</h1>
+            <div class="table">
+                <table>
+                    <tr>
+                        <th>Move to uncollected sea creatures</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                    </tr>
+                    <tr th:each="seaCreature : ${user.seaCreatureSet}">
+                        <td><a th:href="@{/userSeaCreatureDelete(id=${seaCreature.id})}" class="button">X</a></td>
+                        <td><img th:src="@{${'/upload-dir/' + seaCreature.filename}}" class="tableIMG"/></td>
+                        <td th:text="${seaCreature.name}"/>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="personalContainer">
+            <h1>List of uncollected sea creatures:</h1>
+            <div class="table">
+                <table>
+                    <tr>
+                        <th>Move to collected sea creatures</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                    </tr>
+                    <tr th:each="seaCreature : ${seaCreatures}">
+                        <td><a th:href="@{/userSeaCreature(id=${seaCreature.id})}" class="button">X</a></td>
+                        <td><img th:src="@{${'/upload-dir/' + seaCreature.filename}}" class="tableIMG"/></td>
+                        <td th:text="${seaCreature.name}"/>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 

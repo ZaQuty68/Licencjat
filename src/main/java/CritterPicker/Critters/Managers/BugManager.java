@@ -1,10 +1,8 @@
 package CritterPicker.Critters.Managers;
 
 import CritterPicker.Critters.DTO.BugDTO;
-import CritterPicker.Critters.DTO.FishDTO;
 import CritterPicker.Critters.Interfaces.BugInterface;
 import CritterPicker.Critters.Models.Bug;
-import CritterPicker.Critters.Models.Fish;
 import CritterPicker.Enums.Months;
 import CritterPicker.User.AppUser;
 import lombok.AllArgsConstructor;
@@ -139,6 +137,7 @@ public class BugManager{
             for(Bug b : user.getBugSet()){
                 if(b == bug){
                     flag = false;
+                    break;
                 }
             }
             if(flag){

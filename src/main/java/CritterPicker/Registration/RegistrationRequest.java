@@ -2,12 +2,7 @@ package CritterPicker.Registration;
 
 import CritterPicker.Enums.Hemisphere;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.context.annotation.Bean;
-
-import javax.persistence.Entity;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 

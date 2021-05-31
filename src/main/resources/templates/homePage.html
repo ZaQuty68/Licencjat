@@ -22,21 +22,38 @@
     <li>
         <a th:href="@{/allList}">Table of critters</a>
     </li>
+    <li th:if="${role == 'ADMIN'}">
+        <a th:href="@{/admin/newSeaCreature}">Add new sea creature</a>
+    </li>
+    <li th:if="${role == 'ADMIN'}">
+        <a th:href="@{/admin/newBug}">Add new bug</a>
+    </li>
+    <li th:if="${role == 'ADMIN'}">
+        <a th:href="@{/admin/newFish}">Add new fish</a>
+    </li>
 </ul>
 
 <div class="main">
     <h1>Welcome to Critter Picker!</h1>
     <img th:src="@{/images/logo.png}" class="logo"/>
-    <h2>Critter Picker is a site for all Animal Crossing: New Horizons lovers!</h2>
+    <h2 th:if="${role == 'USER'}">Critter Picker is a site for all Animal Crossing: New Horizons lovers!</h2>
+    <h2 th:if="${role == 'ADMIN'}">You are an administrator on Critter Picker!</h2>
     <h3>What do you want to do?</h3>
     <div class="container">
         <div class="option"><br/>
             <a th:href="@{/allList}" class="button">List of all critters</a>
-            <p>See a list of all in-game critters that you can collect with some of their details such as where or when you can find them.</p>
+            <p th:if="${role == 'USER'}">See a list of all in-game critters that you can collect with some of their details such as where or when you can find them.</p>
+            <p th:if="${role == 'ADMIN'}">See a list of all in-game critters, where you can delete, edit and add new ones!</p>
+            <a th:href="@{/fishList}" class="button">Only fishes</a><br/><br/>
+            <a th:href="@{/bugList}" class="button">Only bugs</a><br/><br/>
+            <a th:href="@{/seaCreatureList}" class="button">Only sea creatures</a><br/><br/>
         </div>
         <div class="option"><br/>
             <a th:href="@{/userList}" class="button">Personal critter list</a>
             <p>See and manage lists of critters that you have already collected or still have to collect.</p>
+            <a th:href="@{/userFishList}" class="button">Only fishes</a><br/><br/>
+            <a th:href="@{/userBugList}" class="button">Only bugs</a><br/><br/>
+            <a th:href="@{/userSeaCreatureList}" class="button">Only sea creatures</a><br/><br/>
         </div>
         <div class="option"><br/>
             <a th:href="@{/algorithmInput}" class="button">Critter Picker algorithm</a>

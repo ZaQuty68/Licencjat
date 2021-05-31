@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Personal critter list</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<ul>
+    <li>
+        <a th:href="@{/logout}" class="logout">Logout</a>
+    </li>
+    <li>
+        <a th:href="@{/homePage}">Home</a>
+    </li>
+    <li>
+        <a class="active" th:href="@{/algorithmInput}">Algorithm</a>
+    </li>
+    <li>
+        <a th:href="@{/userList}">Personal list</a>
+    </li>
+    <li>
+        <a th:href="@{/allList}">Table of critters</a>
+    </li>
+    <li th:if="${user.role == T(CritterPicker.Enums.UserRole).ADMIN}">
+        <a th:href="@{/admin/newSeaCreature}">Add new sea creature</a>
+    </li>
+    <li th:if="${user.role == T(CritterPicker.Enums.UserRole).ADMIN}">
+        <a th:href="@{/admin/newBug}">Add new bug</a>
+    </li>
+    <li th:if="${user.role == T(CritterPicker.Enums.UserRole).ADMIN}">
+        <a th:href="@{/admin/newFish}">Add new fish</a>
+    </li>
+</ul>
+
+<div class="main">
+    <h1 th:if="${option == T(CritterPicker.Enums.AlgorithmOption).Money}">Most profitable actions today:</h1>
+    <h1 th:if="${option == T(CritterPicker.Enums.AlgorithmOption).Collection}">Actions for fastest collection completion today:</h1>
+    <div class="table">
+        <table>
+            <tr>
+                <th>Time</th>
+                <th>Action</th>
+            </tr>
+            <tr th:each="response : ${responses}" th:if="${response.today}">
+                <td th:text="${response.hours == '0:00 - 24:00'} ? 'All day' : ${response.hours}"/>
+                <td th:text="${response.text}"/>
+            </tr>
+        </table>
+    </div>
+    <h1 th:if="${option == T(CritterPicker.Enums.AlgorithmOption).Money}">Most profitable actions tomorrow:</h1>
+    <h1 th:if="${option == T(CritterPicker.Enums.AlgorithmOption).Collection}">Actions for fastest collection completion tomorrow:</h1>
+    <div class="table">
+        <table>
+            <tr>
+                <th>Time</th>
+                <th>Action</th>
+            </tr>
+            <tr th:each="response : ${responses}" th:unless="${response.today}">
+                <td th:text="${response.hours == '0:00 - 24:00'} ? 'All day' : ${response.hours}"/>
+                <td th:text="${response.text}"/>
+            </tr>
+        </table>
+    </div>
+    <h2>Please note that due to their irregular spawning conditions bugs are excluded from this algorithm, but it is always good idea to catch one if you see one!</h2>
+    <h3><a th:href="@{/homePage}" class="button">Go back to home page</a></h3>
+    <h3><a th:href="@{/algorithmInput}" class="button">Try again</a></h3>
+</div>
+
+</body>
+</html>

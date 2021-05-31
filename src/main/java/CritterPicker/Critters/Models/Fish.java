@@ -4,15 +4,10 @@ import CritterPicker.Enums.LocationFish;
 import CritterPicker.Enums.Rarity;
 import CritterPicker.Enums.ShadowSize;
 import CritterPicker.User.AppUser;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 

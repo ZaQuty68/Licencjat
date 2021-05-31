@@ -1,13 +1,13 @@
 package CritterPicker.Controller;
 
 import CritterPicker.Algorithm.AlgorithmManager;
+import CritterPicker.Algorithm.AlgorithmRequest;
 import CritterPicker.Critters.DTO.BugDTO;
 import CritterPicker.Critters.DTO.SeaCreatureDTO;
 import CritterPicker.Critters.Managers.BugManager;
 import CritterPicker.Critters.Managers.FishManager;
 import CritterPicker.Critters.Managers.SeaCreatureManager;
 import CritterPicker.Critters.DTO.FishDTO;
-import CritterPicker.Enums.Hemisphere;
 import CritterPicker.Registration.RegistrationManager;
 import CritterPicker.Registration.RegistrationRequest;
 import CritterPicker.Storage.StorageManager;
@@ -146,12 +146,10 @@ public class WebController {
     //////////////////////////////////////////////////////////   USER   //////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @GetMapping("/homePage")
-    public String homePage(){
+    public String homePage(Model model){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String role = ((AppUser)principal).getRole().name();
-        if(role.equals("ADMIN")){
-            return "redirect:/admin/homePage";
-        }
+        model.addAttribute("role", role);
 
         return "homePage";
     }
@@ -159,12 +157,12 @@ public class WebController {
     @GetMapping("/allList")
     public String allList(Model model){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String role = ((AppUser)principal).getRole().name();
-        if(role.equals("ADMIN")){
-            return "redirect:/admin/allList";
-        }
-        String hemisphere = ((AppUser)principal).getHemisphere().name();
-        model.addAttribute("hemisphere", hemisphere);
+        int id = ((AppUser)principal).getId();
+        AppUser user = aum.findById(id);
+        model.addAttribute("user", user);
+        model.addAttribute("showFish", true);
+        model.addAttribute("showBug", true);
+        model.addAttribute("showSeaCreature",true);
         model.addAttribute("fishes", fm.findAll());
         model.addAttribute("bugs", bm.findAll());
         model.addAttribute("seaCreatures", scm.findAll());
@@ -177,8 +175,77 @@ public class WebController {
         int id = ((AppUser)principal).getId();
         AppUser user = aum.findById(id);
         model.addAttribute("user", user);
+        model.addAttribute("showFish", true);
+        model.addAttribute("showBug", true);
+        model.addAttribute("showSeaCreature",true);
         model.addAttribute("fishes", fm.findOtherFish(user));
         model.addAttribute("bugs", bm.findOtherBugs(user));
+        model.addAttribute("seaCreatures", scm.findOtherSeaCreatures(user));
+        return "userList";
+    }
+
+    //////////////////////////////////////////////////////////   SMALL LISTS
+
+    @GetMapping("/fishList")
+    public String fishList(Model model){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int id = ((AppUser)principal).getId();
+        AppUser user = aum.findById(id);
+        model.addAttribute("user", user);
+        model.addAttribute("showFish", true);
+        model.addAttribute("fishes", fm.findAll());
+        return "allList";
+    }
+    @GetMapping("/bugList")
+    public String bugList(Model model){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int id = ((AppUser)principal).getId();
+        AppUser user = aum.findById(id);
+        model.addAttribute("user", user);
+        model.addAttribute("showBug", true);
+        model.addAttribute("bugs", bm.findAll());
+        return "allList";
+    }
+    @GetMapping("/seaCreatureList")
+    public String seaCreatureList(Model model){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int id = ((AppUser)principal).getId();
+        AppUser user = aum.findById(id);
+        model.addAttribute("user", user);
+        model.addAttribute("showSeaCreature", true);
+        model.addAttribute("seaCreatures", scm.findAll());
+        return "allList";
+    }
+
+    @GetMapping("/userFishList")
+    public String userFishList(Model model){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int id = ((AppUser)principal).getId();
+        AppUser user = aum.findById(id);
+        model.addAttribute("user", user);
+        model.addAttribute("showFish",true);
+        model.addAttribute("fishes", fm.findOtherFish(user));
+        return "userList";
+    }
+
+    @GetMapping("/userBugList")
+    public String userBugList(Model model){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int id = ((AppUser)principal).getId();
+        AppUser user = aum.findById(id);
+        model.addAttribute("user", user);
+        model.addAttribute("showBug", true);
+        model.addAttribute("bugs", bm.findOtherBugs(user));
+        return "userList";
+    }
+
+    @GetMapping("/userSeaCreatureList")
+    public String userSeaCreatureList(Model model){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int id = ((AppUser)principal).getId();
+        AppUser user = aum.findById(id);
+        model.addAttribute("user", user);
+        model.addAttribute("showSeaCreature",true);
         model.addAttribute("seaCreatures", scm.findOtherSeaCreatures(user));
         return "userList";
     }
@@ -190,14 +257,14 @@ public class WebController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int idU = ((AppUser)principal).getId();
         aum.addFish(idU, fm.findById(id));
-        return "redirect:/userList";
+        return "redirect:/userFishList";
     }
     @GetMapping("/userFishDelete")
     public String userFishDelete(@RequestParam("id") int id){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int idU = ((AppUser)principal).getId();
         aum.removeFish(idU, fm.findById(id));
-        return "redirect:/userList";
+        return "redirect:/userFishList";
     }
 
     @GetMapping("/userBug")
@@ -205,14 +272,14 @@ public class WebController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int idU = ((AppUser)principal).getId();
         aum.addBug(idU, bm.findById(id));
-        return "redirect:/userList";
+        return "redirect:/userBugList";
     }
     @GetMapping("/userBugDelete")
     public String userBugDelete(@RequestParam("id") int id){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int idU = ((AppUser)principal).getId();
         aum.removeBug(idU, bm.findById(id));
-        return "redirect:/userList";
+        return "redirect:/userBugList";
     }
 
     @GetMapping("/userSeaCreature")
@@ -220,14 +287,14 @@ public class WebController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int idU = ((AppUser)principal).getId();
         aum.addSeaCreature(idU, scm.findById(id));
-        return "redirect:/userList";
+        return "redirect:/userSeaCreatureList";
     }
     @GetMapping("/userSeaCreatureDelete")
     public String userSeaCreatureDelete(@RequestParam("id") int id){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int idU = ((AppUser)principal).getId();
         aum.removeSeaCreature(idU, scm.findById(id));
-        return "redirect:/userList";
+        return "redirect:/userSeaCreatureList";
     }
 
     //////////////////////////////////////////////////////////   ALGORITHM
@@ -237,28 +304,25 @@ public class WebController {
         int id = ((AppUser)principal).getId();
         AppUser user = aum.findById(id);
         model.addAttribute("user", user);
+        model.addAttribute("request", new AlgorithmRequest());
         return "algorithmInput";
+    }
+
+    @PostMapping("/algorithmInput")
+    public String processAlgorithmInput(@ModelAttribute("request") AlgorithmRequest request, Model model){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int id = ((AppUser)principal).getId();
+        AppUser user = aum.findById(id);
+        model.addAttribute("user", user);
+        model.addAttribute("option", request.getOption());
+        model.addAttribute("responses", am.Calculate(user, request));
+        return "algorithmOutput";
     }
 
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////   ADMIN   /////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    @GetMapping("/admin/homePage")
-    public String adminHomePage(){
-        return "adminHomePage";
-    }
-
-    @GetMapping("/admin/allList")
-    public String adminAllList(Model model){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String hemisphere = ((AppUser)principal).getHemisphere().name();
-        model.addAttribute("hemisphere", hemisphere);
-        model.addAttribute("fishes", fm.findAll());
-        model.addAttribute("bugs", bm.findAll());
-        model.addAttribute("seaCreatures", scm.findAll());
-        return "adminAllList";
-    }
 
     //////////////////////////////////////////////////////////   ADDING NEW CRITTERS
     @GetMapping("/admin/newFish")
@@ -282,7 +346,7 @@ public class WebController {
             return "newFish";
         }
         sm.store(file);
-        return "redirect:/admin/allList";
+        return "redirect:/fishList";
     }
 
     @GetMapping("/admin/newBug")
@@ -306,7 +370,7 @@ public class WebController {
             return "newBug";
         }
         sm.store(file);
-        return "redirect:/admin/allList";
+        return "redirect:/bugList";
     }
 
     @GetMapping("/admin/newSeaCreature")
@@ -330,7 +394,7 @@ public class WebController {
             return "newSeaCreature";
         }
         sm.store(file);
-        return "redirect:/admin/allList";
+        return "redirect:/seaCreatureList";
     }
 
     //////////////////////////////////////////////////////////   EDITING CRITTERS
@@ -364,7 +428,7 @@ public class WebController {
         }
         sm.deleteFile(oldFilename);
         sm.store(file);
-        return "redirect:/admin/allList";
+        return "redirect:/fishList";
     }
 
     @GetMapping("/admin/editBug")
@@ -397,7 +461,7 @@ public class WebController {
         }
         sm.deleteFile(oldFilename);
         sm.store(file);
-        return "redirect:/admin/allList";
+        return "redirect:/bugList";
     }
 
     @GetMapping("/admin/editSeaCreature")
@@ -430,7 +494,7 @@ public class WebController {
         }
         sm.deleteFile(oldFilename);
         sm.store(file);
-        return "redirect:/admin/allList";
+        return "redirect:/seaCreatureList";
     }
 
 
@@ -446,7 +510,7 @@ public class WebController {
         sm.deleteFile(fm.findById(id).getFilename());
         aum.deleteFish(fm.findById(id));
         fm.deleteById(id);
-        return "redirect:/admin/allList";
+        return "redirect:/fishList";
     }
 
     @GetMapping("/admin/deleteBugConfirm")
@@ -460,7 +524,7 @@ public class WebController {
         sm.deleteFile(bm.findById(id).getFilename());
         aum.deleteBug(bm.findById(id));
         bm.deleteById(id);
-        return "redirect:/admin/allList";
+        return "redirect:/bugList";
     }
 
     @GetMapping("/admin/deleteSeaCreatureConfirm")
@@ -474,6 +538,6 @@ public class WebController {
         sm.deleteFile(scm.findById(id).getFilename());
         aum.deleteSeaCreature(scm.findById(id));
         scm.deleteById(id);
-        return "redirect:/admin/allList";
+        return "redirect:/seaCreatureList";
     }
 }

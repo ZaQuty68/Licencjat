@@ -3,8 +3,6 @@ package CritterPicker.User;
 import CritterPicker.Critters.Models.Bug;
 import CritterPicker.Critters.Models.Fish;
 import CritterPicker.Critters.Models.SeaCreature;
-import CritterPicker.User.AppUserInterface;
-import CritterPicker.User.AppUser;
 import CritterPicker.Registration.Token.ConfirmationToken;
 import CritterPicker.Registration.Token.ConfirmationTokenManager;
 import lombok.AllArgsConstructor;
@@ -15,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service

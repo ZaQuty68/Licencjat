@@ -6,7 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
-<ul th:if="${user.role == T(CritterPicker.Enums.UserRole).USER}">
+<ul>
     <li>
         <a th:href="@{/logout}" class="logout">Logout</a>
     </li>
@@ -22,53 +22,41 @@
     <li>
         <a th:href="@{/allList}">Table of critters</a>
     </li>
-</ul>
-<ul th:if="${user.role == T(CritterPicker.Enums.UserRole).ADMIN}">
-    <li>
-        <a th:href="@{/logout}" class="logout">Logout</a>
-    </li>
-    <li>
-        <a th:href="@{/admin/homePage}">Home</a>
-    </li>
-    <li>
-        <a class="active" th:href="@{/algorithmInput}">Algorithm</a>
-    </li>
-    <li>
-        <a th:href="@{/userList}">Personal list</a>
-    </li>
-    <li>
-        <a th:href="@{/admin/allList}">Table of critters</a>
-    </li>
-    <li>
+    <li th:if="${user.role == T(CritterPicker.Enums.UserRole).ADMIN}">
         <a th:href="@{/admin/newSeaCreature}">Add new sea creature</a>
     </li>
-    <li>
+    <li th:if="${user.role == T(CritterPicker.Enums.UserRole).ADMIN}">
         <a th:href="@{/admin/newBug}">Add new bug</a>
     </li>
-    <li>
+    <li th:if="${user.role == T(CritterPicker.Enums.UserRole).ADMIN}">
         <a th:href="@{/admin/newFish}">Add new fish</a>
     </li>
 </ul>
 
 <div class="main">
-    <h1>Welcome to Critter Picker!</h1>
+    <h1>Critter Picker algorithm!</h1>
     <img th:src="@{/images/logo.png}" class="logo"/>
-    <h2>Critter Picker is a site for all Animal Crossing: New Horizons lovers!</h2>
-    <h3>What do you want to do?</h3>
-    <div class="container">
-        <div class="option"><br/>
-            <a th:href="@{/allList}" class="button">List of all critters</a>
-            <p>See a list of all in-game critters that you can collect with some of their details such as where or when you can find them.</p>
-        </div>
-        <div class="option"><br/>
-            <a th:href="@{/userList}" class="button">Personal critter list</a>
-            <p>See and manage lists of critters that you have already collected or still have to collect.</p>
-        </div>
-        <div class="option"><br/>
-            <a th:href="@{/algorithmInput}" class="button">Critter Picker algorithm</a>
-            <p>Use an algorithm that will help you catch uncollected critters or earn in-game money.</p>
-        </div>
-    </div>
+    <h2>Do you wan't to know what's the fastest current way to earn in game money? Or maybe you wan't to extends your museum collection?</h2>
+    <h3>Then please fill up this small form and use our Critter Picker algorithm!</h3>
+    <form th:action="@{/algorithmInput}" method="POST" enctype="multipart/form-data" th:object="${request}">
+        <fieldset>
+            <legend>Form:</legend>
+
+            <label for="raining">Is it raining on the island today? </label>
+            <input type="checkbox" id="raining" th:field="*{raining}"/><br/><br/>
+
+            <label for="CJOnIsland">Is CJ on your island today? </label>
+            <input type="checkbox" id="CJOnIsland" th:field="*{CJOnIsland}"/><br/><br/>
+
+            <label for="option">What should our algorithm focus on? </label>
+            <select name="option" id="option" th:field="*{option}" required>
+                <option th:each="opt: ${T(CritterPicker.Enums.AlgorithmOption).values()}" th:value="${opt}" th:text="${opt}"> Option </option>
+            </select><br/><br/>
+
+            <input type="submit" value="Calculate"/><br/><br/>
+            <a th:href="@{/homePage}" class="button">Cancel</a>
+        </fieldset>
+    </form>
 </div>
 </body>
 </html>

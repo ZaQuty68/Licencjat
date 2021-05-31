@@ -4,7 +4,6 @@ import CritterPicker.Enums.UserRole;
 import CritterPicker.User.AppUserManager;
 import CritterPicker.User.AppUser;
 import CritterPicker.Registration.Email.EmailSender;
-import CritterPicker.Registration.Email.EmailValidator;
 import CritterPicker.Registration.Token.ConfirmationToken;
 import CritterPicker.Registration.Token.ConfirmationTokenManager;
 import lombok.AllArgsConstructor;
@@ -18,9 +17,9 @@ import java.time.LocalDateTime;
 public class RegistrationManager {
 
     private final AppUserManager aum;
-    private final EmailValidator emailValidator;
     private final ConfirmationTokenManager ctm;
     private final EmailSender emailSender;
+    private final String adminPassword = "MakeMeAnAdmin123";
 
     public String register(RegistrationRequest request){
         AppUser appUserToSave = new AppUser();
@@ -28,7 +27,7 @@ public class RegistrationManager {
         appUserToSave.setUsername(request.getUsername());
         appUserToSave.setPassword(request.getPassword());
         appUserToSave.setEmail(request.getEmail());
-        if(request.getAdminPassword().equals("MakeMeAnAdmin123")){
+        if(request.getAdminPassword().equals(adminPassword)){
             appUserToSave.setRole(UserRole.ADMIN);
         }else {
             appUserToSave.setRole(UserRole.USER);
