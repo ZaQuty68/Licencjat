@@ -22,9 +22,9 @@ public class AlgorithmManager {
 
     private final int rare = 1;
     private final int scarce = 4;
-    private final int uncommon = 5;
-    private final int fairlyCommon = 8;
-    private final int common = 17;
+    private final int uncommon = 6;
+    private final int fairlyCommon = 9;
+    private final int common = 15;
     private final int raritySum = rare + scarce + uncommon + fairlyCommon + common;
 
     private final int plusDays = 1;
